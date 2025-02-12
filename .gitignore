@@ -48,3 +48,4 @@ coverage
 
 # Local Netlify folder
 .netlify 
+*.code-workspace
