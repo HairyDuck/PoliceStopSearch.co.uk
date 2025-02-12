@@ -44,12 +44,14 @@ jobs:
           find .output/public -type f -exec chmod 644 {} \;
           find .output/public -type d -exec chmod 755 {} \;
 
-      - name: 📤 Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 📂 Deploy to server using SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: .output/public/
-          server-dir: /public_html/
-          dangerous-clean-slate: true    
+          port: 22
+          local_path: './.output/public/'
+          remote_path: '/public_html'
+          sftp_only: true
+          delete_remote_files: true    
