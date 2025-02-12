@@ -1,39 +1,25 @@
-# UK Police Stop and Search Data Portal
+# UK Police Stop and Search Data Portal 🚔
 
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+An interactive platform for exploring and analyzing UK police stop and search data. This project aims to make police data more accessible and transparent through intuitive visualization tools and detailed analytics.
 
-An open source web application for exploring and analyzing UK police stop and search data. Built with Vue 3, Nuxt 3, and TypeScript.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Built with Nuxt](https://img.shields.io/badge/Built%20with-Nuxt-00DC82.svg)](https://nuxt.com/)
+[![Data Source](https://img.shields.io/badge/Data%20Source-UK%20Police%20API-yellow.svg)](https://data.police.uk/)
 
-## 🌟 Open Source & Community Driven
+## 🌟 Features
 
-This project is completely open source and we actively encourage contributions from the community! Whether you're fixing bugs, improving documentation, or adding new features, your contributions are welcome.
+- **Interactive Map**: Visualize stop and search incidents across the UK with filtering capabilities
+- **Detailed Statistics**: Comprehensive analytics and trends for each police force
+- **Force Comparison**: Compare statistics across different police forces
+- **Mobile Responsive**: Full functionality on all devices
+- **Real-time Data**: Updated monthly with the latest available police data
+- **Performance Optimized**: Fast loading with data caching and lazy loading
 
-- 🤝 Join our growing community of contributors
-- 💡 Share your ideas and suggestions
-- 🐛 Help identify and fix bugs
-- 📖 Improve documentation
-- ✨ Add new features
-
-## Features
-
-- 🗺️ Interactive map visualization of stop and search incidents
-- 📊 Detailed statistics and demographic analysis
-- 🔍 Multiple search modes:
-  - Area-based search (map view)
-  - Location-based search
-  - Police force search
-- 📱 Responsive design for all devices
-- 🔄 Automatic data updates
-- 📈 Real-time statistics
-- 💾 Efficient data caching
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 16.x or later
+- Node.js (v18 or later)
 - npm or yarn
 
 ### Installation
@@ -47,99 +33,96 @@ cd PoliceStopSearch.co.uk
 2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
 ```
 
 3. Start the development server:
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-### Building for Production
-
+4. Build for production:
 ```bash
 npm run build
-# or
-yarn build
 ```
 
-## Architecture
+## 🛠️ Tech Stack
 
-The application is built using:
-- [Vue 3](https://vuejs.org/) - Progressive JavaScript Framework
-- [Nuxt 3](https://nuxt.com/) - Vue Framework for SSR and static site generation
-- [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
-- [Pinia](https://pinia.vuejs.org/) - State management
-- [Leaflet](https://leafletjs.com/) - Interactive maps
-- [Chart.js](https://www.chartjs.org/) - Data visualization
-- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
+- **Framework**: [Nuxt 3](https://nuxt.com/) - Vue.js Framework
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- **Maps**: [Leaflet](https://leafletjs.com/) - Interactive maps
+- **Charts**: [Chart.js](https://www.chartjs.org/) - Data visualization
+- **State Management**: [Pinia](https://pinia.vuejs.org/) - Vue Store
+- **Data Source**: [UK Police API](https://data.police.uk/docs/) - Official UK Police Data
 
-## Data Source
+## 📊 Data Sources
 
-This project uses data from the [UK Police Data API](https://data.police.uk/docs/), which provides:
-- Stop and search incidents
-- Outcome statistics
-- Demographic information
-- Geographic data
-- Temporal patterns
+All data is sourced from the official UK Police Data API. The data is typically updated monthly with a two-month delay (e.g., January data becomes available in March).
 
-The data is typically updated monthly with a delay of 1-2 months.
+## 🤝 Contributing
 
-## Contributing
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to:
 
-We actively welcome contributions from the community! Whether you're a developer, designer, or data enthusiast, there are many ways to contribute:
+- Report bugs
+- Suggest new features
+- Submit pull requests
+- Set up your development environment
 
-- 💻 Code contributions
-- 🎨 UI/UX improvements
-- 📝 Documentation updates
-- 🌐 Translations
-- 🐛 Bug reports
-- 💡 Feature suggestions
+## 📝 Documentation
 
-Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to get started.
+- [API Documentation](https://data.police.uk/docs/)
+- [Frequently Asked Questions](https://policestopsearch.co.uk/faq)
+- [Privacy Policy](https://policestopsearch.co.uk/privacy)
+- [Terms of Service](https://policestopsearch.co.uk/terms)
 
-### Development Workflow
+## 🔒 Security
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests
-5. Submit a pull request
+- HTTPS enforced for all connections
+- No personal data collection
+- Data sourced only from official police API
+- Regular security updates
 
-## Community
+## 📈 Performance
 
-- 💬 Join our [Discord community](https://discord.gg/your-invite-link)
-- 🌟 Star the repository to show your support
-- 👀 Watch the repository to stay updated
-- 🔔 Report issues and suggest features
-- 🤝 Help others in discussions
+- Optimized asset loading
+- Efficient data caching
+- Lazy loading of components
+- Mobile-first responsive design
 
-## License
+## 🌐 Browser Support
 
-This project is open source and available under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers
 
-## Acknowledgments
+## 📱 Mobile Apps
 
-- Data provided by [data.police.uk](https://data.police.uk/)
-- Map data © [OpenStreetMap](https://www.openstreetmap.org/) contributors
-- All our amazing contributors
+While we don't currently have native mobile apps, our website is fully responsive and works great on mobile devices. You can add it to your home screen for an app-like experience.
 
-## Support
+## 🔄 Updates
 
-If you encounter any problems or have suggestions:
-1. Check the [Issues](https://github.com/HairyDuck/PoliceStopSearch.co.uk/issues) page
-2. Create a new issue if needed
-3. Join our [Discord community](https://discord.gg/your-invite-link)
+The platform is regularly updated with:
+- Latest stop and search data (monthly)
+- New features and improvements
+- Security patches
+- Performance optimizations
 
-## Project Status
+## 📫 Contact
 
-This project is actively maintained and welcomes contributions. For the latest updates, see our [Changelog](CHANGELOG.md).
+- Email: support@policestopsearch.co.uk
+- GitHub Issues: For bug reports and feature requests
+
+## ⚖️ License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [UK Police Forces](https://www.police.uk/) for providing the data
+- All our [contributors](https://github.com/HairyDuck/PoliceStopSearch.co.uk/graphs/contributors)
+- The open-source community
 
 ---
 
-⭐️ If you find this project useful, please consider giving it a star on GitHub! 
+Made with ❤️ for transparency in UK policing

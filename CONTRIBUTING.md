@@ -111,18 +111,31 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/HairyD
 
 ## Community
 
-* Join our [Discord server](https://discord.gg/your-invite-link)
-* Follow us on [Twitter](https://twitter.com/your-handle)
-* Star the repository
+* Join our [Discord server](https://discord.gg/policestopsearch)
+* Follow us on [Twitter](https://twitter.com/UKStopSearch)
+* Star the repository to show support
 * Watch for updates
 * Help others in discussions and issues
 
 ## Need Help?
 
-* Check our [documentation](https://github.com/HairyDuck/PoliceStopSearch.co.uk/wiki)
-* Join our [Discord community](https://discord.gg/your-invite-link)
+* Check our [documentation](https://policestopsearch.co.uk/docs)
+* Join our [Discord community](https://discord.gg/policestopsearch)
 * Create a [GitHub Discussion](https://github.com/HairyDuck/PoliceStopSearch.co.uk/discussions)
+* Email us at [support@policestopsearch.co.uk](mailto:support@policestopsearch.co.uk)
+
+### Additional Guidelines
+
+* Ensure all pages have proper SEO meta tags
+* Follow accessibility best practices (WCAG 2.1)
+* Test your changes across different browsers
+* Add appropriate documentation for new features
+* Include unit tests for new functionality
+* Follow our security best practices
+* Respect user privacy and data protection guidelines
 
 ---
 
 Thank you for contributing to making police data more accessible and transparent! ❤️ 
+
+**Disclaimer:** This project is not affiliated with or endorsed by any UK police force or government agency. We are an independent open-source initiative focused on making public data more accessible. 
