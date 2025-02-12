@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://policestopsearch.co.uk/sitemap.xml
+
+# Disallow API redirects
+Disallow: /api 

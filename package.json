@@ -1,0 +1,37 @@
+{
+  "name": "police-stopsearch",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "nuxi preview",
+    "generate": "nuxi generate"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "@types/leaflet.markercluster": "^1.5.5",
+    "chart.js": "^4.4.1",
+    "date-fns": "^2.30.0",
+    "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
+    "leaflet.markercluster": "^1.5.3",
+    "lodash": "^4.17.21",
+    "nuxt": "^3.9.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.0",
+    "vue-chartjs": "^5.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/leaflet": "^1.9.8",
+    "@types/node": "^20.10.6",
+    "sass": "^1.69.7",
+    "sass-loader": "^13.3.3",
+    "sharp": "^0.33.5",
+    "typescript": "^5.3.3"
+  }
+}
