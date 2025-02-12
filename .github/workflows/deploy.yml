@@ -19,25 +19,10 @@ jobs:
           node-version: '20'
 
       - name: 📦 Install dependencies
-        run: |
-          npm install
-          npm run build
+        run: npm install
 
-      - name: 📄 Create index.html
-        run: |
-          echo '<!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>UK Police Stop and Search Data Portal</title>
-              <link rel="stylesheet" href="/_nuxt/entry.C29Qq0rU.css">
-            </head>
-            <body>
-              <div id="__nuxt"></div>
-              <script type="module" src="/_nuxt/Qg7GvxR9.js"></script>
-            </body>
-          </html>' > .output/public/index.html
+      - name: 🏗️ Generate static site
+        run: npm run generate
 
       - name: 🔧 Set file permissions
         run: |
@@ -45,11 +30,13 @@ jobs:
           find .output/public -type d -exec chmod 755 {} \;
 
       - name: 📂 Deploy to server using SFTP
-        uses: verbindingsfout/sftp-mirror@v1.6
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          local: .output/public/
-          remote: /public_html    
+          local_path: './.output/public/'
+          remote_path: '/public_html'
+          sftp_only: true
+          delete_remote_files: true    

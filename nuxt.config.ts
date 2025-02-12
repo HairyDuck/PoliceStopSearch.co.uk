@@ -1,9 +1,19 @@
 export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
   ssr: false,
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: false,
+      routes: ['/']
+    }
+  },
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
+  // Base URL configuration for static deployment
   app: {
+    cdnURL: '',
+    baseURL: '/',
+    buildAssetsDir: '/_nuxt/',
     head: {
       title: 'UK Police Stop and Search Data Portal',
       htmlAttrs: {
