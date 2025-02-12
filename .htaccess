@@ -1,20 +1,26 @@
-# Enable rewrite engine
 RewriteEngine On
+RewriteBase /
 
 # Handle Authorization Header
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Redirect to HTTPS
+# Force HTTPS
 RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Serve files and directories as-is if they exist
+# Serve existing files and directories directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Send all other requests to index.html
-RewriteRule ^(.*)$ index.html [QSA,L]
+# Route all other requests to index.html
+RewriteRule ^ index.html [L]
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default character set
+AddDefaultCharset utf-8
 
 # Set security headers
 Header set X-Content-Type-Options "nosniff"
@@ -29,12 +35,6 @@ Header set Access-Control-Allow-Origin "*"
 <FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js)$">
     Header set Cache-Control "max-age=31536000, public"
 </FilesMatch>
-
-# Prevent directory listing
-Options -Indexes
-
-# Set default character set
-AddDefaultCharset utf-8
 
 # Compress text files
 <IfModule mod_deflate.c>
