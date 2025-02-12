@@ -29,13 +29,21 @@ jobs:
           find .output/public -type f -exec chmod 644 {} \;
           find .output/public -type d -exec chmod 755 {} \;
 
-      - name: 📂 Deploy to server using FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./.output/public/
-          server-dir: /public_html/
-          dangerous-clean-slate: true    
+      - name: 📂 Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: 🗑️ Clean remote directory
+        run: |
+          cd .output/public
+          echo "rm -rf /public_html/*" > clean.txt
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" sftp -o StrictHostKeyChecking=no ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} < clean.txt
+
+      - name: 📂 Upload files
+        run: |
+          cd .output/public
+          echo "
+          cd /public_html
+          put -r *
+          " > upload.txt
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" sftp -o StrictHostKeyChecking=no ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} < upload.txt    
            
