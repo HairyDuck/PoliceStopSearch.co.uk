@@ -1,0 +1,42 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Redirect to HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Serve files and directories as-is if they exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Send all other requests to index.html
+RewriteRule ^(.*)$ index.html [QSA,L]
+
+# Set security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-Powered-By "Police Stop Search UK"
+
+# Enable CORS
+Header set Access-Control-Allow-Origin "*"
+
+# Cache control for static assets
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default character set
+AddDefaultCharset utf-8
+
+# Compress text files
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule> 
