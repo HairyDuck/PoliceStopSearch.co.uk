@@ -29,12 +29,13 @@ jobs:
           find .output/public -type f -exec chmod 644 {} \;
           find .output/public -type d -exec chmod 755 {} \;
 
-      - name: 📂 Deploy to server using SFTP
-        uses: verbindingsfout/sftp-mirror@v1.6
+      - name: 📂 Deploy to server using FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          local: './.output/public/'
-          remote: '/public_html'
+          local-dir: ./.output/public/
+          server-dir: /public_html/
+          dangerous-clean-slate: true    
+           
