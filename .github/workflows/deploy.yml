@@ -29,14 +29,14 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Deploy via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 📂 Deploy to server using SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          protocol: sftp
-          local-dir: ./.output/public/
-          server-dir: /public_html/
-          dangerous-clean-slate: true 
+          local_path: './.output/public'
+          remote_path: '/public_html'
+          sftp_only: true
+          delete_remote_files: false          
