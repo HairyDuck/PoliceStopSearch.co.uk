@@ -5,6 +5,11 @@ An interactive platform for exploring and analyzing UK police stop and search da
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Built with Nuxt](https://img.shields.io/badge/Built%20with-Nuxt-00DC82.svg)](https://nuxt.com/)
 [![Data Source](https://img.shields.io/badge/Data%20Source-UK%20Police%20API-yellow.svg)](https://data.police.uk/)
+[![Deployed with FTP Deploy Action](https://img.shields.io/badge/Deployed%20with-FTP%20Deploy%20Action-2b9348)](https://github.com/SamKirkland/FTP-Deploy-Action)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Pinia](https://img.shields.io/badge/Pinia-35495E?logo=vue.js&logoColor=4FC08D)](https://pinia.vuejs.org/)
+[![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?logo=chart.js&logoColor=white)](https://www.chartjs.org/)
 
 ## 🌟 Features
 
