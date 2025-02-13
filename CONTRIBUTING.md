@@ -39,9 +39,9 @@ npm install
 npm run dev
 ```
 
-3. Run tests:
+3. Build for production:
 ```bash
-npm run test
+npm run generate
 ```
 
 ## How to Contribute
@@ -111,16 +111,14 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/HairyD
 
 ## Community
 
-* Join our [Discord server](https://discord.gg/policestopsearch)
-* Follow us on [Twitter](https://twitter.com/UKStopSearch)
 * Star the repository to show support
 * Watch for updates
 * Help others in discussions and issues
+* Create or participate in [GitHub Discussions](https://github.com/HairyDuck/PoliceStopSearch.co.uk/discussions)
 
 ## Need Help?
 
 * Check our [documentation](https://policestopsearch.co.uk/docs)
-* Join our [Discord community](https://discord.gg/policestopsearch)
 * Create a [GitHub Discussion](https://github.com/HairyDuck/PoliceStopSearch.co.uk/discussions)
 * Email us at [support@policestopsearch.co.uk](mailto:support@policestopsearch.co.uk)
 

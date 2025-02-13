@@ -3,14 +3,11 @@
     <!-- SEO Meta Tags -->
     <Head>
       <title>About Police Stop and Search Data Portal | Independent Data Analysis Platform</title>
-      <meta name="description" content="Learn about our independent platform that provides transparent access to UK police stop and search data through interactive visualisation and analysis." />
+      <meta name="description" content="Independent platform providing transparent access to UK police stop and search data." />
       <meta name="keywords" content="police data, stop and search, UK police statistics, independent analysis, data transparency" />
       <meta property="og:title" content="About Police Stop and Search Data Portal" />
       <meta property="og:description" content="Independent platform providing transparent access to UK police stop and search data through interactive visualisation." />
       <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="About Police Stop and Search Data Portal" />
-      <meta name="twitter:description" content="Independent platform providing transparent access to UK police stop and search data." />
       <link rel="canonical" href="https://policestopsearch.co.uk/about" />
     </Head>
 
@@ -232,7 +229,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Learn about our independent platform that provides transparent access to UK police stop and search data through interactive visualisation and analysis.'
+      content: 'Independent platform providing transparent access to UK police stop and search data.'
     },
     {
       name: 'keywords',

@@ -3,7 +3,7 @@
     <!-- SEO Meta Tags -->
     <Head>
       <title>UK Police Forces | Stop and Search Data by Force</title>
-      <meta name="description" content="Browse and compare stop and search data across different UK police forces. View force-specific statistics, trends, and performance metrics." />
+      <meta name="description" content="Compare stop and search data across UK police forces." />
       <meta name="keywords" content="UK police forces, police force comparison, stop and search by force, police force statistics" />
       <meta property="og:title" content="UK Police Forces | Stop and Search Data by Force" />
       <meta property="og:description" content="Browse and compare stop and search data across different UK police forces. View force-specific statistics and trends." />

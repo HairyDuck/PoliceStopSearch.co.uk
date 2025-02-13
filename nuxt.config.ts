@@ -4,8 +4,16 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'static',
     prerender: {
-      crawlLinks: false,
-      routes: ['/']
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/map',
+        '/statistics',
+        '/forces',
+        '/about',
+        '/privacy',
+        '/terms'
+      ]
     }
   },
 
@@ -50,7 +58,8 @@ export default defineNuxtConfig({
   plugins: [
     { src: '~/plugins/leaflet.client.ts', mode: 'client' },
     { src: '~/plugins/chart.client.ts', mode: 'client' },
-    { src: '~/plugins/google-analytics.client.ts', mode: 'client' }
+    { src: '~/plugins/google-analytics.client.ts', mode: 'client' },
+    { src: '~/plugins/google-adsense.client.ts', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

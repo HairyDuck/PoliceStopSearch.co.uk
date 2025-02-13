@@ -5,10 +5,20 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# Restrict who can trigger workflow_dispatch
+permissions:
+  contents: read
+  pages: none
+  id-token: none
+  actions: none
+
 jobs:
   deploy:
     name: 🚀 Deploy Website
     runs-on: ubuntu-latest
+    # Only allow trusted users/maintainers to run the workflow
+    if: github.actor == 'HairyDuck' || github.actor == 'YOUR_OTHER_TRUSTED_USER'
+    
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4

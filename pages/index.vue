@@ -25,7 +25,7 @@
     <!-- SEO Meta Tags -->
     <Head>
       <title>UK Police Stop and Search Data Portal | Interactive Maps & Statistics</title>
-      <meta name="description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />
+      <meta name="description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics." />
       <meta name="keywords" content="police data, stop and search, UK police, crime statistics, law enforcement data, police transparency" />
       <meta property="og:title" content="UK Police Stop and Search Data Portal" />
       <meta property="og:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />

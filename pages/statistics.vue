@@ -3,7 +3,7 @@
     <!-- SEO Meta Tags -->
     <Head>
       <title>Stop and Search Statistics | UK Police Data Analysis</title>
-      <meta name="description" content="Comprehensive statistics and analysis of UK police stop and search data. View trends, demographics, outcomes, and detailed breakdowns of police activity." />
+      <meta name="description" content="Comprehensive analysis of UK police stop and search data." />
       <meta name="keywords" content="police statistics, stop and search data, UK police analysis, crime statistics, police demographics" />
       <meta property="og:title" content="Stop and Search Statistics | UK Police Data Analysis" />
       <meta property="og:description" content="Comprehensive statistics and analysis of UK police stop and search data. View trends, demographics, and outcomes." />
@@ -482,7 +482,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Comprehensive statistics and analysis of UK police stop and search data. View trends, demographics, outcomes, and detailed breakdowns of police activity.'
+      content: 'Comprehensive analysis of UK police stop and search data.'
     },
     {
       name: 'keywords',
