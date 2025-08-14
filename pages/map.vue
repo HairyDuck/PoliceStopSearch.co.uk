@@ -366,18 +366,7 @@ useHead({
       property: 'og:url',
       content: 'https://policestopsearch.co.uk/map'
     },
-    {
-      name: 'twitter:card',
-      content: 'summary_large_image'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Interactive Stop and Search Map | UK Police Data Visualization'
-    },
-    {
-      name: 'twitter:description',
-      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics.'
-    }
+
   ],
   link: [
     {

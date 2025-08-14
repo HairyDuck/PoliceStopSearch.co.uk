@@ -49,11 +49,6 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'PoliceStopSearch.co.uk' },
         { property: 'og:locale', content: 'en_GB' },
         
-        // Twitter Card
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'UK Police Stop and Search Data Portal' },
-        { name: 'twitter:description', content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.' },
-        { name: 'twitter:site', content: '@policestopsearch' },
         
         // Additional SEO
         { name: 'application-name', content: 'PoliceStopSearch.co.uk' },
