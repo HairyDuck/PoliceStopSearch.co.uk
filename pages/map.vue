@@ -340,11 +340,72 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area.'
+      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area. Access real-time police transparency data across all UK forces.'
     },
     {
       name: 'keywords',
-      content: 'police map, stop and search map, UK police data, interactive police map, crime statistics map'
+      content: 'police map, stop and search map, UK police data, interactive police map, crime statistics map, police transparency, UK law enforcement data'
+    },
+    {
+      name: 'robots',
+      content: 'index, follow'
+    },
+    {
+      property: 'og:title',
+      content: 'Interactive Stop and Search Map | UK Police Data Visualization'
+    },
+    {
+      property: 'og:description',
+      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area.'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      property: 'og:url',
+      content: 'https://policestopsearch.co.uk/map'
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: 'Interactive Stop and Search Map | UK Police Data Visualization'
+    },
+    {
+      name: 'twitter:description',
+      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/map'
+    }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Interactive Stop and Search Map',
+        description: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area.',
+        url: 'https://policestopsearch.co.uk/map',
+        mainEntity: {
+          '@type': 'Dataset',
+          name: 'UK Police Stop and Search Data',
+          description: 'Comprehensive dataset of UK police stop and search incidents',
+          url: 'https://data.police.uk/api',
+          provider: {
+            '@type': 'Organization',
+            name: 'UK Police Forces',
+            url: 'https://data.police.uk'
+          }
+        }
+      })
     }
   ]
 })
