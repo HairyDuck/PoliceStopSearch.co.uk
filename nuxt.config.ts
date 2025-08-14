@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
-  ssr: false,
+  ssr: true, // Enable SSR for better SEO
   nitro: {
     preset: 'static',
     prerender: {
@@ -12,7 +12,8 @@ export default defineNuxtConfig({
         '/forces',
         '/about',
         '/privacy',
-        '/terms'
+        '/terms',
+        '/faq'
       ]
     }
   },
@@ -32,18 +33,67 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { 
           name: 'description', 
-          content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.'
+          content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information. Access comprehensive police transparency data across all UK forces.'
         },
         { name: 'format-detection', content: 'telephone=no' },
-        { name: 'theme-color', content: '#ffffff' }
+        { name: 'theme-color', content: '#ffffff' },
+        { name: 'robots', content: 'index, follow' },
+        { name: 'author', content: 'PoliceStopSearch.co.uk' },
+        { name: 'keywords', content: 'police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability' },
+        
+        // Open Graph
+        { property: 'og:title', content: 'UK Police Stop and Search Data Portal' },
+        { property: 'og:description', content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://policestopsearch.co.uk' },
+        { property: 'og:site_name', content: 'PoliceStopSearch.co.uk' },
+        { property: 'og:locale', content: 'en_GB' },
+        
+        
+        // Additional SEO
+        { name: 'application-name', content: 'PoliceStopSearch.co.uk' },
+        { name: 'msapplication-TileColor', content: '#ffffff' },
+        { name: 'msapplication-config', content: '/browserconfig.xml' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'canonical', href: 'https://policestopsearch.co.uk' },
+        { rel: 'manifest', href: '/manifest.json' },
         { 
           rel: 'stylesheet', 
           href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
           integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
           crossorigin: ''
+        }
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'UK Police Stop and Search Data Portal',
+            description: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.',
+            url: 'https://policestopsearch.co.uk',
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: 'https://policestopsearch.co.uk/search?q={search_term_string}',
+              'query-input': 'required name=search_term_string'
+            }
+          })
+        },
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'PoliceStopSearch.co.uk',
+            url: 'https://policestopsearch.co.uk',
+            logo: 'https://policestopsearch.co.uk/logo.png',
+            sameAs: [
+              'https://github.com/HairyDuck/PoliceStopSearch.co.uk'
+            ]
+          })
         }
       ]
     }
