@@ -29,7 +29,7 @@ export default defineNuxtConfig({
       },
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { 
           name: 'description', 
           content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.'
@@ -56,10 +56,10 @@ export default defineNuxtConfig({
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/leaflet.client.ts', mode: 'client' },
-    { src: '~/plugins/chart.client.ts', mode: 'client' },
-    { src: '~/plugins/google-analytics.client.ts', mode: 'client' },
-    { src: '~/plugins/google-adsense.client.ts', mode: 'client' }
+    { src: '@/plugins/leaflet.client.ts', mode: 'client' },
+    { src: '@/plugins/chart.client.ts', mode: 'client' },
+    { src: '@/plugins/google-analytics.client.ts', mode: 'client' },
+    { src: '@/plugins/google-adsense.client.ts', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,21 +1,21 @@
 <template>
   <div class="flex flex-col">
     <!-- Meta tags are handled by useHead in the script setup -->
-    <div class="bg-white border-b border-gray-200 p-4">
-      <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="bg-white border-b border-gray-200 p-4 sm:p-4 p-3">
+      <div class="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center justify-between gap-3 sm:gap-4">
         <!-- Mode Selector -->
-        <div class="flex items-center space-x-4">
-          <div class="flex rounded-lg shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+          <div class="flex rounded-lg shadow-sm w-full sm:w-auto">
             <button
               @click="setMode('map')"
-              class="px-4 py-2 text-sm font-medium rounded-l-lg"
+              class="flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-l-lg"
               :class="mode === 'map' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
             >
               Map View
             </button>
             <button
               @click="setMode('force')"
-              class="px-4 py-2 text-sm font-medium rounded-r-lg"
+              class="flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-r-lg"
               :class="mode === 'force' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
             >
               Force View
@@ -26,7 +26,7 @@
           <select
             v-if="mode === 'force'"
             v-model="selectedForceId"
-            class="form-select rounded-md border-gray-300 text-sm"
+            class="w-full sm:w-auto form-select rounded-md border-gray-300 text-sm"
             :disabled="isLoading"
           >
             <option value="">Select Police Force</option>
@@ -36,9 +36,15 @@
           </select>
         </div>
 
-        <div class="flex items-center space-x-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
           <!-- Month Selector -->
+          <MobileDatePicker
+            v-if="isMobile"
+            v-model="selectedMonths"
+            @change="handleDateChange"
+          />
           <DatePicker
+            v-else
             v-model="selectedMonths"
             @change="handleDateChange"
           />
@@ -46,7 +52,7 @@
           <!-- Location Button -->
           <button
             @click="useMyLocation"
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             :disabled="isLocating"
           >
             <span v-if="isLocating" class="loading-spinner mr-2"></span>
@@ -66,10 +72,18 @@
       <div class="flex flex-col lg:flex-row">
         <!-- Map Section -->
         <div class="flex-1" :class="[
-          'relative transition-all duration-300',
-          isFullscreen ? 'h-screen fixed inset-0 z-40' : 'h-[400px] lg:h-[600px]'
-        ]">
-          <div ref="mapContainer" class="absolute inset-0"></div>
+          'relative transition-all duration-300 border-2 border-gray-300',
+          isFullscreen ? 'h-screen fixed inset-0 z-40' : 'h-[400px] sm:h-[500px] md:h-[550px] lg:h-[600px]'
+        ]" style="min-height: 400px;">
+          <div ref="mapContainer" class="absolute inset-0 w-full h-full map-container bg-gray-100" style="min-height: 400px;"></div>
+          
+          <!-- Map loading indicator -->
+          <div v-if="!map" class="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <div class="text-center">
+              <div class="loading-spinner mx-auto mb-2"></div>
+              <p class="text-gray-600">Loading map...</p>
+            </div>
+          </div>
 
           <!-- Fullscreen Toggle -->
           <button
@@ -137,10 +151,10 @@
       </div>
 
       <!-- Statistics Section -->
-      <div class="bg-gray-50 p-6" :class="{ 'hidden': isFullscreen }">
+      <div class="bg-gray-50 p-4 sm:p-6" :class="{ 'hidden': isFullscreen }">
         <div class="max-w-7xl mx-auto">
           <!-- Quick Stats -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div class="bg-white rounded-lg shadow p-6">
               <h3 class="text-lg font-semibold mb-2">Total Searches</h3>
               <div class="text-3xl font-bold text-primary">
@@ -185,9 +199,9 @@
           </div>
 
           <!-- Charts Section -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <!-- Ethnicity Analysis -->
-            <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6 lg:col-span-2">
               <h3 class="text-lg font-semibold mb-4">Ethnicity Analysis</h3>
               <div class="space-y-4">
                 <div v-for="(count, ethnicity) in statsData.ethnicityBreakdown" 
@@ -228,7 +242,7 @@
             </div>
 
             <!-- Gender Distribution -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
               <h3 class="text-lg font-semibold mb-4">Gender Distribution</h3>
               <div class="space-y-4">
                 <div v-for="(count, gender) in statsData.genderBreakdown" 
@@ -306,7 +320,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import { format, parse, subMonths, getYear, setYear } from 'date-fns'
 import type { Map as LeafletMap, Marker, LatLngBounds, FeatureGroup, Layer } from 'leaflet'
 import * as L from 'leaflet'
@@ -316,7 +330,9 @@ import type { StopSearchIncident } from '../types'
 import { useNuxtApp, useHead } from 'nuxt/app'
 import { Chart } from 'chart.js/auto'
 import { useAnalytics } from '../composables/useAnalytics'
+import { useMobile } from '../composables/useMobile'
 import DatePicker from '../components/DatePicker.vue'
+import MobileDatePicker from '../components/MobileDatePicker.vue'
 
 // Initialize head metadata
 useHead({
@@ -389,6 +405,7 @@ const ageChart = ref<HTMLCanvasElement | null>(null)
 const isFullscreen = ref(false)
 const chartInstances = ref<any[]>([])
 const analytics = useAnalytics()
+const { isMobile } = useMobile()
 
 // Computed
 const visibleIncidents = computed(() => markers.value.length)
@@ -753,28 +770,98 @@ const createMarkers = (incidents: StopSearchIncident[]): Marker[] => {
 }
 
 // Methods
-const initializeMap = () => {
-  if (!mapContainer.value) return
+const initializeMap = async () => {
+  console.log('Initializing map...')
+  console.log('Map container:', mapContainer.value)
+  
+  if (!mapContainer.value) {
+    console.error('Map container not found!')
+    return
+  }
 
-  const { $L } = useNuxtApp()
-  const L = $L as typeof import('leaflet')
+  let L: typeof import('leaflet')
+  
+  try {
+    const { $L } = useNuxtApp()
+    L = $L as typeof import('leaflet')
+    console.log('Leaflet from plugin:', !!L)
+  } catch (error) {
+    console.log('Leaflet plugin not available, trying direct import...')
+    try {
+      // Fallback to direct import
+      const leafletModule = await import('leaflet')
+      L = leafletModule.default || leafletModule
+      console.log('Leaflet from direct import:', !!L)
+    } catch (importError) {
+      console.error('Failed to import Leaflet:', importError)
+      return
+    }
+  }
+  
+  if (!L) {
+    console.error('Leaflet not available')
+    return
+  }
+  
+  console.log('Leaflet available:', !!L)
 
-  map.value = L.map(mapContainer.value).setView([51.505, -0.09], 13)
+  // Use mobile detection from composable
+  const mobileDetected = isMobile.value
+  console.log('Mobile detected:', mobileDetected)
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map.value)
+  // Mobile-specific map options
+  const mapOptions: L.MapOptions = {
+    center: [51.505, -0.09],
+    zoom: 13,
+    zoomControl: true,
+    attributionControl: true,
+    // Mobile-specific options
+    bounceAtZoomLimits: false, // Disable bounce on zoom limits for better mobile experience
+    // Prevent zoom on double tap
+    doubleClickZoom: !mobileDetected,
+    // Enable touch gestures
+    dragging: true,
+    touchZoom: true,
+    scrollWheelZoom: !mobileDetected // Disable scroll wheel zoom on mobile
+  }
 
-  // Initialize marker cluster
-  markerCluster.value = L.markerClusterGroup({
-    chunkedLoading: true,
-    maxClusterRadius: 50,
-    spiderfyOnMaxZoom: true,
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true
+  console.log('Creating map with options:', mapOptions)
+  map.value = L.map(mapContainer.value, mapOptions)
+  console.log('Map created:', !!map.value)
+
+  // Add tile layer with mobile-optimized options
+  const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    // Mobile-specific tile options
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 2
   })
+  tileLayer.addTo(map.value)
+  console.log('Tile layer added')
 
-  map.value.addLayer(markerCluster.value)
+  // Initialize marker cluster with mobile-friendly options
+  try {
+    markerCluster.value = L.markerClusterGroup({
+      chunkedLoading: true,
+      maxClusterRadius: mobileDetected ? 40 : 50, // Smaller clusters on mobile
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      // Mobile-specific cluster options
+      animate: !mobileDetected, // Disable animations on mobile for better performance
+      animateAddingMarkers: !mobileDetected,
+      // Touch-friendly cluster options
+      spiderfyDistanceMultiplier: 1.5
+    })
+
+    map.value.addLayer(markerCluster.value)
+    console.log('Marker cluster added')
+  } catch (clusterError) {
+    console.error('Failed to initialize marker cluster:', clusterError)
+    // Continue without marker clustering
+    markerCluster.value = null
+  }
 }
 
 const addMarkersToMap = (incidents: StopSearchIncident[]) => {
@@ -853,9 +940,23 @@ const useMyLocation = async () => {
 
 // Lifecycle
 onMounted(async () => {
-  initializeMap()
+  console.log('Component mounted')
+  
+  // Wait for next tick to ensure DOM is ready
+  await nextTick()
+  console.log('After nextTick')
+  
+  // Initialize map
+  await initializeMap()
   
   if (map.value) {
+    // Force map to recalculate size after initialization
+    setTimeout(() => {
+      if (map.value) {
+        map.value.invalidateSize()
+      }
+    }, 100)
+
     // Only add moveend event listener in map mode
     let timeout: NodeJS.Timeout
     map.value.on('moveend', () => {
@@ -883,6 +984,37 @@ onMounted(async () => {
         })
       }
     })
+
+    // Add mobile-specific event handlers
+    if (isMobile.value) {
+      // Handle touch events
+      if (map.value) {
+        map.value.on('touchstart', () => {
+          // Ensure map is responsive to touch
+          if (map.value) {
+            map.value.invalidateSize()
+          }
+        })
+      }
+
+      // Handle viewport changes
+      const handleViewportChange = () => {
+        if (map.value) {
+          setTimeout(() => {
+            map.value.invalidateSize()
+          }, 100)
+        }
+      }
+
+      window.addEventListener('resize', handleViewportChange)
+      window.addEventListener('orientationchange', handleViewportChange)
+
+      // Cleanup event listeners on unmount
+      onUnmounted(() => {
+        window.removeEventListener('resize', handleViewportChange)
+        window.removeEventListener('orientationchange', handleViewportChange)
+      })
+    }
   }
 
   try {
@@ -1081,8 +1213,7 @@ const initializeCharts = () => {
             y: {
               beginAtZero: true,
               grid: {
-                display: true,
-                drawBorder: false
+                display: true
               }
             }
           }
@@ -1155,5 +1286,41 @@ watch(selectedForceId, () => {
 
 .btn-secondary {
   @apply bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:hover:bg-gray-100;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  /* Ensure map container is properly sized on mobile */
+  .map-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Make controls more touch-friendly */
+  .leaflet-control-zoom a {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 18px !important;
+    line-height: 44px !important;
+  }
+  
+  /* Improve marker clusters on mobile */
+  .marker-cluster {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 14px !important;
+    line-height: 44px !important;
+  }
+  
+  /* Ensure proper touch handling */
+  .leaflet-container {
+    touch-action: manipulation;
+  }
+  
+  /* Improve modal responsiveness */
+  .modal-content {
+    max-width: 95vw !important;
+    margin: 1rem !important;
+  }
 }
 </style> 
