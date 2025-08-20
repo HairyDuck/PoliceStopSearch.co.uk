@@ -362,6 +362,11 @@
 </template>
 
 <script setup lang="ts">
+// Make this page client-side only to avoid SSR issues with Leaflet
+definePageMeta({
+  ssr: false
+})
+
 import { ref, computed, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import { format, parse, subMonths, getYear, setYear } from 'date-fns'
 import type { Map as LeafletMap, Marker, LatLngBounds, FeatureGroup, Layer } from 'leaflet'
