@@ -73,6 +73,53 @@
           No, this is an independent open-source platform. We are not affiliated with, endorsed by, or operated by any UK police force or government agency. Our mission is to make public police data more accessible and transparent through better visualization and analysis tools.
         </p>
       </div>
+
+      <!-- Additional Resources -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold mb-4">Additional Resources</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Official Sources</h3>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="https://data.police.uk" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  UK Police Data Portal
+                </a>
+              </li>
+              <li>
+                <a href="https://www.gov.uk/government/publications/stop-and-search-statistics-data-tables" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  Government Statistics
+                </a>
+              </li>
+              <li>
+                <a href="https://www.college.police.uk/app/stop-and-search/stop-and-search" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  College of Policing Guidelines
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Related Pages</h3>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="/about" class="text-primary hover:text-primary-dark">
+                  About Our Platform
+                </a>
+              </li>
+              <li>
+                <a href="/api" class="text-primary hover:text-primary-dark">
+                  API Documentation
+                </a>
+              </li>
+              <li>
+                <a href="/privacy" class="text-primary hover:text-primary-dark">
+                  Privacy Policy
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

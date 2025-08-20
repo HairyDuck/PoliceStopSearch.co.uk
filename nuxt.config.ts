@@ -13,7 +13,8 @@ export default defineNuxtConfig({
         '/about',
         '/privacy',
         '/terms',
-        '/faq'
+        '/faq',
+        '/api/sitemap.xml'
       ]
     }
   },
@@ -56,14 +57,23 @@ export default defineNuxtConfig({
         { name: 'msapplication-config', content: '/browserconfig.xml' }
       ],
       link: [
+        { rel: 'icon', type: 'image/png', href: '/images/puk-logo.png' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'canonical', href: 'https://policestopsearch.co.uk' },
         { rel: 'manifest', href: '/manifest.json' },
         { 
+          rel: 'preload', 
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+          as: 'style',
+          onload: "this.onload=null;this.rel='stylesheet'"
+        },
+        { 
           rel: 'stylesheet', 
           href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
           integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
-          crossorigin: ''
+          crossorigin: '',
+          media: 'print',
+          onload: "this.media='all'"
         }
       ],
       script: [
@@ -104,6 +114,11 @@ export default defineNuxtConfig({
     '@/assets/css/main.scss'
   ],
 
+  // Critical CSS optimization
+  experimental: {
+    inlineSSRStyles: false
+  },
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/leaflet.client.ts', mode: 'client' },
@@ -139,6 +154,16 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ['leaflet', 'leaflet.markercluster']
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'leaflet': ['leaflet'],
+            'chart': ['chart.js']
+          }
+        }
+      }
     }
   },
 

@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://policestopsearch.co.uk/sitemap.xml
+Sitemap: https://policestopsearch.co.uk/api/sitemap.xml
 
 # Disallow API redirects
 Disallow: /api 

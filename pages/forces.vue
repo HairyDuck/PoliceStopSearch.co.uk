@@ -191,12 +191,137 @@
         </div>
       </div>
     </div>
+
+    <!-- Resources Section -->
+    <section class="mt-12 bg-gray-50 rounded-lg p-8">
+      <h2 class="text-2xl font-bold mb-6">Additional Resources</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Official Police Resources -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Official Resources</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://www.gov.uk/government/organisations/home-office"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              Home Office
+            </a>
+            <a 
+              href="https://www.college.police.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              College of Policing
+            </a>
+            <a 
+              href="https://www.police.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              Police.uk
+            </a>
+          </div>
+        </div>
+
+        <!-- Data and Statistics -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Data & Statistics</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://data.police.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Police Data Portal
+            </a>
+            <a 
+              href="https://www.gov.uk/government/statistics/police-powers-and-procedures-england-and-wales"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Official Statistics
+            </a>
+            <a 
+              href="https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              ONS Crime Statistics
+            </a>
+          </div>
+        </div>
+
+        <!-- Legal Information -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Legal Information</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://www.legislation.gov.uk/ukpga/1984/60/contents"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Police and Criminal Evidence Act
+            </a>
+            <a 
+              href="https://www.gov.uk/police-powers-to-stop-and-search-your-rights"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Your Rights
+            </a>
+            <a 
+              href="https://www.legislation.gov.uk/ukpga/2000/23/contents"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Terrorism Act 2000
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useStopSearchStore } from '../stores/stopsearch'
 import policeForceBadges from '../police_forces.json'
 
 interface ForceDetails {
@@ -213,10 +338,12 @@ interface ForceDetails {
   name: string
 }
 
+// Server-side data fetching
+const forcesData = await $fetch('/api/forces')
+
 // State
-const store = useStopSearchStore()
-const forces = ref([] as { id: string; name: string }[])
-const forceDetails = ref<Record<string, ForceDetails>>({})
+const forces = ref((forcesData as any)?.forces || [] as { id: string; name: string }[])
+const forceDetails = ref<Record<string, ForceDetails>>((forcesData as any)?.forceDetails || {})
 const isLoading = ref(false)
 const selectedForceId = ref<string | null>(null)
 const selectedForceDescription = ref<string | null>(null)
@@ -316,11 +443,7 @@ const sanitizeHtml = (html: string | null): string => {
 
 // Lifecycle
 onMounted(async () => {
-  try {
-    forces.value = await store.loadForces()
-  } catch (error) {
-    console.error('Error loading forces:', error)
-  }
+  // Data is already loaded server-side, no additional loading needed
 })
 </script>
 
