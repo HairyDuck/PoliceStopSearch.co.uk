@@ -462,6 +462,169 @@
         </div>
       </div>
     </div>
+
+    <!-- Resources Section -->
+    <section class="mt-12 bg-gray-50 rounded-lg p-8">
+      <h2 class="text-2xl font-bold mb-6">Additional Resources</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Official Statistics -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Official Statistics</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://www.gov.uk/government/publications/stop-and-search-statistics-data-tables"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Government Data Tables
+            </a>
+            <a 
+              href="https://www.ethnicity-facts-figures.service.gov.uk/crime-justice-and-the-law/policing/stop-and-search/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Ethnicity Facts & Figures
+            </a>
+          </div>
+        </div>
+
+        <!-- Research & Analysis -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Research & Analysis</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://www.justiceinspectorates.gov.uk/hmicfrs/our-work/article/stop-and-search/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+              HMICFRS Reports
+            </a>
+            <a 
+              href="https://www.college.police.uk/app/stop-and-search/stop-and-search"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              College of Policing
+            </a>
+          </div>
+        </div>
+
+        <!-- Data Sources -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-3">Data Sources</h3>
+          <div class="space-y-3">
+            <a 
+              href="https://data.police.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+              </svg>
+              Police Data UK
+            </a>
+            <a 
+              href="/api"
+              class="flex items-center text-primary hover:text-primary-dark"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              API Documentation
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Server-Side Rendered Data Section (Visible to Bots) -->
+    <section class="mt-12 bg-gray-50 rounded-lg p-8">
+      <h2 class="text-2xl font-bold mb-6">Latest Statistics Overview</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Searches -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Searches</h3>
+          <p class="text-3xl font-bold text-primary">{{ statistics.totalSearches.toLocaleString() }}</p>
+          <p class="text-sm text-gray-600 mt-1">Latest available data</p>
+        </div>
+
+        <!-- Arrests -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Arrests</h3>
+          <p class="text-3xl font-bold text-green-600">{{ statistics.arrests.toLocaleString() }}</p>
+          <p class="text-sm text-gray-600 mt-1">{{ statistics.totalSearches > 0 ? ((statistics.arrests / statistics.totalSearches) * 100).toFixed(1) : 0 }}% arrest rate</p>
+        </div>
+
+        <!-- No Further Action -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">No Further Action</h3>
+          <p class="text-3xl font-bold text-orange-600">{{ statistics.noFurtherAction.toLocaleString() }}</p>
+          <p class="text-sm text-gray-600 mt-1">{{ statistics.totalSearches > 0 ? ((statistics.noFurtherAction / statistics.totalSearches) * 100).toFixed(1) : 0 }}% of searches</p>
+        </div>
+
+        <!-- Forces Analyzed -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Forces Analyzed</h3>
+          <p class="text-3xl font-bold text-blue-600">{{ statistics.forcesAnalyzed || forces.length }}</p>
+          <p class="text-sm text-gray-600 mt-1">of {{ forces.length }} total forces</p>
+        </div>
+      </div>
+
+      <!-- Key Statistics -->
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Most Common Object of Search -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Most Common Object of Search</h3>
+          <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold text-primary">{{ statistics.mostCommonObject }}</span>
+            <span class="text-lg text-gray-600">{{ statistics.mostCommonObjectCount.toLocaleString() }} searches</span>
+          </div>
+        </div>
+
+        <!-- Latest Data Month -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Latest Data Available</h3>
+          <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold text-primary">{{ statistics.latestMonth || 'Latest' }}</span>
+            <span class="text-lg text-gray-600">Updated monthly</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Freshness Notice -->
+      <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+          <div>
+            <h4 class="text-sm font-medium text-blue-800">Data Freshness</h4>
+            <p class="text-sm text-blue-700 mt-1">
+              This data is automatically updated monthly from official UK Police sources. 
+              The latest available data is from {{ statistics.latestMonth || 'the most recent month' }}. 
+              Search engines can crawl this content to understand current trends and statistics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -499,15 +662,18 @@ useHead({
   ]
 })
 
+// Server-side data fetching
+const statisticsData = await $fetch('/api/statistics')
+
 // State
 const store = useStopSearchStore()
 const route = useRoute()
 const selectedForceIds = ref<string[]>([])
 const selectAllForces = ref(false)
 const selectedMonth = ref<string>('latest')
-const forces = ref<{ id: string; name: string }[]>([])
+const forces = ref((statisticsData as any)?.forces || [] as { id: string; name: string }[])
 const isLoading = ref(false)
-const statistics = ref({
+const statistics = ref((statisticsData as any)?.statistics || {
   totalSearches: 0,
   arrests: 0,
   noFurtherAction: 0,
@@ -1218,9 +1384,6 @@ const visibleKeyFindings = computed(() => {
 // Lifecycle
 onMounted(async () => {
   try {
-    // Load forces first
-    forces.value = await store.loadForces()
-    
     // Initialize selected forces from localStorage
     initializeSelectedForces()
     
@@ -1230,10 +1393,9 @@ onMounted(async () => {
       selectedForceIds.value = [forceId]
     }
 
-    // Only load statistics if we have selected forces
-    if (selectedForceIds.value.length > 0) {
-      await loadStatistics()
-    }
+    // Data is already loaded server-side, initialize charts
+    await nextTick()
+    await initializeCharts()
   } catch (error) {
     console.error('Error in component mount:', error)
   }
