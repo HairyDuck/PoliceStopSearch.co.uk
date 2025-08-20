@@ -7,7 +7,6 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: [
         '/',
-        '/map',
         '/statistics',
         '/forces',
         '/about',
@@ -15,6 +14,10 @@ export default defineNuxtConfig({
         '/terms',
         '/faq',
         '/api/sitemap.xml'
+      ],
+      ignore: [
+        '/map',
+        '/manifest.json'
       ]
     }
   },
@@ -154,16 +157,6 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ['leaflet', 'leaflet.markercluster']
-    },
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'leaflet': ['leaflet'],
-            'chart': ['chart.js']
-          }
-        }
-      }
     }
   },
 
