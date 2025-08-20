@@ -1,6 +1,8 @@
 export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
   ssr: true, // Enable SSR for better SEO
+  
+  // HTTPS redirect configuration
   nitro: {
     preset: 'static',
     prerender: {
@@ -28,7 +30,7 @@ export default defineNuxtConfig({
     baseURL: '/',
     buildAssetsDir: '/_nuxt/',
     head: {
-      title: 'UK Police Stop and Search Data Portal',
+      title: 'UK Police Stop and Search Data Portal | Interactive Crime Statistics & Maps',
       htmlAttrs: {
         lang: 'en'
       },
@@ -37,7 +39,7 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { 
           name: 'description', 
-          content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information. Access comprehensive police transparency data across all UK forces.'
+          content: 'Access and analyse UK police stop and search data through interactive maps, detailed statistics, and comprehensive incident information across all UK police forces.'
         },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'theme-color', content: '#ffffff' },
@@ -64,6 +66,9 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'canonical', href: 'https://policestopsearch.co.uk' },
         { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'alternate', hreflang: 'en', href: 'https://policestopsearch.co.uk' },
+        { rel: 'alternate', hreflang: 'en-GB', href: 'https://policestopsearch.co.uk' },
+        { rel: 'alternate', hreflang: 'x-default', href: 'https://policestopsearch.co.uk' },
         { 
           rel: 'preload', 
           href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
