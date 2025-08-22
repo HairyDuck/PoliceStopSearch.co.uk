@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "fill-opacity": 0.8,
+        "fill": "#f7ed4d",
+        "stroke-width": 0,
+        "force_id": "northern-ireland",
+        "force_name": "Police Service of Northern Ireland"
+      }
+    }
+  ]
+}

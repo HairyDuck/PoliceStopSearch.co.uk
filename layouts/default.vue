@@ -21,6 +21,13 @@
             Statistics
           </NuxtLink>
           <NuxtLink 
+            to="/analytics" 
+            class="nav-link"
+            :class="{ 'active': $route.path === '/analytics' }"
+          >
+            Analytics
+          </NuxtLink>
+          <NuxtLink 
             to="/forces" 
             class="nav-link"
             :class="{ 'active': $route.path === '/forces' }"

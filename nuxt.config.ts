@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: [
         '/',
-        '/statistics',
+        '/analytics',
         '/forces',
         '/about',
         '/privacy',
@@ -55,6 +55,12 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'PoliceStopSearch.co.uk' },
         { property: 'og:locale', content: 'en_GB' },
         
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@PoliceStopSearch' },
+        { name: 'twitter:title', content: 'UK Police Stop and Search Data Portal' },
+        { name: 'twitter:description', content: 'Explore UK police stop and search data with interactive maps, statistics, and detailed incident information.' },
+        
         
         // Additional SEO
         { name: 'application-name', content: 'PoliceStopSearch.co.uk' },
@@ -65,23 +71,13 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/images/puk-logo.png' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'canonical', href: 'https://policestopsearch.co.uk' },
-        { rel: 'manifest', href: '/manifest.json' },
+
         { rel: 'alternate', hreflang: 'en', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'en-GB', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'x-default', href: 'https://policestopsearch.co.uk' },
         { 
-          rel: 'preload', 
-          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-          as: 'style',
-          onload: "this.onload=null;this.rel='stylesheet'"
-        },
-        { 
           rel: 'stylesheet', 
-          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-          integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
-          crossorigin: '',
-          media: 'print',
-          onload: "this.media='all'"
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
         }
       ],
       script: [
@@ -127,8 +123,9 @@ export default defineNuxtConfig({
     inlineSSRStyles: false
   },
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+    // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '@/plugins/unregister-sw.client.ts', mode: 'client' },
     { src: '@/plugins/leaflet.client.ts', mode: 'client' },
     { src: '@/plugins/chart.client.ts', mode: 'client' },
     { src: '@/plugins/google-analytics.client.ts', mode: 'client' },

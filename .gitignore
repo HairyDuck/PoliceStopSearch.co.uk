@@ -49,3 +49,5 @@ coverage
 # Local Netlify folder
 .netlify 
 *.code-workspace
+
+# Server cache data
