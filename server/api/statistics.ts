@@ -17,9 +17,185 @@ export default defineEventHandler(async (event) => {
     }
   }
   
+  // Check if we're in build mode (prerendering)
+  const isBuildMode = process.env.NODE_ENV === 'production' && process.env.NITRO_PRESET === 'static'
+  
+  if (isBuildMode) {
+    // Return fallback data for build time
+    const fallbackData = {
+      statistics: {
+        totalSearches: 0,
+        arrests: 0,
+        noFurtherAction: 0,
+        outcomes: {},
+        ethnicityBreakdown: {},
+        ethnicityOutcomes: {},
+        objectsOfSearch: {},
+        genderBreakdown: {},
+        ageBreakdown: {},
+        mostCommonObject: 'None',
+        mostCommonObjectCount: 0,
+        latestMonth: '2025-01',
+        availableMonths: ['2025-01', '2024-12', '2024-11'],
+        forcesAnalyzed: 0,
+        totalForces: 44
+      },
+      forces: [
+        { id: 'avon-and-somerset', name: 'Avon and Somerset Police' },
+        { id: 'bedfordshire', name: 'Bedfordshire Police' },
+        { id: 'cambridgeshire', name: 'Cambridgeshire Police' },
+        { id: 'cheshire', name: 'Cheshire Police' },
+        { id: 'city-of-london', name: 'City of London Police' },
+        { id: 'cleveland', name: 'Cleveland Police' },
+        { id: 'cumbria', name: 'Cumbria Police' },
+        { id: 'derbyshire', name: 'Derbyshire Police' },
+        { id: 'devon-and-cornwall', name: 'Devon and Cornwall Police' },
+        { id: 'dorset', name: 'Dorset Police' },
+        { id: 'durham', name: 'Durham Police' },
+        { id: 'dyfed-powys', name: 'Dyfed-Powys Police' },
+        { id: 'essex', name: 'Essex Police' },
+        { id: 'gloucestershire', name: 'Gloucestershire Police' },
+        { id: 'greater-manchester', name: 'Greater Manchester Police' },
+        { id: 'gwent', name: 'Gwent Police' },
+        { id: 'hampshire', name: 'Hampshire Police' },
+        { id: 'hertfordshire', name: 'Hertfordshire Police' },
+        { id: 'kent', name: 'Kent Police' },
+        { id: 'lancashire', name: 'Lancashire Police' },
+        { id: 'leicestershire', name: 'Leicestershire Police' },
+        { id: 'merseyside', name: 'Merseyside Police' },
+        { id: 'metropolitan', name: 'Metropolitan Police' },
+        { id: 'norfolk', name: 'Norfolk Police' },
+        { id: 'north-wales', name: 'North Wales Police' },
+        { id: 'north-yorkshire', name: 'North Yorkshire Police' },
+        { id: 'northamptonshire', name: 'Northamptonshire Police' },
+        { id: 'northumbria', name: 'Northumbria Police' },
+        { id: 'nottinghamshire', name: 'Nottinghamshire Police' },
+        { id: 'south-wales', name: 'South Wales Police' },
+        { id: 'south-yorkshire', name: 'South Yorkshire Police' },
+        { id: 'staffordshire', name: 'Staffordshire Police' },
+        { id: 'suffolk', name: 'Suffolk Police' },
+        { id: 'surrey', name: 'Surrey Police' },
+        { id: 'sussex', name: 'Sussex Police' },
+        { id: 'thames-valley', name: 'Thames Valley Police' },
+        { id: 'warwickshire', name: 'Warwickshire Police' },
+        { id: 'west-mercia', name: 'West Mercia Police' },
+        { id: 'west-midlands', name: 'West Midlands Police' },
+        { id: 'west-yorkshire', name: 'West Yorkshire Police' },
+        { id: 'wiltshire', name: 'Wiltshire Police' }
+      ],
+      availableDatasets: [
+        { date: '2025-01', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+        { date: '2024-12', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+        { date: '2024-11', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] }
+      ],
+      cached: false,
+      lastUpdated: new Date(now).toISOString(),
+      fallback: true
+    }
+    
+    // Cache the fallback data
+    statisticsCache = {
+      data: fallbackData.statistics,
+      forces: fallbackData.forces,
+      availableDatasets: fallbackData.availableDatasets
+    }
+    lastFetch = now
+    
+    return fallbackData
+  }
+  
   try {
     // Fetch available datasets to get the latest month
-    const datesResponse = await fetch('https://data.police.uk/api/crimes-street-dates')
+    let datesResponse
+    try {
+      datesResponse = await fetch('https://data.police.uk/api/crimes-street-dates', {
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+    } catch (fetchError) {
+      console.warn('Failed to fetch dates from police API, using fallback data')
+      // Return fallback data for build time
+      const fallbackData = {
+        statistics: {
+          totalSearches: 0,
+          arrests: 0,
+          noFurtherAction: 0,
+          outcomes: {},
+          ethnicityBreakdown: {},
+          ethnicityOutcomes: {},
+          objectsOfSearch: {},
+          genderBreakdown: {},
+          ageBreakdown: {},
+          mostCommonObject: 'None',
+          mostCommonObjectCount: 0,
+          latestMonth: '2025-01',
+          availableMonths: ['2025-01', '2024-12', '2024-11'],
+          forcesAnalyzed: 0,
+          totalForces: 44
+        },
+        forces: [
+          { id: 'avon-and-somerset', name: 'Avon and Somerset Police' },
+          { id: 'bedfordshire', name: 'Bedfordshire Police' },
+          { id: 'cambridgeshire', name: 'Cambridgeshire Police' },
+          { id: 'cheshire', name: 'Cheshire Police' },
+          { id: 'city-of-london', name: 'City of London Police' },
+          { id: 'cleveland', name: 'Cleveland Police' },
+          { id: 'cumbria', name: 'Cumbria Police' },
+          { id: 'derbyshire', name: 'Derbyshire Police' },
+          { id: 'devon-and-cornwall', name: 'Devon and Cornwall Police' },
+          { id: 'dorset', name: 'Dorset Police' },
+          { id: 'durham', name: 'Durham Police' },
+          { id: 'dyfed-powys', name: 'Dyfed-Powys Police' },
+          { id: 'essex', name: 'Essex Police' },
+          { id: 'gloucestershire', name: 'Gloucestershire Police' },
+          { id: 'greater-manchester', name: 'Greater Manchester Police' },
+          { id: 'gwent', name: 'Gwent Police' },
+          { id: 'hampshire', name: 'Hampshire Police' },
+          { id: 'hertfordshire', name: 'Hertfordshire Police' },
+          { id: 'kent', name: 'Kent Police' },
+          { id: 'lancashire', name: 'Lancashire Police' },
+          { id: 'leicestershire', name: 'Leicestershire Police' },
+          { id: 'merseyside', name: 'Merseyside Police' },
+          { id: 'metropolitan', name: 'Metropolitan Police' },
+          { id: 'norfolk', name: 'Norfolk Police' },
+          { id: 'north-wales', name: 'North Wales Police' },
+          { id: 'north-yorkshire', name: 'North Yorkshire Police' },
+          { id: 'northamptonshire', name: 'Northamptonshire Police' },
+          { id: 'northumbria', name: 'Northumbria Police' },
+          { id: 'nottinghamshire', name: 'Nottinghamshire Police' },
+          { id: 'south-wales', name: 'South Wales Police' },
+          { id: 'south-yorkshire', name: 'South Yorkshire Police' },
+          { id: 'staffordshire', name: 'Staffordshire Police' },
+          { id: 'suffolk', name: 'Suffolk Police' },
+          { id: 'surrey', name: 'Surrey Police' },
+          { id: 'sussex', name: 'Sussex Police' },
+          { id: 'thames-valley', name: 'Thames Valley Police' },
+          { id: 'warwickshire', name: 'Warwickshire Police' },
+          { id: 'west-mercia', name: 'West Mercia Police' },
+          { id: 'west-midlands', name: 'West Midlands Police' },
+          { id: 'west-yorkshire', name: 'West Yorkshire Police' },
+          { id: 'wiltshire', name: 'Wiltshire Police' }
+        ],
+        availableDatasets: [
+          { date: '2025-01', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+          { date: '2024-12', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+          { date: '2024-11', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] }
+        ],
+        cached: false,
+        lastUpdated: new Date(now).toISOString(),
+        fallback: true
+      }
+      
+      // Cache the fallback data
+      statisticsCache = {
+        data: fallbackData.statistics,
+        forces: fallbackData.forces,
+        availableDatasets: fallbackData.availableDatasets
+      }
+      lastFetch = now
+      
+      return fallbackData
+    }
+    
     if (!datesResponse.ok) {
       throw new Error('Failed to fetch available dates')
     }
@@ -38,7 +214,96 @@ export default defineEventHandler(async (event) => {
     const latestMonth = availableDatasets[0].date
     
     // Fetch forces list
-    const forcesResponse = await fetch('https://data.police.uk/api/forces')
+    let forcesResponse
+    try {
+      forcesResponse = await fetch('https://data.police.uk/api/forces', {
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+    } catch (fetchError) {
+      console.warn('Failed to fetch forces from police API, using fallback data')
+      // Return fallback data for build time
+      const fallbackData = {
+        statistics: {
+          totalSearches: 0,
+          arrests: 0,
+          noFurtherAction: 0,
+          outcomes: {},
+          ethnicityBreakdown: {},
+          ethnicityOutcomes: {},
+          objectsOfSearch: {},
+          genderBreakdown: {},
+          ageBreakdown: {},
+          mostCommonObject: 'None',
+          mostCommonObjectCount: 0,
+          latestMonth: '2025-01',
+          availableMonths: ['2025-01', '2024-12', '2024-11'],
+          forcesAnalyzed: 0,
+          totalForces: 44
+        },
+        forces: [
+          { id: 'avon-and-somerset', name: 'Avon and Somerset Police' },
+          { id: 'bedfordshire', name: 'Bedfordshire Police' },
+          { id: 'cambridgeshire', name: 'Cambridgeshire Police' },
+          { id: 'cheshire', name: 'Cheshire Police' },
+          { id: 'city-of-london', name: 'City of London Police' },
+          { id: 'cleveland', name: 'Cleveland Police' },
+          { id: 'cumbria', name: 'Cumbria Police' },
+          { id: 'derbyshire', name: 'Derbyshire Police' },
+          { id: 'devon-and-cornwall', name: 'Devon and Cornwall Police' },
+          { id: 'dorset', name: 'Dorset Police' },
+          { id: 'durham', name: 'Durham Police' },
+          { id: 'dyfed-powys', name: 'Dyfed-Powys Police' },
+          { id: 'essex', name: 'Essex Police' },
+          { id: 'gloucestershire', name: 'Gloucestershire Police' },
+          { id: 'greater-manchester', name: 'Greater Manchester Police' },
+          { id: 'gwent', name: 'Gwent Police' },
+          { id: 'hampshire', name: 'Hampshire Police' },
+          { id: 'hertfordshire', name: 'Hertfordshire Police' },
+          { id: 'kent', name: 'Kent Police' },
+          { id: 'lancashire', name: 'Lancashire Police' },
+          { id: 'leicestershire', name: 'Leicestershire Police' },
+          { id: 'merseyside', name: 'Merseyside Police' },
+          { id: 'metropolitan', name: 'Metropolitan Police' },
+          { id: 'norfolk', name: 'Norfolk Police' },
+          { id: 'north-wales', name: 'North Wales Police' },
+          { id: 'north-yorkshire', name: 'North Yorkshire Police' },
+          { id: 'northamptonshire', name: 'Northamptonshire Police' },
+          { id: 'northumbria', name: 'Northumbria Police' },
+          { id: 'nottinghamshire', name: 'Nottinghamshire Police' },
+          { id: 'south-wales', name: 'South Wales Police' },
+          { id: 'south-yorkshire', name: 'South Yorkshire Police' },
+          { id: 'staffordshire', name: 'Staffordshire Police' },
+          { id: 'suffolk', name: 'Suffolk Police' },
+          { id: 'surrey', name: 'Surrey Police' },
+          { id: 'sussex', name: 'Sussex Police' },
+          { id: 'thames-valley', name: 'Thames Valley Police' },
+          { id: 'warwickshire', name: 'Warwickshire Police' },
+          { id: 'west-mercia', name: 'West Mercia Police' },
+          { id: 'west-midlands', name: 'West Midlands Police' },
+          { id: 'west-yorkshire', name: 'West Yorkshire Police' },
+          { id: 'wiltshire', name: 'Wiltshire Police' }
+        ],
+        availableDatasets: [
+          { date: '2025-01', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+          { date: '2024-12', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] },
+          { date: '2024-11', 'stop-and-search': ['avon-and-somerset', 'bedfordshire'] }
+        ],
+        cached: false,
+        lastUpdated: new Date(now).toISOString(),
+        fallback: true
+      }
+      
+      // Cache the fallback data
+      statisticsCache = {
+        data: fallbackData.statistics,
+        forces: fallbackData.forces,
+        availableDatasets: fallbackData.availableDatasets
+      }
+      lastFetch = now
+      
+      return fallbackData
+    }
+    
     if (!forcesResponse.ok) {
       throw new Error('Failed to fetch forces list')
     }

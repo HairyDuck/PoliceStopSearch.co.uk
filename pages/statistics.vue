@@ -2,16 +2,16 @@
   <div class="container mx-auto px-4 py-8">
     <!-- SEO Meta Tags -->
     <Head>
-      <title>Stop and Search Statistics | UK Police Data Analysis</title>
-      <meta name="description" content="Comprehensive analysis of UK police stop and search data." />
+      <title>{{ pageTitle }}</title>
+      <meta name="description" :content="pageDescription" />
       <meta name="keywords" content="police statistics, stop and search data, UK police analysis, crime statistics, police demographics" />
-      <meta property="og:title" content="Stop and Search Statistics | UK Police Data Analysis" />
-      <meta property="og:description" content="Comprehensive statistics and analysis of UK police stop and search data. View trends, demographics, and outcomes." />
+      <meta property="og:title" :content="pageTitle" />
+      <meta property="og:description" :content="pageDescription" />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Stop and Search Statistics" />
-      <meta name="twitter:description" content="Comprehensive analysis of UK police stop and search data." />
-      <link rel="canonical" href="https://policestopsearch.co.uk/statistics" />
+      <meta name="twitter:title" :content="pageTitle" />
+      <meta name="twitter:description" :content="pageDescription" />
+      <link rel="canonical" :href="canonicalUrl" />
     </Head>
     <h1 class="text-3xl font-bold mb-8">Stop and Search Statistics</h1>
 
@@ -731,6 +731,59 @@ const keyFindings = ref({
 
 // Add to the script section, after the state declarations:
 const forceSearch = ref('')
+
+// Route handling for force parameter
+const router = useRouter()
+
+// Initialize selected forces from URL parameter
+const initializeFromRoute = () => {
+  const forceParam = route.query.force as string
+  if (forceParam && forces.value.length > 0) {
+    const force = forces.value.find(f => f.id === forceParam)
+    if (force) {
+      selectedForceIds.value = [forceParam]
+      selectAllForces.value = false
+    }
+  }
+}
+
+// Computed properties for dynamic SEO
+const pageTitle = computed(() => {
+  if (selectedForceIds.value.length === 1) {
+    const force = forces.value.find(f => f.id === selectedForceIds.value[0])
+    return `${force?.name} Stop and Search Statistics | UK Police Data Analysis`
+  }
+  return 'Stop and Search Statistics | UK Police Data Analysis'
+})
+
+const pageDescription = computed(() => {
+  if (selectedForceIds.value.length === 1) {
+    const force = forces.value.find(f => f.id === selectedForceIds.value[0])
+    return `Comprehensive stop and search statistics and analysis for ${force?.name}. View trends, demographics, and outcomes.`
+  }
+  return 'Comprehensive analysis of UK police stop and search data. View trends, demographics, and outcomes across all forces.'
+})
+
+const canonicalUrl = computed(() => {
+  if (selectedForceIds.value.length === 1) {
+    return `https://policestopsearch.co.uk/statistics?force=${selectedForceIds.value[0]}`
+  }
+  return 'https://policestopsearch.co.uk/statistics'
+})
+
+// Watch for force selection changes and update URL
+watch(selectedForceIds, (newForces) => {
+  if (newForces.length === 1) {
+    router.push({ query: { force: newForces[0] } })
+  } else if (newForces.length === 0) {
+    router.push({ query: {} })
+  }
+}, { deep: true })
+
+// Initialize from route on mount
+onMounted(() => {
+  initializeFromRoute()
+})
 
 // Add this computed property
 const filteredForces = computed(() => {

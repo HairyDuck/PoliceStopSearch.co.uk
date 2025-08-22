@@ -17,6 +17,9 @@
             <NuxtLink to="/statistics" class="btn btn-outline">
               View Statistics
             </NuxtLink>
+            <NuxtLink to="/analytics" class="btn btn-outline">
+              Advanced Analytics
+            </NuxtLink>
           </div>
         </div>
       </div>
