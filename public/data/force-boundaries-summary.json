@@ -1,0 +1,370 @@
+{
+  "processed_at": "2025-08-20T16:24:54.591Z",
+  "total_forces": 45,
+  "forces": [
+    {
+      "force_id": "avon-and-somerset",
+      "force_name": "Avon and Somerset Police",
+      "file": "avon-and-somerset.geojson",
+      "original_size": 1219949,
+      "simplified_size": 344771,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "bedfordshire",
+      "force_name": "Bedfordshire Police",
+      "file": "bedfordshire.geojson",
+      "original_size": 264512,
+      "simplified_size": 73608,
+      "reduction_percent": 72.2
+    },
+    {
+      "force_id": "cambridgeshire",
+      "force_name": "Cambridgeshire Constabulary",
+      "file": "cambridgeshire.geojson",
+      "original_size": 113767,
+      "simplified_size": 32244,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "cheshire",
+      "force_name": "Cheshire Constabulary",
+      "file": "cheshire.geojson",
+      "original_size": 91549,
+      "simplified_size": 26276,
+      "reduction_percent": 71.3
+    },
+    {
+      "force_id": "city-of-london",
+      "force_name": "City of London Police",
+      "file": "city-of-london.geojson",
+      "original_size": 32213,
+      "simplified_size": 9181,
+      "reduction_percent": 71.5
+    },
+    {
+      "force_id": "cleveland",
+      "force_name": "Cleveland Police",
+      "file": "cleveland.geojson",
+      "original_size": 302360,
+      "simplified_size": 85590,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "cumbria",
+      "force_name": "Cumbria Constabulary",
+      "file": "cumbria.geojson",
+      "original_size": 1514281,
+      "simplified_size": 427134,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "derbyshire",
+      "force_name": "Derbyshire Constabulary",
+      "file": "derbyshire.geojson",
+      "original_size": 1095231,
+      "simplified_size": 308667,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "devon-and-cornwall",
+      "force_name": "Devon and Cornwall Police",
+      "file": "devon-and-cornwall.geojson",
+      "original_size": 307975,
+      "simplified_size": 96344,
+      "reduction_percent": 68.7
+    },
+    {
+      "force_id": "dorset",
+      "force_name": "Dorset Police",
+      "file": "dorset.geojson",
+      "original_size": 680210,
+      "simplified_size": 192339,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "durham",
+      "force_name": "Durham Constabulary",
+      "file": "durham.geojson",
+      "original_size": 298546,
+      "simplified_size": 84638,
+      "reduction_percent": 71.6
+    },
+    {
+      "force_id": "dyfed-powys",
+      "force_name": "Dyfed-Powys Police",
+      "file": "dyfed-powys.geojson",
+      "original_size": 2482224,
+      "simplified_size": 767290,
+      "reduction_percent": 69.1
+    },
+    {
+      "force_id": "essex",
+      "force_name": "Essex Police",
+      "file": "essex.geojson",
+      "original_size": 740871,
+      "simplified_size": 209274,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "gloucestershire",
+      "force_name": "Gloucestershire Constabulary",
+      "file": "gloucestershire.geojson",
+      "original_size": 624695,
+      "simplified_size": 176366,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "greater-manchester",
+      "force_name": "Greater Manchester Police",
+      "file": "greater-manchester.geojson",
+      "original_size": 864603,
+      "simplified_size": 244118,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "gwent",
+      "force_name": "Gwent Police",
+      "file": "gwent.geojson",
+      "original_size": 99030,
+      "simplified_size": 28277,
+      "reduction_percent": 71.4
+    },
+    {
+      "force_id": "hampshire",
+      "force_name": "Hampshire Constabulary",
+      "file": "hampshire.geojson",
+      "original_size": 916557,
+      "simplified_size": 256592,
+      "reduction_percent": 72
+    },
+    {
+      "force_id": "hertfordshire",
+      "force_name": "Hertfordshire Constabulary",
+      "file": "hertfordshire.geojson",
+      "original_size": 59519,
+      "simplified_size": 16832,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "humberside",
+      "force_name": "Humberside Police",
+      "file": "humberside.geojson",
+      "original_size": 21202,
+      "simplified_size": 6264,
+      "reduction_percent": 70.5
+    },
+    {
+      "force_id": "kent",
+      "force_name": "Kent Police",
+      "file": "kent.geojson",
+      "original_size": 974447,
+      "simplified_size": 277245,
+      "reduction_percent": 71.5
+    },
+    {
+      "force_id": "lancashire",
+      "force_name": "Lancashire Constabulary",
+      "file": "lancashire.geojson",
+      "original_size": 463229,
+      "simplified_size": 130676,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "leicestershire",
+      "force_name": "Leicestershire Police",
+      "file": "leicestershire.geojson",
+      "original_size": 518594,
+      "simplified_size": 144819,
+      "reduction_percent": 72.1
+    },
+    {
+      "force_id": "lincolnshire",
+      "force_name": "Lincolnshire Police",
+      "file": "lincolnshire.geojson",
+      "original_size": 954931,
+      "simplified_size": 268363,
+      "reduction_percent": 71.9
+    },
+    {
+      "force_id": "merseyside",
+      "force_name": "Merseyside Police",
+      "file": "merseyside.geojson",
+      "original_size": 295533,
+      "simplified_size": 83930,
+      "reduction_percent": 71.6
+    },
+    {
+      "force_id": "metropolitan",
+      "force_name": "Metropolitan Police Service",
+      "file": "metropolitan.geojson",
+      "original_size": 692905,
+      "simplified_size": 191939,
+      "reduction_percent": 72.3
+    },
+    {
+      "force_id": "norfolk",
+      "force_name": "Norfolk Constabulary",
+      "file": "norfolk.geojson",
+      "original_size": 544057,
+      "simplified_size": 155572,
+      "reduction_percent": 71.4
+    },
+    {
+      "force_id": "north-wales",
+      "force_name": "North Wales Police",
+      "file": "north-wales.geojson",
+      "original_size": 1471880,
+      "simplified_size": 416491,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "north-yorkshire",
+      "force_name": "North Yorkshire Police",
+      "file": "north-yorkshire.geojson",
+      "original_size": 1430906,
+      "simplified_size": 399715,
+      "reduction_percent": 72.1
+    },
+    {
+      "force_id": "northamptonshire",
+      "force_name": "Northamptonshire Police",
+      "file": "northamptonshire.geojson",
+      "original_size": 642016,
+      "simplified_size": 179346,
+      "reduction_percent": 72.1
+    },
+    {
+      "force_id": "northern-ireland",
+      "force_name": "Police Service of Northern Ireland",
+      "file": "northern-ireland.geojson",
+      "original_size": 636,
+      "simplified_size": 327,
+      "reduction_percent": 48.6
+    },
+    {
+      "force_id": "northumbria",
+      "force_name": "Northumbria Police",
+      "file": "northumbria.geojson",
+      "original_size": 1053024,
+      "simplified_size": 296655,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "nottinghamshire",
+      "force_name": "Nottinghamshire Police",
+      "file": "nottinghamshire.geojson",
+      "original_size": 695840,
+      "simplified_size": 194926,
+      "reduction_percent": 72
+    },
+    {
+      "force_id": "south-wales",
+      "force_name": "South Wales Police",
+      "file": "south-wales.geojson",
+      "original_size": 819643,
+      "simplified_size": 230874,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "south-yorkshire",
+      "force_name": "South Yorkshire Police",
+      "file": "south-yorkshire.geojson",
+      "original_size": 144006,
+      "simplified_size": 40867,
+      "reduction_percent": 71.6
+    },
+    {
+      "force_id": "staffordshire",
+      "force_name": "Staffordshire Police",
+      "file": "staffordshire.geojson",
+      "original_size": 632097,
+      "simplified_size": 178212,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "suffolk",
+      "force_name": "Suffolk Constabulary",
+      "file": "suffolk.geojson",
+      "original_size": 583888,
+      "simplified_size": 167064,
+      "reduction_percent": 71.4
+    },
+    {
+      "force_id": "surrey",
+      "force_name": "Surrey Police",
+      "file": "surrey.geojson",
+      "original_size": 390493,
+      "simplified_size": 107985,
+      "reduction_percent": 72.3
+    },
+    {
+      "force_id": "sussex",
+      "force_name": "Sussex Police",
+      "file": "sussex.geojson",
+      "original_size": 22416,
+      "simplified_size": 6668,
+      "reduction_percent": 70.3
+    },
+    {
+      "force_id": "thames-valley",
+      "force_name": "Thames Valley Police",
+      "file": "thames-valley.geojson",
+      "original_size": 897430,
+      "simplified_size": 250802,
+      "reduction_percent": 72.1
+    },
+    {
+      "force_id": "warwickshire",
+      "force_name": "Warwickshire Police",
+      "file": "warwickshire.geojson",
+      "original_size": 541967,
+      "simplified_size": 153481,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "west-mercia",
+      "force_name": "West Mercia Police",
+      "file": "west-mercia.geojson",
+      "original_size": 1260466,
+      "simplified_size": 355669,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "west-midlands",
+      "force_name": "West Midlands Police",
+      "file": "west-midlands.geojson",
+      "original_size": 1560006,
+      "simplified_size": 440144,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "west-yorkshire",
+      "force_name": "West Yorkshire Police",
+      "file": "west-yorkshire.geojson",
+      "original_size": 398800,
+      "simplified_size": 112578,
+      "reduction_percent": 71.8
+    },
+    {
+      "force_id": "wiltshire",
+      "force_name": "Wiltshire Police",
+      "file": "wiltshire.geojson",
+      "original_size": 479171,
+      "simplified_size": 135834,
+      "reduction_percent": 71.7
+    },
+    {
+      "force_id": "police-scotland",
+      "force_name": "Police Scotland",
+      "file": "police-scotland.geojson",
+      "original_size": 1024,
+      "simplified_size": 1024,
+      "reduction_percent": 0.0
+    }
+  ],
+  "combined_file": "uk-police-forces.geojson",
+  "total_original_size": 29198700,
+  "total_simplified_size": 8307011,
+  "average_reduction": "71.1"
+}
