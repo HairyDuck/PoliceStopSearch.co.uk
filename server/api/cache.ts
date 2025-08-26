@@ -116,6 +116,61 @@ export default defineEventHandler(async (event) => {
   
   const { action, key, data, ttl } = query
   
+  // Check if we're in build mode (prerendering) or if external APIs are unavailable
+  const isBuildMode = process.env.NODE_ENV === 'production' && process.env.NITRO_PRESET === 'static'
+  const isPrerendering = process.env.NITRO_PRESET === 'static'
+  
+  if (isBuildMode || isPrerendering) {
+    // Return fallback data for build time
+    const fallbackData = {
+      size: 0,
+      maxSize: MAX_CACHE_SIZE,
+      keys: [],
+      oldestEntry: null,
+      newestEntry: null,
+      success: true,
+      cacheSize: 0,
+      clearedEntries: 0,
+      setCount: 0,
+      fallback: true
+    }
+    
+    // Return appropriate response based on action
+    switch (action) {
+      case 'stats':
+        return fallbackData
+      case 'get':
+        return { cached: false, data: null, fallback: true }
+      case 'getMultiple':
+        return {
+          cached: {},
+          cachedCount: 0,
+          missingKeys: [],
+          totalRequested: 0,
+          fallback: true
+        }
+      case 'getForceData':
+        const forceIdParam = query.forceId || (body && body.forceId)
+        const monthsParam = query.months || (body && body.months)
+        let months = []
+        try {
+          months = monthsParam ? JSON.parse(monthsParam as string) : []
+        } catch (error) {
+          months = []
+        }
+        return {
+          forceId: forceIdParam || '',
+          cached: {},
+          cachedCount: 0,
+          missingMonths: months,
+          totalMonths: months.length,
+          fallback: true
+        }
+      default:
+        return fallbackData
+    }
+  }
+  
   // Set CORS headers
   setResponseHeader(event, 'Access-Control-Allow-Origin', '*')
   setResponseHeader(event, 'Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')

@@ -2,9 +2,9 @@ export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
   ssr: true, // Enable SSR for better SEO
   
-  // HTTPS redirect configuration
+  // Server configuration for API routes to work in production
   nitro: {
-    preset: 'static',
+    preset: 'node-server',
     prerender: {
       crawlLinks: true,
       routes: [

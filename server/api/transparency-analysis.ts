@@ -7,6 +7,19 @@ import path from 'path'
 const CACHE_FILE = path.join(process.cwd(), 'data', 'server-cache.json')
 
 export default defineEventHandler(async () => {
+  // Check if we're in build mode (prerendering) or if external APIs are unavailable
+  const isBuildMode = process.env.NODE_ENV === 'production' && process.env.NITRO_PRESET === 'static'
+  const isPrerendering = process.env.NITRO_PRESET === 'static'
+  
+  if (isBuildMode || isPrerendering) {
+    // Return fallback data for build time
+    return { 
+      forcesWithIssues: [],
+      analysis: {},
+      fallback: true
+    }
+  }
+
   try {
     if (!existsSync(CACHE_FILE)) {
       return { forcesWithIssues: [] }
