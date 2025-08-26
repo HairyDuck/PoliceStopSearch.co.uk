@@ -670,11 +670,9 @@ export const useStopSearchStore = defineStore('stopsearch', {
           params.date = month
         }
         
-        // Use the PHP API endpoint with correct URL
-        const { useServerCache } = await import('@/composables/useServerCache')
-        const { getBaseURL } = useServerCache()
-        const baseURL = getBaseURL()
-        const response = await $fetch(`${baseURL}/force-data.php`, { params })
+        // Use the PHP API endpoint directly
+        const queryParams = new URLSearchParams(params)
+        const response = await $fetch(`https://api.policestopsearch.co.uk/force-data.php?${queryParams}`)
         
         // The API now returns aggregated data directly
         return response
@@ -1198,39 +1196,46 @@ export const useStopSearchStore = defineStore('stopsearch', {
         
         try {
           const queryParams = new URLSearchParams(params)
-          const data = await this._fetchWithErrorHandling(`https://data.police.uk/api/stops-force?${queryParams}`)
+          const data = await this._fetchWithErrorHandling(`https://api.policestopsearch.co.uk/force-data.php?${queryParams}`)
           
-          if (!Array.isArray(data)) {
+          if (!data || typeof data !== 'object') {
             throw new APIError('Invalid response format from API', 500, 'Invalid Response')
           }
 
-          // Add force information to each incident
-          const enhancedData = data.map(incident => ({
-            ...incident,
-            force_id: forceId,
-            force_name: this.forces.find(f => f.id === forceId)?.name || forceId
-          }))
-          
-          // Cache the results (server + client)
-          await this.saveCachedData(cacheKey, enhancedData, 'force')
-          
-          if (process.client) {
-            console.log(`💾 Cached ${enhancedData.length} incidents for ${forceId} (${date || 'latest'})`)
+          // The API returns aggregated data, so we need to process it for the analytics
+          const processedData = {
+            total: data.total || 0,
+            arrests: data.arrests || 0,
+            noAction: data.noAction || 0,
+            warnings: data.warnings || 0,
+            other: data.other || 0,
+            byEthnicity: data.ethnicityBreakdown || {},
+            byGender: data.genderBreakdown || {},
+            byAgeRange: data.ageBreakdown || {},
+            byLegislation: data.legislation || {},
+            byObjectOfSearch: data.objectOfSearch || {},
+            byType: data.typeBreakdown || {},
+            byHour: data.byHour || {},
+            byDayOfWeek: data.byDay || {},
+            locations: data.locationBreakdown || []
           }
           
-          return enhancedData
+          // Cache the results (server + client)
+          await this.saveCachedData(cacheKey, processedData, 'force')
+          
+          if (process.client) {
+            console.log(`💾 Cached aggregated data for ${forceId} (${date || 'latest'}): ${processedData.total} incidents`)
+          }
+          
+          return processedData
         } catch (apiError) {
           // If API fails and we have stale data, return it
           if (isStale && staleData) {
             if (process.client) {
               console.log(`⚠️ API failed, using stale cached data for force ${forceId} (${date || 'latest'})`)
             }
-            // Ensure force information is present in stale data
-            return staleData.map(incident => ({
-              ...incident,
-              force_id: incident.force_id || forceId,
-              force_name: incident.force_name || this.forces.find(f => f.id === forceId)?.name || forceId
-            }))
+            // Return stale data as-is (it should already be in the correct format)
+            return staleData
           }
           throw apiError
         }

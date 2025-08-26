@@ -204,6 +204,10 @@ const props = defineProps<{
   selectedForces: string[]
 }>()
 
+// Debug logging
+console.log('🔍 EnhancedAnalytics received data:', props.data)
+console.log('🔍 EnhancedAnalytics selected forces:', props.selectedForces)
+
 // Chart refs
 const hourlyChart = ref<HTMLCanvasElement>()
 const dayOfWeekChart = ref<HTMLCanvasElement>()

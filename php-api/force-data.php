@@ -70,19 +70,19 @@ if ($response === false) {
         'month' => $date ?: '',
         'total' => 0,
         'arrests' => 0,
+        'noAction' => 0,
+        'warnings' => 0,
+        'other' => 0,
         'arrestsPercentage' => 0,
-        'outcomes' => [],
-        'ageBreakdown' => [],
-        'genderBreakdown' => [],
         'ethnicityBreakdown' => [],
-        'objectOfSearch' => [],
+        'genderBreakdown' => [],
+        'ageBreakdown' => [],
         'legislation' => [],
-        'locationBreakdown' => [],
+        'objectOfSearch' => [],
+        'typeBreakdown' => [],
         'byHour' => [],
         'byDay' => [],
-        'byMonth' => [],
-        'mostCommonObject' => 'None',
-        'mostCommonObjectCount' => 0,
+        'locations' => [],
         'fallback' => true
     ];
     
@@ -125,12 +125,81 @@ foreach ($rawData as $incident) {
         $processedData['arrests']++;
     }
     
-    // Process other fields as needed
-    // Add more processing logic here based on your needs
+    // Process ethnicity
+    $ethnicity = $incident['officer_defined_ethnicity'] ?? 'Unknown';
+    $processedData['ethnicityBreakdown'][$ethnicity] = ($processedData['ethnicityBreakdown'][$ethnicity] ?? 0) + 1;
+    
+    // Process gender
+    $gender = $incident['gender'] ?? 'Unknown';
+    $processedData['genderBreakdown'][$gender] = ($processedData['genderBreakdown'][$gender] ?? 0) + 1;
+    
+    // Process age range
+    $ageRange = $incident['age_range'] ?? 'Unknown';
+    $processedData['ageBreakdown'][$ageRange] = ($processedData['ageBreakdown'][$ageRange] ?? 0) + 1;
+    
+    // Process legislation
+    $legislation = $incident['legislation'] ?? 'Unknown';
+    $processedData['legislation'][$legislation] = ($processedData['legislation'][$legislation] ?? 0) + 1;
+    
+    // Process object of search
+    $objectOfSearch = $incident['object_of_search'] ?? 'Unknown';
+    $processedData['objectOfSearch'][$objectOfSearch] = ($processedData['objectOfSearch'][$objectOfSearch] ?? 0) + 1;
+    
+    // Process type
+    $type = $incident['type'] ?? 'Unknown';
+    $processedData['typeBreakdown'][$type] = ($processedData['typeBreakdown'][$type] ?? 0) + 1;
+    
+    // Process hour
+    if (isset($incident['datetime'])) {
+        $hour = date('H', strtotime($incident['datetime']));
+        $processedData['byHour'][$hour] = ($processedData['byHour'][$hour] ?? 0) + 1;
+    }
+    
+    // Process day of week
+    if (isset($incident['datetime'])) {
+        $day = date('l', strtotime($incident['datetime']));
+        $processedData['byDay'][$day] = ($processedData['byDay'][$day] ?? 0) + 1;
+    }
+    
+    // Process location data
+    if (isset($incident['location']['latitude']) && isset($incident['location']['longitude'])) {
+        $lat = round($incident['location']['latitude'], 3);
+        $lng = round($incident['location']['longitude'], 3);
+        $locationKey = "{$lat},{$lng}";
+        
+        if (!isset($processedData['locationBreakdown'][$locationKey])) {
+            $processedData['locationBreakdown'][$locationKey] = [
+                'lat' => $incident['location']['latitude'],
+                'lng' => $incident['location']['longitude'],
+                'count' => 0
+            ];
+        }
+        $processedData['locationBreakdown'][$locationKey]['count']++;
+    }
 }
 
 if ($processedData['total'] > 0) {
     $processedData['arrestsPercentage'] = ($processedData['arrests'] / $processedData['total']) * 100;
+    
+    // Calculate other outcomes
+    $processedData['noAction'] = 0;
+    $processedData['warnings'] = 0;
+    $processedData['other'] = 0;
+    
+    foreach ($rawData as $incident) {
+        $outcome = $incident['outcome'] ?? '';
+        if (strpos($outcome, 'No further action') !== false) {
+            $processedData['noAction']++;
+        } elseif (strpos($outcome, 'Warning') !== false) {
+            $processedData['warnings']++;
+        } else {
+            $processedData['other']++;
+        }
+    }
+    
+    // Convert location breakdown to array format
+    $processedData['locations'] = array_values($processedData['locationBreakdown']);
+    unset($processedData['locationBreakdown']);
 }
 
 // Cache the processed data

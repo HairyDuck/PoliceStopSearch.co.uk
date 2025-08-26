@@ -715,22 +715,22 @@ const loadData = async () => {
           if (data && data.total > 0) {
             // Add to analytics data
             allData.push({
-            force_id: forceId,
+              force_id: forceId,
               force_name: getForceName(forceId),
-            month: month,
+              month: month,
               incidents: data.total || 0,
               arrests: data.arrests || 0,
               noAction: data.noAction || 0,
               warnings: data.warnings || 0,
               other_outcomes: data.other || 0,
-              by_ethnicity: data.byEthnicity || {},
-              by_gender: data.byGender || {},
-              by_age_range: data.byAgeRange || {},
-              by_legislation: data.byLegislation || {},
-              by_object_of_search: data.byObjectOfSearch || {},
-              by_type: data.byType || {},
+              by_ethnicity: data.ethnicityBreakdown || {},
+              by_gender: data.genderBreakdown || {},
+              by_age_range: data.ageBreakdown || {},
+              by_legislation: data.legislation || {},
+              by_object_of_search: data.objectOfSearch || {},
+              by_type: data.typeBreakdown || {},
               by_hour: data.byHour || {},
-              by_day_of_week: data.byDayOfWeek || {},
+              by_day_of_week: data.byDay || {},
               locations: data.locations || []
             })
 
@@ -750,6 +750,26 @@ const loadData = async () => {
             }
 
             console.log(`✅ Loaded ${data.total} incidents for ${forceId}:${month}`)
+          console.log('📊 Raw API data:', data)
+          console.log('📊 Processed analytics data:', {
+            force_id: forceId,
+            force_name: getForceName(forceId),
+            month: month,
+            incidents: data.total || 0,
+            arrests: data.arrests || 0,
+            noAction: data.noAction || 0,
+            warnings: data.warnings || 0,
+            other_outcomes: data.other || 0,
+            by_ethnicity: data.ethnicityBreakdown || {},
+            by_gender: data.genderBreakdown || {},
+            by_age_range: data.ageBreakdown || {},
+            by_legislation: data.legislation || {},
+            by_object_of_search: data.objectOfSearch || {},
+            by_type: data.typeBreakdown || {},
+            by_hour: data.byHour || {},
+            by_day_of_week: data.byDay || {},
+            locations: data.locations || []
+          })
           } else {
             console.log(`⚠️ No data for ${forceId}:${month}`)
           }
