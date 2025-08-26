@@ -150,15 +150,21 @@ foreach ($rawData as $incident) {
     $processedData['typeBreakdown'][$type] = ($processedData['typeBreakdown'][$type] ?? 0) + 1;
     
     // Process hour
-    if (isset($incident['datetime'])) {
-        $hour = date('H', strtotime($incident['datetime']));
-        $processedData['byHour'][$hour] = ($processedData['byHour'][$hour] ?? 0) + 1;
+    if (isset($incident['datetime']) && !empty($incident['datetime'])) {
+        $timestamp = strtotime($incident['datetime']);
+        if ($timestamp !== false) {
+            $hour = date('H', $timestamp);
+            $processedData['byHour'][$hour] = ($processedData['byHour'][$hour] ?? 0) + 1;
+        }
     }
     
     // Process day of week
-    if (isset($incident['datetime'])) {
-        $day = date('l', strtotime($incident['datetime']));
-        $processedData['byDay'][$day] = ($processedData['byDay'][$day] ?? 0) + 1;
+    if (isset($incident['datetime']) && !empty($incident['datetime'])) {
+        $timestamp = strtotime($incident['datetime']);
+        if ($timestamp !== false) {
+            $day = date('l', $timestamp);
+            $processedData['byDay'][$day] = ($processedData['byDay'][$day] ?? 0) + 1;
+        }
     }
     
     // Process location data
