@@ -750,8 +750,17 @@ const loadData = async () => {
             }
 
             console.log(`✅ Loaded ${data.total} incidents for ${forceId}:${month}`)
-          console.log('📊 Raw API data:', data)
-          console.log('📊 Processed analytics data:', {
+            console.log('📊 Raw API data:', data)
+            console.log('📊 Data breakdowns:', {
+              ethnicity: Object.keys(data.ethnicityBreakdown || {}),
+              age: Object.keys(data.ageBreakdown || {}),
+              gender: Object.keys(data.genderBreakdown || {}),
+              legislation: Object.keys(data.legislation || {}),
+              objectOfSearch: Object.keys(data.objectOfSearch || {}),
+              byHour: Object.keys(data.byHour || {}),
+              byDay: Object.keys(data.byDay || {})
+            })
+            console.log('📊 Processed analytics data:', {
             force_id: forceId,
             force_name: getForceName(forceId),
             month: month,

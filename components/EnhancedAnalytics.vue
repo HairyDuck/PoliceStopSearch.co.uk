@@ -208,6 +208,19 @@ const props = defineProps<{
 console.log('🔍 EnhancedAnalytics received data:', props.data)
 console.log('🔍 EnhancedAnalytics selected forces:', props.selectedForces)
 
+// Debug the breakdown data
+if (props.data.length > 0) {
+  console.log('🔍 First data item breakdowns:', {
+    by_ethnicity: Object.keys(props.data[0].by_ethnicity || {}),
+    by_age_range: Object.keys(props.data[0].by_age_range || {}),
+    by_gender: Object.keys(props.data[0].by_gender || {}),
+    by_legislation: Object.keys(props.data[0].by_legislation || {}),
+    by_object_of_search: Object.keys(props.data[0].by_object_of_search || {}),
+    by_hour: Object.keys(props.data[0].by_hour || {}),
+    by_day_of_week: Object.keys(props.data[0].by_day_of_week || {})
+  })
+}
+
 // Chart refs
 const hourlyChart = ref<HTMLCanvasElement>()
 const dayOfWeekChart = ref<HTMLCanvasElement>()
