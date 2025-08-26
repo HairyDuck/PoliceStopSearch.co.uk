@@ -51,3 +51,4 @@ coverage
 *.code-workspace
 
 # Server cache data
+data/server-cache.json
