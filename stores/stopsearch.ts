@@ -652,10 +652,11 @@ export const useStopSearchStore = defineStore('stopsearch', {
           params.date = month
         }
         
-        // Use the correct base URL for API calls
+        // Use the PHP API endpoint
         const config = useRuntimeConfig()
         const baseURL = config.public.siteUrl || 'http://localhost:3000'
-        const response = await $fetch(`${baseURL}/api/force-data`, { params })
+        const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
+        const response = await $fetch(`${apiURL}/force-data.php`, { params })
         
         // The API now returns aggregated data directly
         return response

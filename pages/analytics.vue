@@ -338,13 +338,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRuntimeConfig } from 'nuxt/app'
 import { useStopSearchStore } from '@/stores/stopsearch'
 import policeForceBadges from '@/police_forces.json'
 import TrendAnalysis from '@/components/TrendAnalysis.vue'
 import EnhancedAnalytics from '@/components/EnhancedAnalytics.vue'
 import HeatMap from '@/components/HeatMap.vue'
 import ChoroplethMap from '@/components/ChoroplethMap.vue'
-import { useClientFallback } from '../composables/useClientFallback'
+
 
 // Initialize store
 const store = useStopSearchStore()
@@ -419,19 +420,18 @@ const forcesWithTransparencyIssues = ref(new Set())
 // Function to analyze cache and detect forces with no data
 const analyzeForceTransparency = async () => {
   try {
-    const { apiCallWithFallback, getTransparencyAnalysisFallback } = useClientFallback()
+    const config = useRuntimeConfig()
+    const baseURL = config.public.siteUrl || 'http://localhost:3000'
+    const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
     
-    const data = await apiCallWithFallback(
-      '/api/transparency-analysis',
-      undefined,
-      getTransparencyAnalysisFallback
-    )
-    
-    forcesWithTransparencyIssues.value = new Set(data.forcesWithIssues || [])
-    console.log('Transparency analysis completed:', data.forcesWithIssues)
+    const response = await fetch(`${apiURL}/transparency-analysis.php`)
+    if (response.ok) {
+      const data = await response.json()
+      forcesWithTransparencyIssues.value = new Set(data.forcesWithIssues)
+      console.log('Transparency analysis completed:', data.forcesWithIssues)
+    }
   } catch (error) {
     console.error('Error analyzing force transparency:', error)
-    // Set empty set as fallback
     forcesWithTransparencyIssues.value = new Set()
   }
 }
