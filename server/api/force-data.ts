@@ -39,6 +39,37 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // Check if we're in build mode (prerendering) or if external APIs are unavailable
+  const isBuildMode = process.env.NODE_ENV === 'production' && process.env.NITRO_PRESET === 'static'
+  const isPrerendering = process.env.NITRO_PRESET === 'static'
+  
+  if (isBuildMode || isPrerendering) {
+    // Return fallback data for build time
+    const fallbackData = {
+      forceId: force,
+      forceName: force,
+      month: date || '',
+      total: 0,
+      arrests: 0,
+      arrestsPercentage: 0,
+      outcomes: {},
+      ageBreakdown: {},
+      genderBreakdown: {},
+      ethnicityBreakdown: {},
+      objectOfSearch: {},
+      legislation: {},
+      locationBreakdown: {},
+      byHour: {},
+      byDay: {},
+      byMonth: {},
+      mostCommonObject: 'None',
+      mostCommonObjectCount: 0,
+      fallback: true
+    }
+    
+    return fallbackData
+  }
+
   try {
     // Check if we have aggregated data in cache
     const cache = await readCache()
