@@ -1,11 +1,22 @@
 export const useServerCache = () => {
   const config = useRuntimeConfig()
-  const baseURL = config.public.siteUrl || 'http://localhost:3000'
+  
+  // Determine the correct base URL for API calls
+  const getBaseURL = () => {
+    // In development, use localhost
+    if (process.env.NODE_ENV === 'development') {
+      return 'http://localhost:3000'
+    }
+    // In production, use the configured site URL or fallback
+    return config.public.siteUrl || 'https://policestopsearch.co.uk'
+  }
+  
+  const baseURL = getBaseURL()
   
   // Get cached data from server
   const getCached = async (key: string) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'get', key }
       })
       return response
@@ -18,7 +29,7 @@ export const useServerCache = () => {
   // Set data in server cache
   const setCached = async (key: string, data: any, ttl?: number) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         method: 'POST',
         body: {
           action: 'set', 
@@ -37,7 +48,7 @@ export const useServerCache = () => {
   // Delete cached data
   const deleteCached = async (key: string) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'delete', key }
       })
       return response
@@ -50,7 +61,7 @@ export const useServerCache = () => {
   // Clear all server cache
   const clearServerCache = async () => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'clear' }
       })
       return response
@@ -63,7 +74,7 @@ export const useServerCache = () => {
   // Get server cache statistics
   const getServerCacheStats = async () => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'stats' }
       })
       return response
@@ -76,7 +87,7 @@ export const useServerCache = () => {
   // Check if server cache is available
   const isServerCacheAvailable = async () => {
     try {
-      await $fetch('/api/cache', {
+      await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'stats' }
       })
       return true
@@ -88,7 +99,7 @@ export const useServerCache = () => {
   // Get multiple cached entries at once
   const getMultipleCached = async (keys: string[]) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         method: 'POST',
         body: {
           action: 'getMultiple', 
@@ -105,7 +116,7 @@ export const useServerCache = () => {
   // Set multiple entries at once
   const setMultipleCached = async (data: { [key: string]: any }, ttl?: number) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         method: 'POST',
         body: {
           action: 'setMultiple', 
@@ -123,7 +134,7 @@ export const useServerCache = () => {
   // Get force data for specific months
   const getForceData = async (forceId: string, months: string[]) => {
     try {
-      const response = await $fetch('/api/cache', {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         method: 'POST',
         body: {
           action: 'getForceData', 
