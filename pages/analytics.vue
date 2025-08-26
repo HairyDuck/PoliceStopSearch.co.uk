@@ -419,10 +419,21 @@ const forcesWithTransparencyIssues = ref(new Set())
 
 // Function to analyze cache and detect forces with no data
 const analyzeForceTransparency = async () => {
-  // Temporarily disabled due to CSP issues
-  // TODO: Re-enable once CSP is properly configured on live site
-  console.log('🚫 Transparency analysis temporarily disabled due to CSP issues')
-  forcesWithTransparencyIssues.value = new Set()
+  try {
+    console.log('🔍 Analyzing force transparency...')
+    const response = await $fetch<{forcesWithIssues: string[], analysis: any}>('https://api.policestopsearch.co.uk/transparency-analysis.php')
+    
+    if (response && response.forcesWithIssues) {
+      forcesWithTransparencyIssues.value = new Set(response.forcesWithIssues)
+      console.log(`✅ Transparency analysis complete: ${response.forcesWithIssues.length} forces with issues`)
+    } else {
+      forcesWithTransparencyIssues.value = new Set()
+      console.log('✅ Transparency analysis complete: No forces with issues')
+    }
+  } catch (error) {
+    console.error('❌ Error analyzing force transparency:', error)
+    forcesWithTransparencyIssues.value = new Set()
+  }
 }
 
 // Available months with data
