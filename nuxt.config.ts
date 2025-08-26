@@ -20,7 +20,12 @@ export default defineNuxtConfig({
       ],
       ignore: [
         '/map',
-        '/manifest.json'
+        '/manifest.json',
+        '/api/cache',
+        '/api/transparency-analysis',
+        '/api/force-data',
+        '/api/forces',
+        '/api/statistics'
       ]
     }
   },
