@@ -20,6 +20,12 @@ export const useServerCache = () => {
   
   // Get cached data from server
   const getCached = async (key: string) => {
+    // Temporarily disabled due to CSP issues
+    console.log('🚫 Server cache get temporarily disabled due to CSP issues')
+    return { cached: false, data: null }
+    
+    // Original code (commented out)
+    /*
     try {
       const response = await $fetch(`${baseURL}/cache.php`, {
         query: { action: 'get', key }
@@ -29,10 +35,17 @@ export const useServerCache = () => {
       console.error('❌ Server cache get error:', error)
       return { cached: false, data: null }
     }
+    */
   }
   
   // Set data in server cache
   const setCached = async (key: string, data: any, ttl?: number) => {
+    // Temporarily disabled due to CSP issues
+    console.log('🚫 Server cache set temporarily disabled due to CSP issues')
+    return { success: false }
+    
+    // Original code (commented out)
+    /*
     try {
       const response = await $fetch(`${baseURL}/cache.php`, {
         method: 'POST',
@@ -48,6 +61,7 @@ export const useServerCache = () => {
       console.error('❌ Server cache set error:', error)
       return { success: false }
     }
+    */
   }
   
   // Delete cached data
@@ -78,6 +92,12 @@ export const useServerCache = () => {
   
   // Get server cache statistics
   const getServerCacheStats = async () => {
+    // Temporarily disabled due to CSP issues
+    console.log('🚫 Server cache stats temporarily disabled due to CSP issues')
+    return null
+    
+    // Original code (commented out)
+    /*
     try {
       const response = await $fetch(`${baseURL}/cache.php`, {
         query: { action: 'stats' }
@@ -87,10 +107,18 @@ export const useServerCache = () => {
       console.error('❌ Server cache stats error:', error)
       return null
     }
+    */
   }
   
   // Check if server cache is available
   const isServerCacheAvailable = async () => {
+    // Temporarily disabled due to CSP issues
+    // TODO: Re-enable once CSP is properly configured on live site
+    console.log('🚫 Server cache check temporarily disabled due to CSP issues')
+    return false
+    
+    // Original code (commented out)
+    /*
     try {
       const response = await $fetch(`${baseURL}/cache.php`, {
         query: { action: 'stats' }
@@ -99,6 +127,7 @@ export const useServerCache = () => {
     } catch (error) {
       return false
     }
+    */
   }
   
   // Get multiple cached entries at once

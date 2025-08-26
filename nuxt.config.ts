@@ -46,6 +46,10 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#ffffff' },
         { name: 'robots', content: 'index, follow' },
         { name: 'author', content: 'PoliceStopSearch.co.uk' },
+        // Cache-busting headers
+        { 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
+        { 'http-equiv': 'Pragma', content: 'no-cache' },
+        { 'http-equiv': 'Expires', content: '0' },
         { name: 'keywords', content: 'police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability' },
         
         // Open Graph
@@ -69,7 +73,7 @@ export default defineNuxtConfig({
         { name: 'msapplication-config', content: '/browserconfig.xml' },
         { 
           'http-equiv': 'Content-Security-Policy', 
-          content: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.policestopsearch.co.uk https://data.police.uk https://www.google-analytics.com; frame-src https://www.google.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self';"
+          content: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.policestopsearch.co.uk https://data.police.uk https://www.google-analytics.com https://pagead2.googlesyndication.com; frame-src https://www.google.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self';"
         }
       ],
       link: [
