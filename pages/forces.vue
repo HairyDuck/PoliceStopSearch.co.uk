@@ -345,7 +345,33 @@ const baseURL = config.public.siteUrl || 'http://localhost:3000'
 
 let forcesData: any = null
 try {
-  forcesData = await $fetch(`${baseURL}/api/forces`)
+  // Use PHP API for forces data
+  const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
+  forcesData = await $fetch(`${apiURL}/cache.php`, {
+    query: { action: 'get', key: 'forces' }
+  })
+  if (forcesData.cached && forcesData.data) {
+    forcesData = forcesData.data
+  } else {
+    // If not cached, fetch from external API and cache it
+    const externalResponse = await fetch('https://data.police.uk/api/forces')
+    if (externalResponse.ok) {
+      const forces = await externalResponse.json()
+      forcesData = { forces, forceDetails: {} }
+      // Cache the data
+      await $fetch(`${apiURL}/cache.php`, {
+        method: 'POST',
+        body: {
+          action: 'set',
+          key: 'forces',
+          data: JSON.stringify(forcesData),
+          ttl: '86400000' // 24 hours
+        }
+      })
+    } else {
+      throw new Error('Failed to fetch forces data')
+    }
+  }
 } catch (error) {
   console.warn('Failed to fetch forces data during build, using fallback:', error)
   // Fallback data for static generation

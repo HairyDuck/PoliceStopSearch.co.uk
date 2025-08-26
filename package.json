@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "build": "nuxi build",
-    "build:local": "nuxi build",
-    "start": "nuxi start",
+    "build": "nuxi generate",
+    "build:local": "nuxi generate",
+    "start": "nuxi preview",
     "generate": "nuxi generate",
     "postinstall": "nuxi prepare"
   },

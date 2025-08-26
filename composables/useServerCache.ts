@@ -5,9 +5,12 @@ export const useServerCache = () => {
   
   // Determine the correct base URL for API calls
   const getBaseURL = () => {
-    // In development, use localhost
-    if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:3000'
+    // Check if we're running locally (development or preview mode)
+    if (process.client) {
+      const hostname = window.location.hostname
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:8000' // PHP API server port
+      }
     }
     // In production, use the PHP API subdomain
     return 'https://api.policestopsearch.co.uk'
@@ -94,7 +97,6 @@ export const useServerCache = () => {
       })
       return true
     } catch (error) {
-      console.log('⚠️ Server cache not available, using client-side fallback')
       return false
     }
   }
@@ -159,6 +161,7 @@ export const useServerCache = () => {
   }
   
   return {
+    getBaseURL,
     getCached,
     setCached,
     deleteCached,

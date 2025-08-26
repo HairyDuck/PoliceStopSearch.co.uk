@@ -2,9 +2,9 @@ export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
   ssr: true, // Enable SSR for better SEO
   
-  // Server configuration for API routes to work in production
+  // Static site generation for FTP hosting
   nitro: {
-    preset: 'node-server',
+    preset: 'static',
     prerender: {
       crawlLinks: true,
       routes: [
@@ -20,12 +20,7 @@ export default defineNuxtConfig({
       ],
       ignore: [
         '/map',
-        '/manifest.json',
-        '/api/cache',
-        '/api/transparency-analysis',
-        '/api/force-data',
-        '/api/forces',
-        '/api/statistics'
+        '/manifest.json'
       ]
     }
   },

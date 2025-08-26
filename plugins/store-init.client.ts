@@ -6,7 +6,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.mixin({
     mounted() {
       const store = useStopSearchStore()
-      store.initializeFromStorage()
+      // Only initialize if not already initialized
+      if (!store._initialized) {
+        store.initializeFromStorage()
+      }
     }
   })
 }) 

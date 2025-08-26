@@ -668,7 +668,17 @@ const baseURL = config.public.siteUrl || 'http://localhost:3000'
 
 let statisticsData: any = null
 try {
-  statisticsData = await $fetch(`${baseURL}/api/statistics`)
+  // Use PHP API for statistics data
+  const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
+  statisticsData = await $fetch(`${apiURL}/cache.php`, {
+    query: { action: 'get', key: 'statistics' }
+  })
+  if (statisticsData.cached && statisticsData.data) {
+    statisticsData = statisticsData.data
+  } else {
+    // If not cached, use fallback data
+    throw new Error('Statistics data not available')
+  }
 } catch (error) {
   console.warn('Failed to fetch statistics data during build, using fallback:', error)
   // Fallback data for static generation

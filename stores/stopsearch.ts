@@ -107,6 +107,7 @@ export const useStopSearchStore = defineStore('stopsearch', {
     // Server cache state
     serverCacheAvailable: false, // Track if server cache is available
     serverCacheStats: null as any, // Server cache statistics
+    serverCacheChecked: false, // Track if server cache availability has been checked
   }),
 
   actions: {
@@ -311,17 +312,42 @@ export const useStopSearchStore = defineStore('stopsearch', {
     async checkServerCacheAvailability() {
       if (process.server) return
       
+      // Only check once to prevent multiple API calls
+      if (this.serverCacheChecked) {
+        console.log('🔄 Server cache already checked, skipping...')
+        return
+      }
+      
+      // In development mode, skip server cache check to prevent excessive API calls
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🚫 Development mode: skipping server cache check')
+        this.serverCacheAvailable = false
+        this.serverCacheChecked = true
+        return
+      }
+      
+      console.log('🔍 Checking server cache availability...')
+      
       try {
         const { useServerCache } = await import('@/composables/useServerCache')
         const { isServerCacheAvailable } = useServerCache()
         this.serverCacheAvailable = await isServerCacheAvailable()
         
         if (this.serverCacheAvailable) {
+          console.log('✅ Server cache is available')
           const { getServerCacheStats } = useServerCache()
           this.serverCacheStats = await getServerCacheStats()
+        } else {
+          console.log('❌ Server cache is not available')
         }
+        
+        // Mark as checked to prevent future calls
+        this.serverCacheChecked = true
+        console.log('✅ Server cache check completed')
       } catch (error) {
+        console.log('❌ Server cache check failed:', error)
         this.serverCacheAvailable = false
+        this.serverCacheChecked = true
       }
     },
 
@@ -652,11 +678,11 @@ export const useStopSearchStore = defineStore('stopsearch', {
           params.date = month
         }
         
-        // Use the PHP API endpoint
-        const config = useRuntimeConfig()
-        const baseURL = config.public.siteUrl || 'http://localhost:3000'
-        const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
-        const response = await $fetch(`${apiURL}/force-data.php`, { params })
+        // Use the PHP API endpoint with correct URL
+        const { useServerCache } = await import('@/composables/useServerCache')
+        const { getBaseURL } = useServerCache()
+        const baseURL = getBaseURL()
+        const response = await $fetch(`${baseURL}/force-data.php`, { params })
         
         // The API now returns aggregated data directly
         return response
