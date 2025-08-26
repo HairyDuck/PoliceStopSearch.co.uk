@@ -31,26 +31,26 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🏗️ Generate static site
-        run: npm run generate
+      - name: 🏗️ Build server-side application
+        run: npm run build
 
       - name: 🔧 Set file permissions
         run: |
-          find .output/public -type f -exec chmod 644 {} \;
-          find .output/public -type d -exec chmod 755 {} \;
+          find .output -type f -exec chmod 644 {} \;
+          find .output -type d -exec chmod 755 {} \;
 
       - name: 📂 Install sshpass
         run: sudo apt-get install -y sshpass
 
       - name: 🗑️ Clean remote directory
         run: |
-          cd .output/public
+          cd .output
           echo "rm -rf /public_html/*" > clean.txt
           sshpass -p "${{ secrets.FTP_PASSWORD }}" sftp -o StrictHostKeyChecking=no ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }} < clean.txt
 
       - name: 📂 Upload files
         run: |
-          cd .output/public
+          cd .output
           echo "
           cd /public_html
           put -r *

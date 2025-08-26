@@ -1,3 +1,5 @@
+import { useRuntimeConfig } from 'nuxt/app'
+
 export const useServerCache = () => {
   const config = useRuntimeConfig()
   
@@ -87,11 +89,12 @@ export const useServerCache = () => {
   // Check if server cache is available
   const isServerCacheAvailable = async () => {
     try {
-      await $fetch(`${baseURL}/api/cache`, {
+      const response = await $fetch(`${baseURL}/api/cache`, {
         query: { action: 'stats' }
       })
       return true
-    } catch {
+    } catch (error) {
+      console.log('⚠️ Server cache not available, using client-side fallback')
       return false
     }
   }
