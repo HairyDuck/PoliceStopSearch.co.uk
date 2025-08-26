@@ -322,6 +322,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRuntimeConfig } from 'nuxt/app'
 import policeForceBadges from '../police_forces.json'
 
 interface ForceDetails {
@@ -338,10 +339,63 @@ interface ForceDetails {
   name: string
 }
 
-// Server-side data fetching
+// Server-side data fetching with fallback for static generation
 const config = useRuntimeConfig()
 const baseURL = config.public.siteUrl || 'http://localhost:3000'
-const forcesData = await $fetch(`${baseURL}/api/forces`)
+
+let forcesData: any = null
+try {
+  forcesData = await $fetch(`${baseURL}/api/forces`)
+} catch (error) {
+  console.warn('Failed to fetch forces data during build, using fallback:', error)
+  // Fallback data for static generation
+  forcesData = {
+    forces: [
+      { id: 'avon-and-somerset', name: 'Avon and Somerset Police' },
+      { id: 'bedfordshire', name: 'Bedfordshire Police' },
+      { id: 'cambridgeshire', name: 'Cambridgeshire Police' },
+      { id: 'cheshire', name: 'Cheshire Police' },
+      { id: 'city-of-london', name: 'City of London Police' },
+      { id: 'cleveland', name: 'Cleveland Police' },
+      { id: 'cumbria', name: 'Cumbria Police' },
+      { id: 'derbyshire', name: 'Derbyshire Police' },
+      { id: 'devon-and-cornwall', name: 'Devon and Cornwall Police' },
+      { id: 'dorset', name: 'Dorset Police' },
+      { id: 'durham', name: 'Durham Police' },
+      { id: 'dyfed-powys', name: 'Dyfed-Powys Police' },
+      { id: 'essex', name: 'Essex Police' },
+      { id: 'gloucestershire', name: 'Gloucestershire Police' },
+      { id: 'greater-manchester', name: 'Greater Manchester Police' },
+      { id: 'gwent', name: 'Gwent Police' },
+      { id: 'hampshire', name: 'Hampshire Police' },
+      { id: 'hertfordshire', name: 'Hertfordshire Police' },
+      { id: 'kent', name: 'Kent Police' },
+      { id: 'lancashire', name: 'Lancashire Police' },
+      { id: 'leicestershire', name: 'Leicestershire Police' },
+      { id: 'merseyside', name: 'Merseyside Police' },
+      { id: 'metropolitan', name: 'Metropolitan Police' },
+      { id: 'norfolk', name: 'Norfolk Police' },
+      { id: 'north-wales', name: 'North Wales Police' },
+      { id: 'north-yorkshire', name: 'North Yorkshire Police' },
+      { id: 'northamptonshire', name: 'Northamptonshire Police' },
+      { id: 'northumbria', name: 'Northumbria Police' },
+      { id: 'nottinghamshire', name: 'Nottinghamshire Police' },
+      { id: 'south-wales', name: 'South Wales Police' },
+      { id: 'south-yorkshire', name: 'South Yorkshire Police' },
+      { id: 'staffordshire', name: 'Staffordshire Police' },
+      { id: 'suffolk', name: 'Suffolk Police' },
+      { id: 'surrey', name: 'Surrey Police' },
+      { id: 'sussex', name: 'Sussex Police' },
+      { id: 'thames-valley', name: 'Thames Valley Police' },
+      { id: 'warwickshire', name: 'Warwickshire Police' },
+      { id: 'west-mercia', name: 'West Mercia Police' },
+      { id: 'west-midlands', name: 'West Midlands Police' },
+      { id: 'west-yorkshire', name: 'West Yorkshire Police' },
+      { id: 'wiltshire', name: 'Wiltshire Police' }
+    ],
+    forceDetails: {}
+  }
+}
 
 // State
 const forces = ref((forcesData as any)?.forces || [] as { id: string; name: string }[])

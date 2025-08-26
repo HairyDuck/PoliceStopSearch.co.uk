@@ -10,6 +10,7 @@ export default defineNuxtConfig({
       routes: [
         '/',
         '/analytics',
+        '/statistics',
         '/forces',
         '/about',
         '/privacy',
@@ -119,9 +120,7 @@ export default defineNuxtConfig({
   ],
 
   // Critical CSS optimization
-  experimental: {
-    inlineSSRStyles: false
-  },
+  // Note: inlineSSRStyles is deprecated in Nuxt 3
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
