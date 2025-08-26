@@ -17,10 +17,11 @@ export default defineEventHandler(async (event) => {
     }
   }
   
-  // Check if we're in build mode (prerendering)
+  // Check if we're in build mode (prerendering) or if external APIs are unavailable
   const isBuildMode = process.env.NODE_ENV === 'production' && process.env.NITRO_PRESET === 'static'
+  const isPrerendering = process.env.NITRO_PRESET === 'static'
   
-  if (isBuildMode) {
+  if (isBuildMode || isPrerendering) {
     // Return fallback data for build time
     const fallbackData = {
       statistics: {
