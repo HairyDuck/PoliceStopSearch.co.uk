@@ -419,21 +419,10 @@ const forcesWithTransparencyIssues = ref(new Set())
 
 // Function to analyze cache and detect forces with no data
 const analyzeForceTransparency = async () => {
-  try {
-    const { useServerCache } = await import('@/composables/useServerCache')
-    const { getBaseURL } = useServerCache()
-    const baseURL = getBaseURL()
-    
-    const response = await fetch(`${baseURL}/transparency-analysis.php`)
-    if (response.ok) {
-      const data = await response.json()
-      forcesWithTransparencyIssues.value = new Set(data.forcesWithIssues)
-      console.log('Transparency analysis completed:', data.forcesWithIssues)
-    }
-  } catch (error) {
-    console.error('Error analyzing force transparency:', error)
-    forcesWithTransparencyIssues.value = new Set()
-  }
+  // Temporarily disabled due to CSP issues
+  // TODO: Re-enable once CSP is properly configured on live site
+  console.log('🚫 Transparency analysis temporarily disabled due to CSP issues')
+  forcesWithTransparencyIssues.value = new Set()
 }
 
 // Available months with data

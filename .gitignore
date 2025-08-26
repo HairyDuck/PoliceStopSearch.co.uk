@@ -52,3 +52,23 @@ coverage
 
 # Server cache data
 data/server-cache.json
+
+# PHP API cache data
+php-api/data/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+*.code-workspace
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
