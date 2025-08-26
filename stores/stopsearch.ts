@@ -318,13 +318,6 @@ export const useStopSearchStore = defineStore('stopsearch', {
         return
       }
       
-      // Temporarily disable server cache check due to CSP issues
-      // TODO: Re-enable once CSP is properly configured on live site
-      console.log('🚫 Server cache check temporarily disabled due to CSP issues')
-      this.serverCacheAvailable = false
-      this.serverCacheChecked = true
-      return
-      
       console.log('🔍 Checking server cache availability...')
       
       try {
