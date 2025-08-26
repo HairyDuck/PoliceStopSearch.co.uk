@@ -319,7 +319,8 @@ export const useStopSearchStore = defineStore('stopsearch', {
       }
       
       // In development mode, skip server cache check to prevent excessive API calls
-      if (process.env.NODE_ENV === 'development') {
+      // But allow it in production or when explicitly testing
+      if (process.env.NODE_ENV === 'development' && process.client && window.location.hostname === 'localhost') {
         console.log('🚫 Development mode: skipping server cache check')
         this.serverCacheAvailable = false
         this.serverCacheChecked = true

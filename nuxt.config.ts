@@ -66,7 +66,11 @@ export default defineNuxtConfig({
         // Additional SEO
         { name: 'application-name', content: 'PoliceStopSearch.co.uk' },
         { name: 'msapplication-TileColor', content: '#ffffff' },
-        { name: 'msapplication-config', content: '/browserconfig.xml' }
+        { name: 'msapplication-config', content: '/browserconfig.xml' },
+        { 
+          'http-equiv': 'Content-Security-Policy', 
+          content: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.policestopsearch.co.uk https://data.police.uk https://www.google-analytics.com; frame-src https://www.google.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self';"
+        }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/images/puk-logo.png' },
