@@ -663,7 +663,9 @@ useHead({
 })
 
 // Server-side data fetching
-const statisticsData = await $fetch('/api/statistics')
+const config = useRuntimeConfig()
+const baseURL = config.public.siteUrl || 'http://localhost:3000'
+const statisticsData = await $fetch(`${baseURL}/api/statistics`)
 
 // State
 const store = useStopSearchStore()

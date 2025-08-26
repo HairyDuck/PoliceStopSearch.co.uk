@@ -339,7 +339,9 @@ interface ForceDetails {
 }
 
 // Server-side data fetching
-const forcesData = await $fetch('/api/forces')
+const config = useRuntimeConfig()
+const baseURL = config.public.siteUrl || 'http://localhost:3000'
+const forcesData = await $fetch(`${baseURL}/api/forces`)
 
 // State
 const forces = ref((forcesData as any)?.forces || [] as { id: string; name: string }[])

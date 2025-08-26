@@ -652,7 +652,10 @@ export const useStopSearchStore = defineStore('stopsearch', {
           params.date = month
         }
         
-        const response = await $fetch('/api/force-data', { params })
+        // Use the correct base URL for API calls
+        const config = useRuntimeConfig()
+        const baseURL = config.public.siteUrl || 'http://localhost:3000'
+        const response = await $fetch(`${baseURL}/api/force-data`, { params })
         
         // The API now returns aggregated data directly
         return response

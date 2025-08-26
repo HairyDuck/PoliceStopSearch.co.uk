@@ -418,7 +418,9 @@ const forcesWithTransparencyIssues = ref(new Set())
 // Function to analyze cache and detect forces with no data
 const analyzeForceTransparency = async () => {
   try {
-    const response = await fetch('/api/transparency-analysis')
+    const config = useRuntimeConfig()
+    const baseURL = config.public.siteUrl || 'http://localhost:3000'
+    const response = await fetch(`${baseURL}/api/transparency-analysis`)
     if (response.ok) {
       const data = await response.json()
       forcesWithTransparencyIssues.value = new Set(data.forcesWithIssues)

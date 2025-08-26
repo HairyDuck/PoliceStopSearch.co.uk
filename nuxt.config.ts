@@ -144,7 +144,8 @@ export default defineNuxtConfig({
   // Runtime Config
   runtimeConfig: {
     public: {
-      apiBase: 'https://data.police.uk/api'
+      apiBase: 'https://data.police.uk/api',
+      siteUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://policestopsearch.co.uk'
     }
   },
 
