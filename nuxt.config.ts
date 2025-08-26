@@ -15,8 +15,7 @@ export default defineNuxtConfig({
         '/about',
         '/privacy',
         '/terms',
-        '/faq',
-        '/api/sitemap.xml'
+        '/faq'
       ],
       ignore: [
         '/map',
