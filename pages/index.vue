@@ -67,6 +67,20 @@
       </div>
     </section>
 
+    <!-- UK Police Forces Overview Map -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-4">UK Police Forces Overview</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Visualize the current state of police data transparency across all UK police forces. 
+            See which forces are actively reporting data and identify areas with transparency issues.
+          </p>
+        </div>
+        <HomePageMap />
+      </div>
+    </section>
+
     <!-- Key Features -->
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

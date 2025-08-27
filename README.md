@@ -14,8 +14,10 @@ An interactive platform for exploring and analyzing UK police stop and search da
 ## 🌟 Features
 
 - **Interactive Map**: Visualize stop and search incidents across the UK with filtering capabilities
+- **Home Page Overview**: High-level UK police forces map showing data status and transparency issues
 - **Detailed Statistics**: Comprehensive analytics and trends for each police force
 - **Force Comparison**: Compare statistics across different police forces
+- **Transparency Analysis**: Identify forces with data publication issues
 - **Mobile Responsive**: Full functionality on all devices
 - **Real-time Data**: Updated monthly with the latest available police data
 - **Performance Optimized**: Fast loading with data caching and lazy loading
