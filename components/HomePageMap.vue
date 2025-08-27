@@ -5,7 +5,7 @@
       <div class="loading-spinner mx-auto mb-4"></div>
       <p class="text-gray-600">Loading UK police forces overview...</p>
     </div>
-
+    
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <div class="text-red-500 mb-4">
@@ -17,9 +17,11 @@
       <p class="text-gray-600 mb-4">{{ error }}</p>
       <button @click="loadData" class="btn btn-primary">Try Again</button>
     </div>
-
+    
     <!-- Data Display -->
     <div v-else class="space-y-6">
+
+
       <!-- Summary Statistics -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-blue-50 p-4 rounded-lg">
@@ -39,13 +41,13 @@
           <div class="text-sm text-purple-700">Latest Data Month</div>
         </div>
       </div>
-
-      <!-- Map Container -->
+      
+            <!-- Map Container -->
       <div class="relative">
-        <div ref="mapContainer" class="h-96 w-full rounded-lg border border-gray-200"></div>
+        <div ref="mapContainer" class="map-container h-[500px] w-full rounded-lg border border-gray-200 bg-gray-100"></div>
         
         <!-- Map Legend -->
-        <div class="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 text-sm">
+        <div class="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 text-sm z-10">
           <div class="font-medium mb-2">Data Status</div>
           <div class="space-y-1">
             <div class="flex items-center">
@@ -63,21 +65,21 @@
           </div>
         </div>
 
-                 <!-- Transparency Issues Notice -->
-         <div v-if="forcesWithTransparencyIssues.length > 0" class="absolute top-4 right-4 bg-red-50 border border-red-200 rounded-lg p-3 max-w-xs">
-           <div class="flex items-start">
-             <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-               <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-             </svg>
-             <div>
-               <h4 class="text-sm font-medium text-red-800">Transparency Issues</h4>
-               <p class="text-xs text-red-700 mt-1">
-                 {{ forcesWithTransparencyIssues.length }} forces are not publishing stop and search data, 
-                 contradicting Home Office transparency initiatives.
-               </p>
-             </div>
-           </div>
-         </div>
+        <!-- Transparency Issues Notice -->
+        <div v-if="forcesWithTransparencyIssues.length > 0" class="absolute top-4 right-4 bg-red-50 border border-red-200 rounded-lg p-3 max-w-xs z-10">
+          <div class="flex items-start">
+            <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <div>
+              <h4 class="text-sm font-medium text-red-800">Transparency Issues</h4>
+              <p class="text-xs text-red-700 mt-1">
+                {{ forcesWithTransparencyIssues.length }} forces are not publishing stop and search data, 
+                contradicting Home Office transparency initiatives.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
              <!-- Force List with Transparency Issues -->
@@ -105,7 +107,7 @@
                    <div class="text-xs text-gray-500">
                      {{ force.totalIncidents.toLocaleString() }} incidents
                    </div>
-                 </div>
+              </div>
                  <div class="text-xs px-2 py-1 rounded-full"
                    :class="{
                      'bg-green-100 text-green-800': force.status === 'active',
@@ -113,12 +115,12 @@
                    }"
                  >
                    {{ force.status === 'active' ? 'Active' : 'Limited' }}
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
          <!-- Forces with Transparency Issues -->
          <div v-if="forcesWithTransparencyIssues.length > 0" class="bg-red-50 rounded-lg p-4">
            <h3 class="text-lg font-semibold mb-4 text-red-800 flex items-center">
@@ -127,11 +129,11 @@
              </svg>
              Transparency Issues - Not Reporting Data ({{ forcesWithTransparencyIssues.length }})
            </h3>
-           <div class="mb-3 p-3 bg-red-100 rounded-lg">
-             <p class="text-sm text-red-800">
-               These forces are not publishing stop and search data, contradicting Home Office transparency initiatives.
-             </p>
-           </div>
+                       <div class="mb-3 p-3 bg-red-100 rounded-lg">
+              <p class="text-sm text-red-800">
+                These forces are not publishing stop and search data, contradicting Home Office transparency initiatives.
+              </p>
+            </div>
            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
              <div 
                v-for="force in forcesWithTransparencyIssues" 
@@ -153,39 +155,10 @@
                  </div>
                </div>
              </div>
-           </div>
-         </div>
-
-         <!-- Forces with No Data (but not transparency issues) -->
-         <div v-if="forcesWithNoData.length > 0" class="bg-gray-50 rounded-lg p-4">
-           <h3 class="text-lg font-semibold mb-4 text-gray-700 flex items-center">
-             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-             </svg>
-             Forces with Limited/No Data ({{ forcesWithNoData.length }})
-           </h3>
-           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-             <div 
-               v-for="force in forcesWithNoData" 
-               :key="force.id"
-               class="bg-white p-3 rounded-lg border-l-4 border-gray-400"
-             >
-               <div class="flex items-center justify-between">
-                 <div>
-                   <div class="font-medium text-sm">{{ force.name }}</div>
-                   <div class="text-xs text-gray-500">
-                     {{ force.latestMonth || 'No data available' }}
-                   </div>
-                 </div>
-                 <div class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
-                   No Data
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-
+          </div>
+        </div>
+      </div>
+      
       <!-- Call to Action -->
       <div class="text-center bg-primary/5 rounded-lg p-6">
         <h3 class="text-lg font-semibold mb-2">Explore Detailed Data</h3>
@@ -256,9 +229,7 @@ const forcesWithTransparencyIssues = computed(() =>
   forcesList.value.filter(force => force.hasTransparencyIssues === true)
 )
 
-const forcesWithNoData = computed(() => 
-  forcesList.value.filter(force => force.status === 'none' && !force.hasTransparencyIssues)
-)
+
 
 // Force coordinates (approximate centers of UK police force areas)
 const forceCoordinates: Record<string, [number, number]> = {
@@ -334,7 +305,10 @@ const loadData = async () => {
       if (process.client) {
         console.log('🖥️ Client side, initializing map...')
         await nextTick()
-        initializeMap()
+        // Add a small delay to ensure DOM is fully rendered
+        setTimeout(() => {
+          initializeMap()
+        }, 100)
       }
     } else {
       console.log('❌ Data load failed:', response.error)
@@ -352,13 +326,30 @@ const loadData = async () => {
 // Initialize the map
 const initializeMap = async () => {
   console.log('🗺️ Initializing map...')
-  if (!mapContainer.value || !process.client) {
-    console.log('❌ Map container not found or not on client side')
+  console.log('Map container:', mapContainer.value)
+  console.log('Process client:', process.client)
+  console.log('Forces list length:', forcesList.value.length)
+  
+  // Wait for next tick to ensure DOM is ready
+  await nextTick()
+  
+  if (!process.client) {
+    console.log('❌ Not on client side')
+    return
+  }
+  
+  if (!mapContainer.value) {
+    console.log('❌ Map container not found, retrying...')
+    // Try again after a short delay
+    setTimeout(() => {
+      initializeMap()
+    }, 200)
     return
   }
 
   try {
     const { $L } = useNuxtApp()
+    console.log('$L from Nuxt app:', $L)
     const L = $L as typeof import('leaflet')
     
     if (!L) {
@@ -368,35 +359,40 @@ const initializeMap = async () => {
     
     console.log('✅ Leaflet available, creating map...')
 
-    // Create map
-    map = L.map(mapContainer.value, {
-      zoomControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      touchZoom: false,
-      boxZoom: false,
-      keyboard: false
-    }).setView([54.5, -2], 6)
-
+              // Create map
+          map = L.map(mapContainer.value, {
+            zoomControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            touchZoom: false,
+            boxZoom: false,
+            keyboard: false
+          }).setView([54.5, -2], 5)
+    
     // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 10
     }).addTo(map)
-
+    
+    console.log('✅ Map created and tile layer added')
+    
     // Add force markers
-    forcesList.value.forEach(force => {
+    console.log('📍 Adding markers for', forcesList.value.length, 'forces')
+    forcesList.value.forEach((force, index) => {
       if (force.coordinates) {
         const color = force.status === 'active' ? '#10B981' : 
                      force.status === 'limited' ? '#F59E0B' : '#EF4444'
+        
+        console.log(`📍 Adding marker ${index + 1}: ${force.name} at ${force.coordinates}`)
         
         const marker = L.circleMarker(force.coordinates, {
           radius: 8,
           fillColor: color,
           color: '#fff',
-          weight: 2,
-          opacity: 1,
+      weight: 2,
+      opacity: 1,
           fillOpacity: 0.8
         })
         if (map) {
@@ -410,11 +406,11 @@ const initializeMap = async () => {
             <div class="text-gray-600">Status: ${force.status === 'active' ? 'Active' : force.status === 'limited' ? 'Limited Data' : 'No Data'}</div>
             <div class="text-gray-600">Latest: ${force.latestMonth || 'No data'}</div>
             ${force.totalIncidents > 0 ? `<div class="text-gray-600">Incidents: ${force.totalIncidents.toLocaleString()}</div>` : ''}
-          </div>
+        </div>
         `)
       }
     })
-
+    
   } catch (err) {
     console.error('Error initializing map:', err)
   }
@@ -448,5 +444,22 @@ onUnmounted(() => {
 
 .btn-outline {
   @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+}
+
+/* Ensure map container is properly styled */
+.map-container {
+  min-height: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Leaflet map styles */
+:global(.leaflet-container) {
+  height: 100%;
+  width: 100%;
+}
+
+:global(.leaflet-tile) {
+  filter: none;
 }
 </style>
