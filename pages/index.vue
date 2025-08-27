@@ -57,97 +57,6 @@
       <meta name="twitter:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics." />
       <meta name="twitter:image" content="https://policestopsearch.co.uk/images/puk-logo.png" />
       <link rel="canonical" href="https://policestopsearch.co.uk" />
-      
-      <!-- Structured Data -->
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "UK Police Stop and Search Data Portal",
-        "description": "Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.",
-        "url": "https://policestopsearch.co.uk",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://policestopsearch.co.uk/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      }
-      </script>
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "PoliceStopSearch.co.uk",
-        "url": "https://policestopsearch.co.uk",
-        "logo": "https://policestopsearch.co.uk/images/puk-logo.png",
-        "sameAs": [
-          "https://github.com/HairyDuck/PoliceStopSearch.co.uk"
-        ]
-      }
-      </script>
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Where does the data come from?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "All data is sourced directly from the official UK Police Data API (data.police.uk). This ensures that our information is accurate, up-to-date, and matches official records."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How often is the data updated?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The UK Police Data API updates its data monthly, typically with a two-month delay. For example, January's data becomes available in March. This delay allows for proper data validation and processing by police forces."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What time period does the data cover?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Our platform provides access to the last 24 months of stop and search data. The current month and previous month are typically not available due to the processing delay in the official police data system."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How accurate is the data?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The data comes directly from police records and undergoes validation before being published. However, some incidents might have incomplete information or approximate locations for privacy and operational reasons."
-            }
-          }
-        ]
-      }
-      </script>
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://policestopsearch.co.uk"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "UK Police Stop and Search Data Portal",
-            "item": "https://policestopsearch.co.uk"
-          }
-        ]
-      }
-      </script>
     </Head>
 
     <!-- Open Source Banner -->
@@ -381,6 +290,102 @@
 import { ref, onMounted } from 'vue'
 import { useNuxtApp } from 'nuxt/app'
 import type { Map as LeafletMap } from 'leaflet'
+
+// SEO and Structured Data
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "UK Police Stop and Search Data Portal",
+        "description": "Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.",
+        "url": "https://policestopsearch.co.uk",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://policestopsearch.co.uk/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "PoliceStopSearch.co.uk",
+        "url": "https://policestopsearch.co.uk",
+        "logo": "https://policestopsearch.co.uk/images/puk-logo.png",
+        "sameAs": [
+          "https://github.com/HairyDuck/PoliceStopSearch.co.uk"
+        ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Where does the data come from?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "All data is sourced directly from the official UK Police Data API (data.police.uk). This ensures that our information is accurate, up-to-date, and matches official records."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How often is the data updated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The UK Police Data API updates its data monthly, typically with a two-month delay. For example, January's data becomes available in March. This delay allows for proper data validation and processing by police forces."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What time period does the data cover?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our platform provides access to the last 24 months of stop and search data. The current month and previous month are typically not available due to the processing delay in the official police data system."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How accurate is the data?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The data comes directly from police records and undergoes validation before being published. However, some incidents might have incomplete information or approximate locations for privacy and operational reasons."
+            }
+          }
+        ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://policestopsearch.co.uk"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "UK Police Stop and Search Data Portal",
+            "item": "https://policestopsearch.co.uk"
+          }
+        ]
+      })
+    }
+  ]
+})
 
 // Remove statistics data
 const mapPreview = ref<HTMLElement | null>(null)
