@@ -96,6 +96,31 @@
                   College of Policing Guidelines
                 </a>
               </li>
+              <li>
+                <a href="https://www.ethnicity-facts-figures.service.gov.uk/crime-justice-and-the-law/policing/stop-and-search/latest" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  Ethnicity Facts & Figures
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-2">Research & Advocacy</h3>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="https://www.libertyhumanrights.org.uk/issue/stop-and-search/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  Liberty - Stop and Search
+                </a>
+              </li>
+              <li>
+                <a href="https://www.stop-watch.org/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  StopWatch
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ucl.ac.uk/jill-dando-institute/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                  UCL Jill Dando Institute
+                </a>
+              </li>
             </ul>
           </div>
           <div>

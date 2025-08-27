@@ -97,7 +97,7 @@
             See which forces are actively reporting data and identify areas with transparency issues.
           </p>
         </div>
-        <HomePageMap />
+        <HomePageMap :forceData="homepageData.forces" :summaryData="homepageData.summary" />
       </div>
     </section>
 
@@ -228,6 +228,152 @@
             </ul>
           </div>
         </div>
+              </div>
+      </section>
+
+    <!-- Research & Academic Resources -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-12">Research & Academic Resources</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Academic Research -->
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold mb-4">Academic Research</h3>
+            <ul class="space-y-4">
+              <li>
+                <a 
+                  href="https://www.ucl.ac.uk/jill-dando-institute/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  UCL Jill Dando Institute
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.lse.ac.uk/research/research-for-the-world/society/stop-and-search"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                  LSE Research
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.ox.ac.uk/research/research-in-conversation/stop-and-search"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  Oxford Research
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Civil Rights Organizations -->
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold mb-4">Civil Rights & Advocacy</h3>
+            <ul class="space-y-4">
+              <li>
+                <a 
+                  href="https://www.libertyhumanrights.org.uk/issue/stop-and-search/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Liberty
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.stop-watch.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  StopWatch
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.raceequalityfoundation.org.uk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  Race Equality Foundation
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Data & Technology -->
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold mb-4">Data & Technology</h3>
+            <ul class="space-y-4">
+              <li>
+                <a 
+                  href="https://data.police.uk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                  </svg>
+                  UK Police Data Portal
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.openpolicing.stanford.edu/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                  Stanford Open Policing
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.themarshallproject.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-primary hover:text-primary-dark"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                  The Marshall Project
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -290,6 +436,49 @@
 import { ref, onMounted } from 'vue'
 import { useNuxtApp } from 'nuxt/app'
 import type { Map as LeafletMap } from 'leaflet'
+
+// Types for homepage data
+interface ForceData {
+  id: string
+  name: string
+  status: 'active' | 'limited' | 'none'
+  latestMonth: string | null
+  totalIncidents: number
+  coordinates?: [number, number]
+  hasTransparencyIssues?: boolean
+  logoUrl?: string
+}
+
+interface SummaryData {
+  totalForces: number
+  activeForces: number
+  limitedDataForces: number
+  noDataForces: number
+  transparencyIssues: number
+  latestMonth: string
+}
+
+// Server-side data fetching for SEO
+const { data: homepageData } = await useFetch<{
+  success: boolean
+  summary?: SummaryData
+  forces?: ForceData[]
+  error?: string
+}>('/api/homepage-map', {
+  server: true,
+  default: () => ({
+    success: false,
+    summary: {
+      totalForces: 0,
+      activeForces: 0,
+      limitedDataForces: 0,
+      noDataForces: 0,
+      transparencyIssues: 0,
+      latestMonth: 'Unknown'
+    },
+    forces: []
+  })
+})
 
 // SEO and Structured Data
 useHead({

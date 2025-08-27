@@ -91,6 +91,49 @@
               As an independent platform, we strive to present the data objectively and without bias. We encourage users to draw their own conclusions and engage in constructive discussions about police practices and their impact on communities.
             </p>
           </section>
+
+          <!-- Additional Resources -->
+          <section>
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="p-2 bg-primary bg-opacity-10 rounded-lg">
+                <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-900">Additional Resources</h2>
+            </div>
+            <div class="space-y-4">
+              <p class="text-lg text-gray-600 leading-relaxed">
+                For further research and understanding of police stop and search practices, we recommend exploring these authoritative sources:
+              </p>
+              <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <a href="https://www.libertyhumanrights.org.uk/issue/stop-and-search/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                    Liberty's Stop and Search Campaign
+                  </a>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <a href="https://www.stop-watch.org/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                    StopWatch - Independent Stop and Search Monitoring
+                  </a>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <a href="https://www.ucl.ac.uk/jill-dando-institute/" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark">
+                    UCL Jill Dando Institute of Security and Crime Science
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
         </div>
 
         <!-- Right Column -->

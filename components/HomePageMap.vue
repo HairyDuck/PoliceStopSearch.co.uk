@@ -1,25 +1,7 @@
 <template>
   <div class="bg-white rounded-lg shadow-sm p-6">
-    <!-- Loading State -->
-    <div v-if="isLoading" class="text-center py-12">
-      <div class="loading-spinner mx-auto mb-4"></div>
-      <p class="text-gray-600">Loading UK police forces overview...</p>
-    </div>
-    
-    <!-- Error State -->
-    <div v-else-if="error" class="text-center py-12">
-      <div class="text-red-500 mb-4">
-        <svg class="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
-      </div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">Unable to load data</h3>
-      <p class="text-gray-600 mb-4">{{ error }}</p>
-      <button @click="loadData" class="btn btn-primary">Try Again</button>
-    </div>
-    
     <!-- Data Display -->
-    <div v-else class="space-y-6">
+    <div class="space-y-6">
 
 
       <!-- Summary Statistics -->
@@ -45,6 +27,14 @@
       <!-- Map Container -->
       <div class="relative">
         <div ref="mapContainer" class="map-container h-[500px] w-full rounded-lg border border-gray-200 bg-gray-100"></div>
+        
+        <!-- Map loading indicator -->
+        <div v-if="!map" class="absolute inset-0 flex items-center justify-center bg-gray-100">
+          <div class="text-center">
+            <div class="loading-spinner mx-auto mb-2"></div>
+            <p class="text-gray-600">Loading interactive map...</p>
+          </div>
+        </div>
         
         <!-- Map Legend -->
         <div class="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 text-sm z-10">
@@ -199,7 +189,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed, watch } from 'vue'
 import { useNuxtApp } from 'nuxt/app'
 import type { Map as LeafletMap } from 'leaflet'
 
@@ -224,11 +214,29 @@ interface SummaryData {
   latestMonth: string
 }
 
+// Props
+interface Props {
+  forceData?: ForceData[]
+  summaryData?: SummaryData
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  forceData: () => [],
+  summaryData: () => ({
+    totalForces: 0,
+    activeForces: 0,
+    limitedDataForces: 0,
+    noDataForces: 0,
+    transparencyIssues: 0,
+    latestMonth: 'Unknown'
+  })
+})
+
 // State
-const isLoading = ref(true)
+const isLoading = ref(false)
 const error = ref<string | null>(null)
-const forcesList = ref<ForceData[]>([])
-const summary = ref<SummaryData>({
+const forcesList = ref<ForceData[]>(props.forceData || [])
+const summary = ref<SummaryData>(props.summaryData || {
   totalForces: 0,
   activeForces: 0,
   limitedDataForces: 0,
@@ -250,6 +258,18 @@ const forcesWithTransparencyIssues = computed(() =>
   forcesList.value.filter(force => force.hasTransparencyIssues === true)
 )
 
+// Watch for prop changes and update local state
+watch(() => props.forceData, (newForces) => {
+  if (newForces) {
+    forcesList.value = newForces
+  }
+}, { immediate: true })
+
+watch(() => props.summaryData, (newSummary) => {
+  if (newSummary) {
+    summary.value = newSummary
+  }
+}, { immediate: true })
 
 
 // Force coordinates (approximate centers of UK police force areas)
@@ -302,49 +322,15 @@ const forceCoordinates: Record<string, [number, number]> = {
   'wiltshire': [51.3498, -1.9941]
 }
 
-// Load data from APIs
-const loadData = async () => {
-  try {
-    isLoading.value = true
-    error.value = null
-
-    // Determine the correct API endpoint based on environment
-    const isDev = process.env.NODE_ENV === 'development'
-    const apiUrl = isDev ? '/api/homepage-map' : 'https://api.policestopsearch.co.uk/homepage-map.php'
-
-    // Use the server-side API for better SEO and to avoid CSP issues
-    const response = await $fetch<{
-      success: boolean
-      summary?: SummaryData
-      forces?: ForceData[]
-      error?: string
-    }>(apiUrl)
-    
-    if (response.success && response.summary && response.forces) {
-      console.log('✅ Data loaded successfully:', response.summary)
-      console.log('📊 Forces loaded:', response.forces.length)
-      forcesList.value = response.forces
-      summary.value = response.summary
-      
-      // Initialize map after data is loaded (client-side only)
-      if (process.client) {
-        console.log('🖥️ Client side, initializing map...')
-        await nextTick()
-        // Add a small delay to ensure DOM is fully rendered
-        setTimeout(() => {
-          initializeMap()
-        }, 100)
-      }
-    } else {
-      console.log('❌ Data load failed:', response.error)
-      error.value = response.error || 'Failed to load police force data. Please try again.'
-    }
-
-  } catch (err) {
-    console.error('Error loading home page map data:', err)
-    error.value = 'Failed to load police force data. Please try again.'
-  } finally {
-    isLoading.value = false
+// Initialize map when component mounts (client-side only)
+const initializeMapOnMount = async () => {
+  if (process.client && forcesList.value.length > 0) {
+    console.log('🖥️ Client side, initializing map...')
+    await nextTick()
+    // Add a small delay to ensure DOM is fully rendered
+    setTimeout(() => {
+      initializeMap()
+    }, 100)
   }
 }
 
@@ -443,7 +429,7 @@ const initializeMap = async () => {
 
 // Lifecycle
 onMounted(() => {
-  loadData()
+  initializeMapOnMount()
 })
 
 // Cleanup
