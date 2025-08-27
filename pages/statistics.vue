@@ -756,10 +756,10 @@ if (!statisticsData) {
       ethnicity: {},
       gender: {},
       age: {},
-      objects_of_search: {},
+      objectOfSearch: {},
       legislation: {},
-      by_hour: {},
-      by_day_of_week: {}
+      byHour: {},
+      byDay: {}
     }
   }
 }
