@@ -267,15 +267,16 @@ foreach ($forcesData as $forceId => $forceInfo) {
         }
     }
     
-    $forces[] = [
-        'id' => $forceId,
-        'name' => $forceInfo['name'],
-        'status' => $status,
-        'latestMonth' => $latestMonthForForce,
-        'totalIncidents' => $totalIncidents,
-        'coordinates' => $coordinates,
-        'hasTransparencyIssues' => $hasTransparencyIssues
-    ];
+               $forces[] = [
+               'id' => $forceId,
+               'name' => $forceInfo['name'],
+               'status' => $status,
+               'latestMonth' => $latestMonthForForce,
+               'totalIncidents' => $totalIncidents,
+               'coordinates' => $coordinates,
+               'hasTransparencyIssues' => $hasTransparencyIssues,
+               'logoUrl' => $forceInfo['logo_url'] ?? null
+           ];
 }
 
 // Sort forces by status (active first, then limited, then none)

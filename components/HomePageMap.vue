@@ -42,7 +42,7 @@
         </div>
       </div>
       
-            <!-- Map Container -->
+      <!-- Map Container -->
       <div class="relative">
         <div ref="mapContainer" class="map-container h-[500px] w-full rounded-lg border border-gray-200 bg-gray-100"></div>
         
@@ -50,16 +50,16 @@
         <div class="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 text-sm z-10">
           <div class="font-medium mb-2">Data Status</div>
           <div class="space-y-1">
-            <div class="flex items-center">
-              <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
               <span>Active ({{ summary.activeForces }})</span>
-            </div>
-            <div class="flex items-center">
-              <div class="w-3 h-3 bg-yellow-500 rounded mr-2"></div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-yellow-500 rounded mr-2"></div>
               <span>Limited Data ({{ summary.limitedDataForces }})</span>
-            </div>
-            <div class="flex items-center">
-              <div class="w-3 h-3 bg-red-500 rounded mr-2"></div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-red-500 rounded mr-2"></div>
               <span>No Data ({{ summary.noDataForces }})</span>
             </div>
           </div>
@@ -92,29 +92,39 @@
              </svg>
              Forces with Recent Data ({{ summary.activeForces + summary.limitedDataForces }})
            </h3>
-           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-             <div 
-               v-for="force in forcesWithData" 
-               :key="force.id"
-               class="bg-white p-3 rounded-lg border-l-4 border-green-500"
-             >
-               <div class="flex items-center justify-between">
-                 <div>
-                   <div class="font-medium text-sm">{{ force.name }}</div>
-                   <div class="text-xs text-gray-500">
-                     Latest: {{ force.latestMonth || 'Unknown' }}
-                   </div>
-                   <div class="text-xs text-gray-500">
-                     {{ force.totalIncidents.toLocaleString() }} incidents
-                   </div>
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div
+                      v-for="force in forcesWithData"
+                      :key="force.id"
+                      class="bg-white p-3 rounded-lg border-l-4 border-green-500"
+                    >
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <div class="flex-shrink-0">
+                            <img 
+                              :src="force.logoUrl || `/images/forces/${force.id}.png`" 
+                              :alt="`${force.name} logo`"
+                              class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                              @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                            />
+                          </div>
+                          <div>
+                            <div class="font-medium text-sm">{{ force.name }}</div>
+                            <div class="text-xs text-gray-500">
+                              Latest: {{ force.latestMonth || 'Unknown' }}
+                            </div>
+                            <div class="text-xs text-gray-500">
+                              {{ force.totalIncidents.toLocaleString() }} incidents
+                            </div>
+                          </div>
               </div>
-                 <div class="text-xs px-2 py-1 rounded-full"
-                   :class="{
-                     'bg-green-100 text-green-800': force.status === 'active',
-                     'bg-yellow-100 text-yellow-800': force.status === 'limited'
-                   }"
-                 >
-                   {{ force.status === 'active' ? 'Active' : 'Limited' }}
+                        <div class="text-xs px-2 py-1 rounded-full"
+                          :class="{
+                            'bg-green-100 text-green-800': force.status === 'active',
+                            'bg-yellow-100 text-yellow-800': force.status === 'limited'
+                          }"
+                        >
+                          {{ force.status === 'active' ? 'Active' : 'Limited' }}
               </div>
             </div>
           </div>
@@ -134,28 +144,38 @@
                 These forces are not publishing stop and search data, contradicting Home Office transparency initiatives.
               </p>
             </div>
-           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-             <div 
-               v-for="force in forcesWithTransparencyIssues" 
-               :key="force.id"
-               class="bg-white p-3 rounded-lg border-l-4 border-red-500"
-             >
-               <div class="flex items-center justify-between">
-                 <div>
-                   <div class="font-medium text-sm">{{ force.name }}</div>
-                   <div class="text-xs text-red-600 font-medium">
-                     No data published
-                   </div>
-                   <div class="text-xs text-gray-500">
-                     Last known: {{ force.latestMonth || 'Unknown' }}
-                   </div>
-                 </div>
-                 <div class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">
-                   No Data
-                 </div>
-               </div>
-             </div>
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div
+                      v-for="force in forcesWithTransparencyIssues"
+                      :key="force.id"
+                      class="bg-white p-3 rounded-lg border-l-4 border-red-500"
+                    >
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <div class="flex-shrink-0">
+                            <img 
+                              :src="force.logoUrl || `/images/forces/${force.id}.png`" 
+                              :alt="`${force.name} logo`"
+                              class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                              @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                            />
+                          </div>
+                          <div>
+                            <div class="font-medium text-sm">{{ force.name }}</div>
+                            <div class="text-xs text-red-600 font-medium">
+                              No data published
+                            </div>
+                            <div class="text-xs text-gray-500">
+                              Last known: {{ force.latestMonth || 'Unknown' }}
           </div>
+        </div>
+      </div>
+                        <div class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">
+                          No Data
+          </div>
+          </div>
+                    </div>
+                  </div>
         </div>
       </div>
       
@@ -192,6 +212,7 @@ interface ForceData {
   totalIncidents: number
   coordinates?: [number, number]
   hasTransparencyIssues?: boolean
+  logoUrl?: string
 }
 
 interface SummaryData {
@@ -378,8 +399,8 @@ const initializeMap = async () => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 10
-    }).addTo(map)
-    
+      }).addTo(map)
+      
     console.log('✅ Map created and tile layer added')
     
     // Add force markers
@@ -393,7 +414,7 @@ const initializeMap = async () => {
         
         const marker = L.circleMarker(force.coordinates, {
           radius: 8,
-          fillColor: color,
+      fillColor: color,
           color: '#fff',
       weight: 2,
       opacity: 1,
