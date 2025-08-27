@@ -632,11 +632,11 @@
 import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
 import { format, parse } from 'date-fns'
 import { useStopSearchStore } from '../stores/stopsearch'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Chart } from 'chart.js/auto'
 import type { StopSearchIncident } from '../types'
 import forceLogos from '../police_forces.json'
-import { useHead } from 'nuxt/app'
+import { useHead, useRuntimeConfig } from 'nuxt/app'
 import { useAnalytics } from '../composables/useAnalytics'
 
 // Initialize head metadata
@@ -662,29 +662,41 @@ useHead({
   ]
 })
 
+// Get route parameters for force-specific pages
+const route = useRoute()
+const forceParam = route.query.force as string
+const monthParam = route.query.month as string || 'latest'
+
 // Server-side data fetching with fallback for static generation
 const config = useRuntimeConfig()
 const baseURL = config.public.siteUrl || 'http://localhost:3000'
 
 let statisticsData: any = null
 
-// Only try to fetch data on client side to avoid build issues
-if (process.client) {
+// Try to fetch data server-side for SEO, fallback to client-side
   try {
-    // Use PHP API for statistics data
-    const apiURL = process.env.NODE_ENV === 'development' ? baseURL : 'https://api.policestopsearch.co.uk'
-    statisticsData = await $fetch(`${apiURL}/cache.php`, {
-      query: { action: 'get', key: 'statistics' }
-    })
-    if (statisticsData.cached && statisticsData.data) {
-      statisticsData = statisticsData.data
-    } else {
-      // If not cached, use fallback data
-      throw new Error('Statistics data not available')
-    }
-  } catch (error) {
-    console.warn('Failed to fetch statistics data during build, using fallback:', error)
+    // Use new statistics cache API
+    const apiURL = 'https://api.policestopsearch.co.uk'
+    const query: any = { action: 'get' }
+  
+  if (forceParam) {
+    query.force = forceParam
   }
+  if (monthParam) {
+    query.month = monthParam
+  }
+  
+  statisticsData = await $fetch(`${apiURL}/statistics-cache.php`, { query })
+  
+  if (statisticsData.cached && statisticsData.data) {
+    statisticsData = statisticsData.data
+  } else if (statisticsData.data) {
+    statisticsData = statisticsData.data
+  } else {
+    throw new Error('Statistics data not available')
+  }
+} catch (error) {
+  console.warn('Failed to fetch statistics data, using fallback:', error)
 }
 
 // Use fallback data for static generation
@@ -733,42 +745,42 @@ if (!statisticsData) {
       { id: 'west-yorkshire', name: 'West Yorkshire Police' },
       { id: 'wiltshire', name: 'Wiltshire Police' }
     ],
-    statistics: {
-      totalSearches: 0,
-      arrests: 0,
-      noFurtherAction: 0,
+    // New API structure
+    total_incidents: 0,
+    total_arrests: 0,
+    total_no_further_action: 0,
+    forces_analyzed: 0,
+    month: monthParam,
+    overall_breakdowns: {
       outcomes: {},
-      ethnicityBreakdown: {},
-      ethnicityOutcomes: {},
-      objectsOfSearch: {},
-      genderBreakdown: {},
-      ageBreakdown: {},
-      mostCommonObject: 'None',
-      mostCommonObjectCount: 0,
-      latestMonth: '2025-01',
-      forcesAnalyzed: 0
+      ethnicity: {},
+      gender: {},
+      age: {},
+      objects_of_search: {},
+      legislation: {},
+      by_hour: {},
+      by_day_of_week: {}
     }
   }
 }
 
 // State
 const store = useStopSearchStore()
-const route = useRoute()
 const selectedForceIds = ref<string[]>([])
 const selectAllForces = ref(false)
 const selectedMonth = ref<string>('latest')
 const forces = ref((statisticsData as any)?.forces || [] as { id: string; name: string }[])
 const isLoading = ref(false)
-const statistics = ref((statisticsData as any)?.statistics || {
-  totalSearches: 0,
-  arrests: 0,
-  noFurtherAction: 0,
-  outcomes: {} as Record<string, number>,
-  ethnicityBreakdown: {} as Record<string, number>,
+const statistics = ref({
+  totalSearches: (statisticsData as any)?.total_incidents || 0,
+  arrests: (statisticsData as any)?.total_arrests || 0,
+  noFurtherAction: (statisticsData as any)?.total_no_further_action || 0,
+  outcomes: (statisticsData as any)?.overall_breakdowns?.outcomes || {} as Record<string, number>,
+  ethnicityBreakdown: (statisticsData as any)?.overall_breakdowns?.ethnicity || {} as Record<string, number>,
   ethnicityOutcomes: {} as Record<string, { arrests: number, noAction: number }>,
-  objectsOfSearch: {} as Record<string, number>,
-  genderBreakdown: {} as Record<string, number>,
-  ageBreakdown: {} as Record<string, number>,
+  objectsOfSearch: (statisticsData as any)?.overall_breakdowns?.objects_of_search || {} as Record<string, number>,
+  genderBreakdown: (statisticsData as any)?.overall_breakdowns?.gender || {} as Record<string, number>,
+  ageBreakdown: (statisticsData as any)?.overall_breakdowns?.age || {} as Record<string, number>,
   mostCommonObject: 'None',
   mostCommonObjectCount: 0
 })
@@ -829,6 +841,15 @@ const initializeFromRoute = () => {
     if (force) {
       selectedForceIds.value = [forceParam]
       selectAllForces.value = false
+      
+      // Auto-load statistics for the selected force
+      if (statisticsData && statisticsData.total_incidents > 0) {
+        // Data already loaded server-side
+        console.log('✅ Using server-side rendered statistics data')
+      } else {
+        // Load data client-side
+        loadStatistics()
+      }
     }
   }
 }
@@ -1148,142 +1169,154 @@ const loadStatistics = async () => {
     analytics.trackFilterUse('forces', selectedForceIds.value.join(','))
     analytics.trackFilterUse('month', selectedMonth.value)
 
-    // Reset statistics and key findings
-    statistics.value = {
-      totalSearches: 0,
-      arrests: 0,
-      noFurtherAction: 0,
-      outcomes: {},
-      ethnicityBreakdown: {},
-      ethnicityOutcomes: {},
-      objectsOfSearch: {},
-      genderBreakdown: {},
-      ageBreakdown: {},
-      mostCommonObject: 'None',
-      mostCommonObjectCount: 0
-    }
-
-    keyFindings.value = {
-      mostCommonReason: { value: 'None', count: 0 },
-      peakTime: { range: 'None', count: 0 },
-      mostActiveForce: { name: 'None', count: 0 },
-      totalForces: 0,
-      searchesPerForce: {},
-      arrestRate: { force: 'None', rate: 0 },
-      highestNoActionRate: { force: 'None', rate: 0 },
-      peakDay: { day: 'None', count: 0 },
-      mostCommonAge: { range: 'None', count: 0 }
-    }
-
-    // Reset aggregatedStats
-    aggregatedStats = {
-      totalSearches: 0,
-      arrests: 0,
-      noFurtherAction: 0,
-      outcomes: {},
-      ethnicityBreakdown: {},
-      ethnicityOutcomes: {},
-      objectsOfSearch: {},
-      genderBreakdown: {},
-      ageBreakdown: {},
-      mostCommonObject: 'None',
-      mostCommonObjectCount: 0
-    }
-
-    showProgressModal.value = true
-    resetProgress()
-    startTime.value = Date.now()
-
-    // Initialize progress tracking
-    progressStats.value.total = selectedForceIds.value.length
-    progressStats.value.forces = selectedForceIds.value.map(id => ({
-      id,
-      name: forces.value.find(f => f.id === id)?.name || 'Unknown Force',
-      status: 'pending',
-      error: null,
-      retryCount: 0
-    }))
-
-    const maxRetries = 2
-    const processForce = async (force: typeof progressStats.value.forces[0]) => {
-      if (isCancelled.value) return
-
-      try {
-        force.status = 'loading'
-        force.error = null
-        
-        await nextTick()
-        
-        if (currentForceElement.value && forcesList.value) {
-          currentForceElement.value.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-          })
+    // Use new statistics cache API
+    const apiURL = process.env.NODE_ENV === 'development' ? 'https://api.policestopsearch.co.uk' : 'https://api.policestopsearch.co.uk'
+    
+    if (selectedForceIds.value.length === 1) {
+      // Single force - get force-specific data
+      const query: any = { action: 'get', force: selectedForceIds.value[0] }
+      if (selectedMonth.value !== 'latest') {
+        query.month = selectedMonth.value
+      }
+      
+      const response = await $fetch(`${apiURL}/statistics-cache.php`, { query })
+      
+      if (response.data) {
+        const data = response.data
+        statistics.value = {
+          totalSearches: data.total_incidents || 0,
+          arrests: data.arrests || 0,
+          noFurtherAction: data.no_further_action || 0,
+          outcomes: data.outcomes || {},
+          ethnicityBreakdown: data.ethnicityBreakdown || {},
+          ethnicityOutcomes: {} as Record<string, { arrests: number, noAction: number }>,
+          objectsOfSearch: data.objectOfSearch || {},
+          genderBreakdown: data.genderBreakdown || {},
+          ageBreakdown: data.ageBreakdown || {},
+          mostCommonObject: 'None',
+          mostCommonObjectCount: 0
         }
-
-        const forceIncidents = await store.getStopsByForce(
-          force.id,
-          selectedMonth.value === 'latest' ? undefined : selectedMonth.value
+        
+        // Calculate most common object
+        const objects = data.objectOfSearch || {}
+        const mostCommon = Object.entries(objects).reduce((max, [object, count]) => 
+          (count as number) > max.count ? { object, count: count as number } : max, 
+          { object: 'None', count: 0 }
         )
-
-        // Process incidents immediately and clear them from memory
-        processIncidents(forceIncidents, force.name)
-        force.status = 'completed'
-        progressStats.value.completed++
-      } catch (error) {
-        console.error(`Error fetching data for force ${force.name}:`, error)
-        force.status = 'error'
-        force.error = error instanceof Error ? error.message : 'Unknown error'
-        progressStats.value.completed++
+        statistics.value.mostCommonObject = mostCommon.object
+        statistics.value.mostCommonObjectCount = mostCommon.count
         
-        if (force.retryCount < maxRetries) {
-          force.retryCount++
-          force.status = 'pending'
-          progressStats.value.completed--
-          await new Promise(resolve => setTimeout(resolve, 2000))
-          return processForce(force)
+        // Update key findings
+        keyFindings.value = {
+          mostCommonReason: { value: mostCommon.object, count: mostCommon.count },
+          peakTime: { range: 'None', count: 0 },
+          mostActiveForce: { name: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', count: data.total_incidents || 0 },
+          totalForces: 1,
+          searchesPerForce: { [selectedForceIds.value[0]]: data.total_incidents || 0 },
+          arrestRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total_incidents > 0 ? (data.arrests / data.total_incidents) * 100 : 0 },
+          highestNoActionRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total_incidents > 0 ? (data.no_further_action / data.total_incidents) * 100 : 0 },
+          peakDay: { day: 'None', count: 0 },
+          mostCommonAge: { range: 'None', count: 0 }
         }
+        
+        // Calculate peak day
+        const byDay = data.byDay || {}
+        const peakDay = Object.entries(byDay).reduce((max, [day, count]) => 
+          (count as number) > max.count ? { day, count: count as number } : max, 
+          { day: 'None', count: 0 }
+        )
+        keyFindings.value.peakDay = peakDay
+        
+        // Calculate most common age
+        const ages = data.ageBreakdown || {}
+        const mostCommonAge = Object.entries(ages).reduce((max, [age, count]) => 
+          (count as number) > max.count ? { range: age, count: count as number } : max, 
+          { range: 'None', count: 0 }
+        )
+        keyFindings.value.mostCommonAge = mostCommonAge
+      }
+    } else {
+      // Multiple forces - get overall data
+      const query: any = { action: 'get' }
+      if (selectedMonth.value !== 'latest') {
+        query.month = selectedMonth.value
+      }
+      
+      const response = await $fetch(`${apiURL}/statistics-cache.php`, { query })
+      
+      if (response.data) {
+        const data = response.data
+        statistics.value = {
+          totalSearches: data.total_incidents || 0,
+          arrests: data.total_arrests || 0,
+          noFurtherAction: data.total_no_further_action || 0,
+          outcomes: data.overall_breakdowns?.outcomes || {},
+          ethnicityBreakdown: data.overall_breakdowns?.ethnicity || {},
+          ethnicityOutcomes: {} as Record<string, { arrests: number, noAction: number }>,
+          objectsOfSearch: data.overall_breakdowns?.objectOfSearch || {},
+          genderBreakdown: data.overall_breakdowns?.gender || {},
+          ageBreakdown: data.overall_breakdowns?.age || {},
+          mostCommonObject: 'None',
+          mostCommonObjectCount: 0
+        }
+        
+        // Calculate most common object
+        const objects = data.overall_breakdowns?.objectOfSearch || {}
+        const mostCommon = Object.entries(objects).reduce((max, [object, count]) => 
+          (count as number) > max.count ? { object, count: count as number } : max, 
+          { object: 'None', count: 0 }
+        )
+        statistics.value.mostCommonObject = mostCommon.object
+        statistics.value.mostCommonObjectCount = mostCommon.count
+        
+        // Update key findings
+        keyFindings.value = {
+          mostCommonReason: { value: mostCommon.object, count: mostCommon.count },
+          peakTime: { range: 'None', count: 0 },
+          mostActiveForce: { name: 'Multiple Forces', count: data.total_incidents || 0 },
+          totalForces: data.forces_analyzed || 0,
+          searchesPerForce: {},
+          arrestRate: { force: 'Overall', rate: data.total_incidents > 0 ? (data.total_arrests / data.total_incidents) * 100 : 0 },
+          highestNoActionRate: { force: 'Overall', rate: data.total_incidents > 0 ? (data.total_no_further_action / data.total_incidents) * 100 : 0 },
+          peakDay: { day: 'None', count: 0 },
+          mostCommonAge: { range: 'None', count: 0 }
+        }
+        
+        // Calculate peak day
+        const byDay = data.overall_breakdowns?.byDay || {}
+        const peakDay = Object.entries(byDay).reduce((max, [day, count]) => 
+          (count as number) > max.count ? { day, count: count as number } : max, 
+          { day: 'None', count: 0 }
+        )
+        keyFindings.value.peakDay = peakDay
+        
+        // Calculate most common age
+        const ages = data.overall_breakdowns?.age || {}
+        const mostCommonAge = Object.entries(ages).reduce((max, [age, count]) => 
+          (count as number) > max.count ? { range: age, count: count as number } : max, 
+          { range: 'None', count: 0 }
+        )
+        keyFindings.value.mostCommonAge = mostCommonAge
       }
     }
 
-    // Process forces sequentially
-    for (const force of progressStats.value.forces) {
-      if (isCancelled.value) break
-      await processForce(force)
-      await new Promise(resolve => setTimeout(resolve, 100))
-    }
-
-    if (!isCancelled.value) {
-      const failedForces = progressStats.value.forces.filter(f => f.status === 'error')
-      if (failedForces.length > 0) {
-        const summary = `Completed with ${failedForces.length} failed forces:\n` +
-          failedForces.map(f => `${f.name}: ${f.error}`).join('\n')
-        console.warn(summary)
-      }
-
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      showProgressModal.value = false
-    }
-
-    if (!isCancelled.value && aggregatedStats.totalSearches > 0) {
-      statistics.value = aggregatedStats
-      
-      // Track performance and data size
-      const perfEndTime = performance.now()
-      analytics.trackPerformanceMetric('statistics_load_time', perfEndTime - perfStartTime)
-      analytics.trackPerformanceMetric('total_incidents_analyzed', aggregatedStats.totalSearches)
-      
-      await nextTick()
-      await initializeCharts()
-    }
+    isLoading.value = false
+    showProgressModal.value = false
+    
+    const perfEndTime = performance.now()
+    analytics.trackPerformance('statistics', 'load_data', perfEndTime - perfStartTime)
+    
+        console.log('✅ Statistics loaded successfully')
   } catch (error) {
     console.error('Error loading statistics:', error)
     analytics.trackError('statistics', 'Failed to load statistics', error instanceof Error ? error.message : 'Unknown error')
     alert('An error occurred while loading statistics. Please try again.')
   } finally {
     isLoading.value = false
+    showProgressModal.value = false
   }
 }
+
 
 const initializeCharts = async () => {
   try {
@@ -1526,11 +1559,8 @@ onMounted(async () => {
     // Initialize selected forces from localStorage
     initializeSelectedForces()
     
-    // Check for force parameter in URL
-    const forceId = route.query.force as string
-    if (forceId) {
-      selectedForceIds.value = [forceId]
-    }
+    // Initialize from route parameters (for force-specific pages)
+    initializeFromRoute()
 
     // Data is already loaded server-side, initialize charts
     await nextTick()
