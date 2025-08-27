@@ -6,11 +6,11 @@ export default defineEventHandler(async (event) => {
     'avon-and-somerset', 'bedfordshire', 'cambridgeshire', 'cheshire', 'city-of-london',
     'cleveland', 'cumbria', 'derbyshire', 'devon-and-cornwall', 'dorset', 'durham',
     'dyfed-powys', 'essex', 'gloucestershire', 'greater-manchester', 'gwent', 'hampshire',
-    'hertfordshire', 'kent', 'lancashire', 'leicestershire', 'merseyside', 'metropolitan',
-    'norfolk', 'north-wales', 'north-yorkshire', 'northamptonshire', 'northumbria',
-    'nottinghamshire', 'south-wales', 'south-yorkshire', 'staffordshire', 'suffolk',
-    'surrey', 'sussex', 'thames-valley', 'warwickshire', 'west-mercia', 'west-midlands',
-    'west-yorkshire', 'wiltshire'
+    'hertfordshire', 'humberside', 'kent', 'lancashire', 'leicestershire', 'lincolnshire',
+    'merseyside', 'metropolitan', 'norfolk', 'north-wales', 'north-yorkshire', 'northamptonshire',
+    'northumbria', 'northern-ireland', 'nottinghamshire', 'police-scotland', 'psni',
+    'south-wales', 'south-yorkshire', 'staffordshire', 'suffolk', 'surrey', 'sussex',
+    'thames-valley', 'warwickshire', 'west-mercia', 'west-midlands', 'west-yorkshire', 'wiltshire'
   ]
   
   // Define static pages

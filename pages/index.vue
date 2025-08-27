@@ -1,5 +1,22 @@
 <template>
   <div>
+    <!-- Breadcrumbs -->
+    <nav class="bg-gray-50 py-3 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <ol class="flex items-center space-x-2 text-sm text-gray-600">
+          <li>
+            <a href="/" class="hover:text-primary">Home</a>
+          </li>
+          <li>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </li>
+          <li class="text-gray-900 font-medium">UK Police Stop and Search Data Portal</li>
+        </ol>
+      </div>
+    </nav>
+
     <!-- Hero Section -->
     <section class="bg-primary text-white py-16 -mt-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,15 +45,109 @@
     <!-- SEO Meta Tags -->
     <Head>
       <title>UK Police Stop and Search Data Portal | Interactive Maps & Statistics</title>
-      <meta name="description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics." />
-      <meta name="keywords" content="police data, stop and search, UK police, crime statistics, law enforcement data, police transparency" />
+      <meta name="description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />
+      <meta name="keywords" content="police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability" />
       <meta property="og:title" content="UK Police Stop and Search Data Portal" />
       <meta property="og:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />
       <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://policestopsearch.co.uk" />
+      <meta property="og:image" content="https://policestopsearch.co.uk/images/puk-logo.png" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="UK Police Stop and Search Data Portal" />
       <meta name="twitter:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics." />
+      <meta name="twitter:image" content="https://policestopsearch.co.uk/images/puk-logo.png" />
       <link rel="canonical" href="https://policestopsearch.co.uk" />
+      
+      <!-- Structured Data -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "UK Police Stop and Search Data Portal",
+        "description": "Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.",
+        "url": "https://policestopsearch.co.uk",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://policestopsearch.co.uk/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+      </script>
+      
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "PoliceStopSearch.co.uk",
+        "url": "https://policestopsearch.co.uk",
+        "logo": "https://policestopsearch.co.uk/images/puk-logo.png",
+        "sameAs": [
+          "https://github.com/HairyDuck/PoliceStopSearch.co.uk"
+        ]
+      }
+      </script>
+      
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Where does the data come from?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "All data is sourced directly from the official UK Police Data API (data.police.uk). This ensures that our information is accurate, up-to-date, and matches official records."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How often is the data updated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The UK Police Data API updates its data monthly, typically with a two-month delay. For example, January's data becomes available in March. This delay allows for proper data validation and processing by police forces."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What time period does the data cover?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our platform provides access to the last 24 months of stop and search data. The current month and previous month are typically not available due to the processing delay in the official police data system."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How accurate is the data?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The data comes directly from police records and undergoes validation before being published. However, some incidents might have incomplete information or approximate locations for privacy and operational reasons."
+            }
+          }
+        ]
+      }
+      </script>
+      
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://policestopsearch.co.uk"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "UK Police Stop and Search Data Portal",
+            "item": "https://policestopsearch.co.uk"
+          }
+        ]
+      }
+      </script>
     </Head>
 
     <!-- Open Source Banner -->
