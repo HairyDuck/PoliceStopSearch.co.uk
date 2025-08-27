@@ -287,13 +287,17 @@ const loadData = async () => {
     isLoading.value = true
     error.value = null
 
+    // Determine the correct API endpoint based on environment
+    const isDev = process.env.NODE_ENV === 'development'
+    const apiUrl = isDev ? '/api/homepage-map' : 'https://api.policestopsearch.co.uk/homepage-map.php'
+
     // Use the server-side API for better SEO and to avoid CSP issues
     const response = await $fetch<{
       success: boolean
       summary?: SummaryData
       forces?: ForceData[]
       error?: string
-    }>('/api/homepage-map')
+    }>(apiUrl)
     
     if (response.success && response.summary && response.forces) {
       console.log('✅ Data loaded successfully:', response.summary)

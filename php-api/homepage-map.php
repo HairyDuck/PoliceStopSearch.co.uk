@@ -10,13 +10,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Cache file path
-$cacheFile = '../data/server-cache.json';
+// Cache file path - try multiple possible paths
+$possibleCachePaths = [
+    '../data/server-cache.json',
+    '../../data/server-cache.json',
+    dirname(__FILE__) . '/../data/server-cache.json',
+    dirname(__FILE__) . '/../../data/server-cache.json',
+    $_SERVER['DOCUMENT_ROOT'] . '/data/server-cache.json'
+];
 
-if (!file_exists($cacheFile)) {
+$cacheFile = null;
+foreach ($possibleCachePaths as $path) {
+    if (file_exists($path)) {
+        $cacheFile = $path;
+        break;
+    }
+}
+
+if (!$cacheFile) {
     echo json_encode([
         'success' => false,
-        'error' => 'No cache data available',
+        'error' => 'No cache data available. Tried paths: ' . implode(', ', $possibleCachePaths),
         'summary' => [
             'totalForces' => 0,
             'activeForces' => 0,
@@ -77,12 +91,27 @@ function formatMonth($monthString) {
     return $monthString;
 }
 
-// Load police forces data
-$policeForcesFile = '../police_forces.json';
-if (!file_exists($policeForcesFile)) {
+// Load police forces data - try multiple possible paths
+$possiblePaths = [
+    '../police_forces.json',
+    '../../police_forces.json',
+    dirname(__FILE__) . '/../police_forces.json',
+    dirname(__FILE__) . '/../../police_forces.json',
+    $_SERVER['DOCUMENT_ROOT'] . '/police_forces.json'
+];
+
+$policeForcesFile = null;
+foreach ($possiblePaths as $path) {
+    if (file_exists($path)) {
+        $policeForcesFile = $path;
+        break;
+    }
+}
+
+if (!$policeForcesFile) {
     echo json_encode([
         'success' => false,
-        'error' => 'Police forces data not found',
+        'error' => 'Police forces data not found. Tried paths: ' . implode(', ', $possiblePaths),
         'summary' => [
             'totalForces' => 0,
             'activeForces' => 0,
