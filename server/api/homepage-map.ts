@@ -1,25 +1,8 @@
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
 export default defineEventHandler(async (event) => {
   try {
-    // Load police forces data
-    const forcesResponse = await $fetch('https://policestopsearch.co.uk/police_forces.json')
-    
-    // Load transparency analysis
-    let transparencyResponse: {forcesWithIssues: string[], analysis: any} = { forcesWithIssues: [], analysis: {} }
-    try {
-      transparencyResponse = await $fetch<{forcesWithIssues: string[], analysis: any}>('https://api.policestopsearch.co.uk/transparency-analysis.php')
-    } catch (err) {
-      console.warn('Could not load transparency analysis, using fallback')
-    }
-    
-    // Load latest statistics for each force
-    const forcesWithData: any[] = []
-    const forcesWithIssues = new Set(transparencyResponse.forcesWithIssues || [])
-    
-    let latestMonth = 'Unknown'
-    let activeCount = 0
-    let limitedCount = 0
-    let noDataCount = 0
-
     // Force coordinates (approximate centers of UK police force areas)
     const forceCoordinates: Record<string, [number, number]> = {
       'avon-and-somerset': [51.4545, -2.5879],
@@ -70,6 +53,66 @@ export default defineEventHandler(async (event) => {
       'wiltshire': [51.3498, -1.9941]
     }
 
+    // Determine base URL for API calls
+    const isDev = process.env.NODE_ENV === 'development'
+    const baseURL = isDev ? 'http://localhost:8000' : 'https://api.policestopsearch.co.uk'
+    
+    // Load police forces data from local file
+    const policeForcesPath = join(process.cwd(), 'police_forces.json')
+    const forcesResponse = JSON.parse(readFileSync(policeForcesPath, 'utf8'))
+    
+    // Load transparency analysis
+    let transparencyResponse: {forcesWithIssues: string[], analysis: any} = { forcesWithIssues: [], analysis: {} }
+    try {
+      transparencyResponse = await $fetch<{forcesWithIssues: string[], analysis: any}>(`${baseURL}/transparency-analysis.php`)
+    } catch (err) {
+      console.warn('Could not load transparency analysis, using fallback')
+    }
+    
+    // If we're in development and the PHP server isn't running, provide fallback data
+    if (isDev && Object.keys(forcesResponse).length > 0) {
+      console.log('🔧 Development mode: Using fallback data for HomePageMap')
+      
+      // Create fallback data for development
+      const fallbackForces = Object.entries(forcesResponse).map(([forceId, forceInfo]: [string, any]) => {
+        const coordinates = forceCoordinates[forceId]
+        return {
+          id: forceId,
+          name: forceInfo.name,
+          status: 'active' as const,
+          latestMonth: '2024-12',
+          totalIncidents: Math.floor(Math.random() * 1000) + 100,
+          coordinates,
+          hasTransparencyIssues: false
+        }
+      })
+      
+      const summary = {
+        totalForces: fallbackForces.length,
+        activeForces: fallbackForces.length,
+        limitedDataForces: 0,
+        noDataForces: 0,
+        transparencyIssues: 0,
+        latestMonth: '2024-12'
+      }
+      
+      return {
+        success: true,
+        summary,
+        forces: fallbackForces,
+        timestamp: new Date().toISOString()
+      }
+    }
+    
+    // Load latest statistics for each force
+    const forcesWithData: any[] = []
+    const forcesWithIssues = new Set(transparencyResponse.forcesWithIssues || [])
+    
+    let latestMonth = 'Unknown'
+    let activeCount = 0
+    let limitedCount = 0
+    let noDataCount = 0
+
     // Process each force
     for (const [forceId, forceInfo] of Object.entries(forcesResponse as Record<string, any>)) {
       const forceName = forceInfo.name
@@ -86,7 +129,7 @@ export default defineEventHandler(async (event) => {
 
        try {
          // Use the correct API endpoint
-         const dataResponse = await $fetch(`https://api.policestopsearch.co.uk/force-data.php?force=${forceId}`)
+         const dataResponse = await $fetch(`${baseURL}/force-data.php?force=${forceId}`)
          if (dataResponse && (dataResponse as any).total > 0) {
            latestData = dataResponse
            totalIncidents = (dataResponse as any).total

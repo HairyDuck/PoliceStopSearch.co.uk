@@ -117,8 +117,12 @@ export const useStopSearchStore = defineStore('stopsearch', {
       
       // Prevent multiple initializations
       if (this._initialized) {
+        console.log('🔄 Store already initialized, skipping...')
         return
       }
+      
+      // Set flag immediately to prevent concurrent calls
+      this._initialized = true
       
       // Check server cache availability first
       await this.checkServerCacheAvailability()
@@ -318,6 +322,9 @@ export const useStopSearchStore = defineStore('stopsearch', {
         return
       }
       
+      // Set flag immediately to prevent concurrent calls
+      this.serverCacheChecked = true
+      
       console.log('🔍 Checking server cache availability...')
       
       try {
@@ -333,13 +340,10 @@ export const useStopSearchStore = defineStore('stopsearch', {
           console.log('❌ Server cache is not available')
         }
         
-        // Mark as checked to prevent future calls
-        this.serverCacheChecked = true
         console.log('✅ Server cache check completed')
       } catch (error) {
         console.log('❌ Server cache check failed:', error)
         this.serverCacheAvailable = false
-        this.serverCacheChecked = true
       }
     },
 

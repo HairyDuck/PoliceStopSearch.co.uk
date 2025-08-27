@@ -325,15 +325,19 @@ const loadData = async () => {
     }>('/api/homepage-map')
     
     if (response.success && response.summary && response.forces) {
+      console.log('✅ Data loaded successfully:', response.summary)
+      console.log('📊 Forces loaded:', response.forces.length)
       forcesList.value = response.forces
       summary.value = response.summary
       
       // Initialize map after data is loaded (client-side only)
       if (process.client) {
+        console.log('🖥️ Client side, initializing map...')
         await nextTick()
         initializeMap()
       }
     } else {
+      console.log('❌ Data load failed:', response.error)
       error.value = response.error || 'Failed to load police force data. Please try again.'
     }
 
@@ -347,11 +351,22 @@ const loadData = async () => {
 
 // Initialize the map
 const initializeMap = async () => {
-  if (!mapContainer.value || !process.client) return
+  console.log('🗺️ Initializing map...')
+  if (!mapContainer.value || !process.client) {
+    console.log('❌ Map container not found or not on client side')
+    return
+  }
 
   try {
     const { $L } = useNuxtApp()
     const L = $L as typeof import('leaflet')
+    
+    if (!L) {
+      console.log('❌ Leaflet not available')
+      return
+    }
+    
+    console.log('✅ Leaflet available, creating map...')
 
     // Create map
     map = L.map(mapContainer.value, {
