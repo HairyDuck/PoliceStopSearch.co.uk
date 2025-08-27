@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Accept');
 
 // Handle CORS preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -95,6 +95,8 @@ $rawData = json_decode($response, true);
 if (!is_array($rawData)) {
     $rawData = [];
 }
+
+
 
 // Process the data
 $processedData = [
@@ -217,6 +219,8 @@ $cache[$cacheKey] = [
 ];
 
 saveCache($cache);
+
+
 
 echo json_encode($processedData);
 ?>

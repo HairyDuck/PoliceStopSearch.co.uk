@@ -675,29 +675,89 @@ let statisticsData: any = null
 
 // Try to fetch data server-side for SEO, fallback to client-side
   try {
-    // Use new statistics cache API
+    // Use new statistics cache API with better error handling
     const apiURL = 'https://api.policestopsearch.co.uk'
     const query: any = { action: 'get' }
   
-  if (forceParam) {
-    query.force = forceParam
-  }
-  if (monthParam) {
-    query.month = monthParam
-  }
-  
-  statisticsData = await $fetch(`${apiURL}/statistics-cache.php`, { query })
-  
-  if (statisticsData.cached && statisticsData.data) {
-    statisticsData = statisticsData.data
-  } else if (statisticsData.data) {
-    statisticsData = statisticsData.data
-  } else {
-    throw new Error('Statistics data not available')
+    if (forceParam) {
+      query.force = forceParam
+    }
+    if (monthParam) {
+      query.month = monthParam
+    }
+    
+    // Add timeout and retry logic
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+    
+          try {
+        // Use force-data API directly to avoid CSP issues
+        if (forceParam) {
+          statisticsData = await $fetch(`${apiURL}/force-data.php?force=${forceParam}`, {
+            signal: controller.signal,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          
+          clearTimeout(timeoutId)
+          
+          if (statisticsData && (statisticsData as any).total > 0) {
+            // Transform the data to match expected structure
+            statisticsData = {
+              total_incidents: (statisticsData as any).total,
+              arrests: (statisticsData as any).arrests || 0,
+              no_further_action: (statisticsData as any).noAction || 0,
+              ethnicityBreakdown: (statisticsData as any).ethnicityBreakdown || {},
+              genderBreakdown: (statisticsData as any).genderBreakdown || {},
+              ageBreakdown: (statisticsData as any).ageBreakdown || {},
+              objectOfSearch: (statisticsData as any).objectOfSearch || {},
+              legislation: (statisticsData as any).legislation || {},
+              byHour: (statisticsData as any).byHour || {},
+              byDay: (statisticsData as any).byDay || {},
+              outcomes: (statisticsData as any).outcomes || {}
+            }
+            console.log('✅ Successfully loaded statistics data from force-data API')
+          } else {
+            throw new Error('No data in API response')
+          }
+        } else {
+          // For multiple forces or no specific force, use fallback
+          throw new Error('No specific force parameter')
+        }
+    } catch (fetchError) {
+      clearTimeout(timeoutId)
+      console.warn('API fetch failed, trying alternative approach:', fetchError)
+      
+      // Try alternative approach - use the existing force-data API
+      try {
+        if (forceParam) {
+          const forceData = await $fetch(`${apiURL}/force-data.php?force=${forceParam}`)
+          if (forceData && (forceData as any).total > 0) {
+            statisticsData = {
+              total_incidents: (forceData as any).total,
+              arrests: (forceData as any).arrests || 0,
+              no_further_action: (forceData as any).noAction || 0,
+              ethnicityBreakdown: (forceData as any).ethnicityBreakdown || {},
+              genderBreakdown: (forceData as any).genderBreakdown || {},
+              ageBreakdown: (forceData as any).ageBreakdown || {},
+              objectOfSearch: (forceData as any).objectOfSearch || {},
+              legislation: (forceData as any).legislation || {},
+              byHour: (forceData as any).byHour || {},
+              byDay: (forceData as any).byDay || {},
+              outcomes: (forceData as any).outcomes || {}
+            }
+            console.log('✅ Successfully loaded data from force-data API')
+          }
+        }
+      } catch (altError) {
+        console.warn('Alternative API also failed:', altError)
+        throw new Error('All API attempts failed')
+      }
   }
 } catch (error) {
-  console.warn('Failed to fetch statistics data, using fallback:', error)
-}
+    console.warn('Failed to fetch statistics data, using fallback:', error)
+  }
 
 // Use fallback data for static generation
 if (!statisticsData) {
@@ -769,7 +829,7 @@ const store = useStopSearchStore()
 const selectedForceIds = ref<string[]>([])
 const selectAllForces = ref(false)
 const selectedMonth = ref<string>('latest')
-const forces = ref((statisticsData as any)?.forces || [] as { id: string; name: string }[])
+const forces = ref([] as { id: string; name: string }[])
 const isLoading = ref(false)
 const statistics = ref({
   totalSearches: (statisticsData as any)?.total_incidents || 0,
@@ -947,23 +1007,23 @@ const selectedForceNames = computed(() => {
 // Add computed properties for sorted data
 const sortedEthnicityData = computed(() => {
   return Object.entries(statistics.value.ethnicityBreakdown)
-    .sort(([,a], [,b]) => b - a)
+    .sort(([,a], [,b]) => ((b as number) || 0) - ((a as number) || 0))
 })
 
 const sortedGenderData = computed(() => {
   return Object.entries(statistics.value.genderBreakdown)
-    .sort(([,a], [,b]) => b - a)
+    .sort(([,a], [,b]) => ((b as number) || 0) - ((a as number) || 0))
 })
 
 const sortedObjectsData = computed(() => {
   return Object.entries(statistics.value.objectsOfSearch)
-    .sort(([,a], [,b]) => b - a)
+    .sort(([,a], [,b]) => ((b as number) || 0) - ((a as number) || 0))
     .slice(0, 10)
 })
 
 const sortedOutcomesData = computed(() => {
   return Object.entries(statistics.value.outcomes)
-    .sort(([,a], [,b]) => b - a)
+    .sort(([,a], [,b]) => ((b as number) || 0) - ((a as number) || 0))
 })
 
 // Add computed property for force rankings
@@ -1169,34 +1229,33 @@ const loadStatistics = async () => {
     analytics.trackFilterUse('forces', selectedForceIds.value.join(','))
     analytics.trackFilterUse('month', selectedMonth.value)
 
-    // Use new statistics cache API
-    const apiURL = process.env.NODE_ENV === 'development' ? 'https://api.policestopsearch.co.uk' : 'https://api.policestopsearch.co.uk'
+    // Use new statistics cache API with robust error handling
+    const apiURL = 'https://api.policestopsearch.co.uk'
     
     if (selectedForceIds.value.length === 1) {
-      // Single force - get force-specific data
-      const query: any = { action: 'get', force: selectedForceIds.value[0] }
-      if (selectedMonth.value !== 'latest') {
-        query.month = selectedMonth.value
-      }
+      // Single force - get force-specific data directly from force-data API
+      const forceData = await $fetch(`${apiURL}/force-data.php?force=${selectedForceIds.value[0]}`, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
       
-      const response = await $fetch(`${apiURL}/statistics-cache.php`, { query })
-      
-      if (response.data) {
-        const data = response.data
-        statistics.value = {
-          totalSearches: data.total_incidents || 0,
+      if (forceData && (forceData as any).total > 0) {
+        const data = forceData as any
+    statistics.value = {
+          totalSearches: data.total || 0,
           arrests: data.arrests || 0,
-          noFurtherAction: data.no_further_action || 0,
+          noFurtherAction: data.noAction || 0,
           outcomes: data.outcomes || {},
           ethnicityBreakdown: data.ethnicityBreakdown || {},
           ethnicityOutcomes: {} as Record<string, { arrests: number, noAction: number }>,
           objectsOfSearch: data.objectOfSearch || {},
           genderBreakdown: data.genderBreakdown || {},
           ageBreakdown: data.ageBreakdown || {},
-          mostCommonObject: 'None',
-          mostCommonObjectCount: 0
-        }
-        
+      mostCommonObject: 'None',
+      mostCommonObjectCount: 0
+    }
+
         // Calculate most common object
         const objects = data.objectOfSearch || {}
         const mostCommon = Object.entries(objects).reduce((max, [object, count]) => 
@@ -1207,18 +1266,18 @@ const loadStatistics = async () => {
         statistics.value.mostCommonObjectCount = mostCommon.count
         
         // Update key findings
-        keyFindings.value = {
+    keyFindings.value = {
           mostCommonReason: { value: mostCommon.object, count: mostCommon.count },
-          peakTime: { range: 'None', count: 0 },
-          mostActiveForce: { name: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', count: data.total_incidents || 0 },
+      peakTime: { range: 'None', count: 0 },
+          mostActiveForce: { name: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', count: data.total || 0 },
           totalForces: 1,
-          searchesPerForce: { [selectedForceIds.value[0]]: data.total_incidents || 0 },
-          arrestRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total_incidents > 0 ? (data.arrests / data.total_incidents) * 100 : 0 },
-          highestNoActionRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total_incidents > 0 ? (data.no_further_action / data.total_incidents) * 100 : 0 },
-          peakDay: { day: 'None', count: 0 },
-          mostCommonAge: { range: 'None', count: 0 }
-        }
-        
+          searchesPerForce: { [selectedForceIds.value[0]]: data.total || 0 },
+          arrestRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total > 0 ? (data.arrests / data.total) * 100 : 0 },
+          highestNoActionRate: { force: forces.value.find(f => f.id === selectedForceIds.value[0])?.name || 'Unknown', rate: data.total > 0 ? (data.noAction / data.total) * 100 : 0 },
+      peakDay: { day: 'None', count: 0 },
+      mostCommonAge: { range: 'None', count: 0 }
+    }
+
         // Calculate peak day
         const byDay = data.byDay || {}
         const peakDay = Object.entries(byDay).reduce((max, [day, count]) => 
@@ -1236,16 +1295,74 @@ const loadStatistics = async () => {
         keyFindings.value.mostCommonAge = mostCommonAge
       }
     } else {
-      // Multiple forces - get overall data
-      const query: any = { action: 'get' }
-      if (selectedMonth.value !== 'latest') {
-        query.month = selectedMonth.value
-      }
+      // Multiple forces - aggregate data from individual force APIs
+      const forceDataPromises = selectedForceIds.value.map(async (forceId) => {
+        try {
+          const forceData = await $fetch(`${apiURL}/force-data.php?force=${forceId}`, {
+            headers: {
+              'Accept': 'application/json'
+            }
+          }) as any
+          return forceData
+        } catch (error) {
+          console.warn(`Failed to fetch data for ${forceId}:`, error)
+          return null
+        }
+      })
       
-      const response = await $fetch(`${apiURL}/statistics-cache.php`, { query })
+      const forceDataResults = await Promise.all(forceDataPromises)
+      const validForceData = forceDataResults.filter(data => data && data.total > 0)
       
-      if (response.data) {
-        const data = response.data
+      if (validForceData.length > 0) {
+        // Aggregate the data
+        const aggregatedData = {
+          total_incidents: validForceData.reduce((sum, data) => sum + (data.total || 0), 0),
+          total_arrests: validForceData.reduce((sum, data) => sum + (data.arrests || 0), 0),
+          total_no_further_action: validForceData.reduce((sum, data) => sum + (data.noAction || 0), 0),
+          forces_analyzed: validForceData.length,
+          overall_breakdowns: {
+      outcomes: {},
+            ethnicity: {},
+            gender: {},
+            age: {},
+            objectOfSearch: {},
+            legislation: {},
+            byHour: {},
+            byDay: {}
+          }
+        }
+        
+        // Aggregate breakdowns
+        validForceData.forEach(data => {
+          // Aggregate outcomes
+          Object.entries(data.outcomes || {}).forEach(([outcome, count]) => {
+            aggregatedData.overall_breakdowns.outcomes[outcome] = (aggregatedData.overall_breakdowns.outcomes[outcome] || 0) + (count as number)
+          })
+          
+          // Aggregate ethnicity
+          Object.entries(data.ethnicityBreakdown || {}).forEach(([ethnicity, count]) => {
+            aggregatedData.overall_breakdowns.ethnicity[ethnicity] = (aggregatedData.overall_breakdowns.ethnicity[ethnicity] || 0) + (count as number)
+          })
+          
+          // Aggregate other breakdowns similarly
+          Object.entries(data.genderBreakdown || {}).forEach(([gender, count]) => {
+            aggregatedData.overall_breakdowns.gender[gender] = (aggregatedData.overall_breakdowns.gender[gender] || 0) + (count as number)
+          })
+          
+          Object.entries(data.ageBreakdown || {}).forEach(([age, count]) => {
+            aggregatedData.overall_breakdowns.age[age] = (aggregatedData.overall_breakdowns.age[age] || 0) + (count as number)
+          })
+          
+          Object.entries(data.objectOfSearch || {}).forEach(([object, count]) => {
+            aggregatedData.overall_breakdowns.objectOfSearch[object] = (aggregatedData.overall_breakdowns.objectOfSearch[object] || 0) + (count as number)
+          })
+          
+          Object.entries(data.byDay || {}).forEach(([day, count]) => {
+            aggregatedData.overall_breakdowns.byDay[day] = (aggregatedData.overall_breakdowns.byDay[day] || 0) + (count as number)
+          })
+        })
+        
+        const data = aggregatedData
         statistics.value = {
           totalSearches: data.total_incidents || 0,
           arrests: data.total_arrests || 0,
@@ -1301,11 +1418,11 @@ const loadStatistics = async () => {
     }
 
     isLoading.value = false
-    showProgressModal.value = false
-    
-    const perfEndTime = performance.now()
-    analytics.trackPerformance('statistics', 'load_data', perfEndTime - perfStartTime)
-    
+      showProgressModal.value = false
+
+      const perfEndTime = performance.now()
+      analytics.trackPerformanceMetric('statistics_load_time', perfEndTime - perfStartTime)
+      
         console.log('✅ Statistics loaded successfully')
   } catch (error) {
     console.error('Error loading statistics:', error)
@@ -1556,11 +1673,86 @@ const visibleKeyFindings = computed(() => {
 // Lifecycle
 onMounted(async () => {
   try {
+    // Load forces from store
+    if (store.forces.length === 0) {
+      console.log('🔄 Loading forces from store...')
+      await store.loadForces()
+    }
+    forces.value = store.forces
+    console.log('📋 Forces loaded:', forces.value.length, 'forces available')
+    
     // Initialize selected forces from localStorage
     initializeSelectedForces()
     
     // Initialize from route parameters (for force-specific pages)
     initializeFromRoute()
+
+    // Map server-side data to client-side state if available
+    if (statisticsData) {
+      console.log('📊 Mapping server-side data to client state:', statisticsData)
+      
+      // Calculate most common object from the data
+      const objectsOfSearch = (statisticsData as any)?.objectOfSearch || {}
+      const mostCommonObjectEntry = Object.entries(objectsOfSearch).reduce((max, [object, count]) => 
+        (count as number) > max.count ? { object, count: count as number } : max, 
+        { object: 'None', count: 0 }
+      )
+      
+      // Calculate no further action from outcomes data
+      const outcomes = (statisticsData as any)?.outcomes || {}
+      const noFurtherAction = outcomes['No further action'] || outcomes['No Further Action'] || 0
+      console.log('📊 Outcomes data:', outcomes)
+      console.log('📊 No Further Action calculated:', noFurtherAction)
+      
+      statistics.value = {
+        totalSearches: (statisticsData as any)?.total_incidents || 0,
+        arrests: (statisticsData as any)?.arrests || 0,
+        noFurtherAction: noFurtherAction,
+        outcomes: outcomes,
+        ethnicityBreakdown: (statisticsData as any)?.ethnicityBreakdown || {},
+        ethnicityOutcomes: {} as Record<string, { arrests: number, noAction: number }>,
+        objectsOfSearch: objectsOfSearch,
+        genderBreakdown: (statisticsData as any)?.genderBreakdown || {},
+        ageBreakdown: (statisticsData as any)?.ageBreakdown || {},
+        mostCommonObject: mostCommonObjectEntry.object,
+        mostCommonObjectCount: mostCommonObjectEntry.count
+      }
+      
+      // Update key findings if we have force-specific data
+      const forceParam = route.query.force as string
+      if (forceParam && (statisticsData as any)?.total_incidents) {
+        const data = statisticsData as any
+        // Calculate peak day from the data
+        const byDay = (statisticsData as any)?.byDay || {}
+        const peakDayEntry = Object.entries(byDay).reduce((max, [day, count]) => 
+          (count as number) > max.count ? { day, count: count as number } : max, 
+          { day: 'None', count: 0 }
+        )
+        
+        // Calculate most common age from the data
+        const ageBreakdown = (statisticsData as any)?.ageBreakdown || {}
+        const mostCommonAgeEntry = Object.entries(ageBreakdown).reduce((max, [age, count]) => 
+          (count as number) > max.count ? { range: age, count: count as number } : max, 
+          { range: 'None', count: 0 }
+        )
+        
+        keyFindings.value = {
+          mostCommonReason: { value: mostCommonObjectEntry.object, count: mostCommonObjectEntry.count },
+          peakTime: { range: 'None', count: 0 },
+          mostActiveForce: { name: forceParam, count: data.total_incidents || 0 },
+          totalForces: 1,
+          searchesPerForce: { [forceParam]: data.total_incidents || 0 },
+          arrestRate: { force: forceParam, rate: data.total_incidents > 0 ? (data.arrests / data.total_incidents) * 100 : 0 },
+          highestNoActionRate: { force: forceParam, rate: data.total_incidents > 0 ? (noFurtherAction / data.total_incidents) * 100 : 0 },
+          peakDay: { day: peakDayEntry.day, count: peakDayEntry.count },
+          mostCommonAge: { range: mostCommonAgeEntry.range, count: mostCommonAgeEntry.count }
+        }
+        
+        console.log('✅ Updated key findings with force data:', keyFindings.value)
+      }
+      
+      console.log('✅ Mapped server data to client state:', statistics.value)
+    }
 
     // Data is already loaded server-side, initialize charts
     await nextTick()
