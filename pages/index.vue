@@ -424,7 +424,7 @@ import type { Map as LeafletMap } from 'leaflet'
 interface ForceData {
   id: string
   name: string
-  status: 'active' | 'limited' | 'none'
+  status: 'active' | 'limited' | 'no_data'
   latestMonth: string | null
   totalIncidents: number
   coordinates?: [number, number]
