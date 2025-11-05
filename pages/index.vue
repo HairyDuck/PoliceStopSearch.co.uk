@@ -1,24 +1,7 @@
 <template>
   <div>
-    <!-- Breadcrumbs -->
-    <nav class="bg-gray-50 py-3 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-7xl mx-auto">
-        <ol class="flex items-center space-x-2 text-sm text-gray-600">
-          <li>
-            <a href="/" class="hover:text-primary">Home</a>
-          </li>
-          <li>
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </li>
-          <li class="text-gray-900 font-medium">UK Police Stop and Search Data Portal</li>
-        </ol>
-      </div>
-    </nav>
-
     <!-- Hero Section -->
-    <section class="bg-primary text-white py-16 -mt-8">
+    <section class="bg-primary text-white py-16 -mt-8 relative z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
           <h1 class="text-4xl md:text-5xl font-bold mb-6">
