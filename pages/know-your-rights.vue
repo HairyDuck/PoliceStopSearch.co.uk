@@ -362,7 +362,7 @@
                 <li>• Contact the force's Professional Standards Department</li>
                 <li>• Complain within 12 months of the incident</li>
               </ul>
-              <a href="https://www.police.uk/contact/" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-primary hover:text-primary-dark font-semibold">
+              <a href="https://www.police.uk/pu/contact-us" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-primary hover:text-primary-dark font-semibold">
                 Find Your Police Force →
               </a>
             </div>
