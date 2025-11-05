@@ -80,6 +80,116 @@
             See which forces are actively reporting data and identify areas with transparency issues.
           </p>
         </div>
+
+        <!-- Static Server-Side Rendered Summary Statistics -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <div class="text-2xl font-bold text-blue-600">{{ homepageData.summary?.totalForces || 0 }}</div>
+              <div class="text-sm text-blue-700">Total Forces</div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg">
+              <div class="text-2xl font-bold text-green-600">{{ homepageData.summary?.activeForces || 0 }}</div>
+              <div class="text-sm text-green-700">Active Forces</div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg">
+              <div class="text-2xl font-bold text-yellow-600">{{ homepageData.summary?.transparencyIssues || 0 }}</div>
+              <div class="text-sm text-yellow-700">Transparency Issues</div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg">
+              <div class="text-2xl font-bold text-purple-600">{{ homepageData.summary?.latestMonth || 'Unknown' }}</div>
+              <div class="text-sm text-purple-700">Latest Data Month</div>
+            </div>
+          </div>
+
+          <!-- Static Force Lists -->
+          <div class="space-y-6">
+            <!-- Forces with Data -->
+            <div v-if="homepageData.forces && homepageData.forces.filter(f => f.status === 'active' || f.status === 'limited').length > 0" class="bg-green-50 rounded-lg p-4">
+              <h3 class="text-lg font-semibold mb-4 text-green-800 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Forces with Recent Data ({{ homepageData.forces?.filter(f => f.status === 'active' || f.status === 'limited').length || 0 }})
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div
+                  v-for="force in homepageData.forces?.filter(f => f.status === 'active' || f.status === 'limited')"
+                  :key="force.id"
+                  class="bg-white p-3 rounded-lg border-l-4 border-green-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="flex-shrink-0">
+                        <img 
+                          :src="force.logoUrl || `/images/forces/${force.id}.png`" 
+                          :alt="`${force.name} logo`"
+                          class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                          @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                        />
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900">{{ force.name }}</div>
+                        <div class="text-xs text-gray-500">
+                          Latest: {{ force.latestMonth || 'Unknown' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-xs px-2 py-1 rounded-full"
+                      :class="{
+                        'bg-green-100 text-green-800': force.status === 'active',
+                        'bg-yellow-100 text-yellow-800': force.status === 'limited'
+                      }"
+                    >
+                      {{ force.status === 'active' ? 'Active' : 'Limited' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Forces with Transparency Issues -->
+            <div v-if="homepageData.forces && homepageData.forces.filter(f => f.status === 'no_data').length > 0" class="bg-red-50 rounded-lg p-4">
+              <h3 class="text-lg font-semibold mb-4 text-red-800 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                Forces with Limited/No Data ({{ homepageData.forces?.filter(f => f.status === 'no_data').length || 0 }})
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div
+                  v-for="force in homepageData.forces?.filter(f => f.status === 'no_data')"
+                  :key="force.id"
+                  class="bg-white p-3 rounded-lg border-l-4 border-red-500"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="flex-shrink-0">
+                        <img 
+                          :src="force.logoUrl || `/images/forces/${force.id}.png`" 
+                          :alt="`${force.name} logo`"
+                          class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                          @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                        />
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900">{{ force.name }}</div>
+                        <div class="text-xs text-gray-500">
+                          Last known: {{ force.latestMonth || 'Unknown' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">
+                      No Data
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Map Component -->
         <HomePageMap :forceData="homepageData.forces" :summaryData="homepageData.summary" />
       </div>
     </section>
