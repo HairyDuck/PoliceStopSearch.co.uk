@@ -35,6 +35,13 @@
             Police Forces
           </NuxtLink>
           <NuxtLink 
+            to="/know-your-rights" 
+            class="nav-link"
+            :class="{ 'active': $route.path === '/know-your-rights' }"
+          >
+            Know Your Rights
+          </NuxtLink>
+          <NuxtLink 
             to="/about" 
             class="nav-link"
             :class="{ 'active': $route.path === '/about' }"
