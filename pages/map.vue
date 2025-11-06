@@ -347,7 +347,7 @@
           </a>
           
           <a 
-            href="/statistics"
+            href="/analytics"
             class="flex items-center p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
           >
             <svg class="w-5 h-5 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

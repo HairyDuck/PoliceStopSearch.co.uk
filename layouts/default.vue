@@ -14,13 +14,6 @@
             Map
           </NuxtLink>
           <NuxtLink 
-            to="/statistics" 
-            class="nav-link"
-            :class="{ 'active': $route.path === '/statistics' }"
-          >
-            Statistics
-          </NuxtLink>
-          <NuxtLink 
             to="/analytics" 
             class="nav-link"
             :class="{ 'active': $route.path === '/analytics' }"

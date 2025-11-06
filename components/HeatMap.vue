@@ -306,18 +306,32 @@ const initializeMap = () => {
       map.remove()
     }
     
-    // Initialize map
-    map = L.map(heatMapContainer.value).setView([54.5, -2], 6)
-    
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map)
-    
-    // Update heat map with current data
-    updateHeatMap()
+    // Wait for container to be fully rendered
+    nextTick(() => {
+      if (!heatMapContainer.value) {
+        console.warn('HeatMap: Container not available after nextTick')
+        return
+      }
+      
+      // Initialize map
+      map = L.map(heatMapContainer.value, {
+        preferCanvas: true
+      }).setView([54.5, -2], 6)
+      
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map)
+      
+      // Wait a bit for map to render before updating heat map
+      setTimeout(() => {
+        updateHeatMap()
+      }, 100)
+    })
   }).catch(error => {
     console.error('Error loading Leaflet:', error)
+    isLoading.value = false
   })
 }
 

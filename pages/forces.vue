@@ -49,7 +49,7 @@
 
             <!-- Statistics Button -->
             <NuxtLink 
-              :to="{ path: '/statistics', query: { force: force.id }}"
+              :to="{ path: '/analytics', query: { force: force.id }}"
               class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
             >
               <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

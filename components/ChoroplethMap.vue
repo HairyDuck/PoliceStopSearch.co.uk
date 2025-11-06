@@ -547,18 +547,32 @@ const initializeMap = () => {
       map.remove()
     }
     
-    // Initialize map
-    map = L.map(choroplethContainer.value).setView([54.5, -2], 6)
-    
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map)
-    
-    // Update choropleth with current data
-    updateChoropleth()
+    // Wait for container to be fully rendered
+    nextTick(() => {
+      if (!choroplethContainer.value) {
+        console.warn('ChoroplethMap: Container not available after nextTick')
+        return
+      }
+      
+      // Initialize map
+      map = L.map(choroplethContainer.value, {
+        preferCanvas: true
+      }).setView([54.5, -2], 6)
+      
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map)
+      
+      // Wait a bit for map to render before updating choropleth
+      setTimeout(() => {
+        updateChoropleth()
+      }, 100)
+    })
   }).catch(error => {
     console.error('Error loading Leaflet:', error)
+    isLoading.value = false
   })
 }
 

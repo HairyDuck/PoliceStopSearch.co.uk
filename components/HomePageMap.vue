@@ -198,14 +198,14 @@
       <div class="text-center bg-primary/5 rounded-lg p-6">
         <h3 class="text-lg font-semibold mb-2">Explore Detailed Data</h3>
         <p class="text-gray-600 mb-4">
-          Click on any force to view detailed stop and search statistics and trends.
+          Click on any force to view detailed stop and search analytics and trends.
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <NuxtLink to="/map" class="btn btn-primary">
             Interactive Map
           </NuxtLink>
-          <NuxtLink to="/statistics" class="btn btn-outline">
-            View Statistics
+          <NuxtLink to="/analytics" class="btn btn-outline">
+            View Analytics
           </NuxtLink>
         </div>
       </div>
