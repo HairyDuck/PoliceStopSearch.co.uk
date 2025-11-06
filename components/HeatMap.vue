@@ -137,7 +137,7 @@
 
     <!-- Heat Map Container -->
     <div class="mt-6">
-      <div ref="heatMapContainer" class="w-full h-80 bg-gray-100 rounded-lg relative">
+      <div ref="heatMapContainer" class="w-full bg-gray-100 rounded-lg relative" style="height: 500px; min-height: 500px;">
         <div v-if="!hasData" class="absolute inset-0 flex items-center justify-center text-gray-500">
           <div class="text-center">
             <div class="text-4xl mb-2">🗺️</div>
