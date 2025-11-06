@@ -547,29 +547,41 @@ const initializeMap = () => {
       map.remove()
     }
     
-    // Wait for container to be fully rendered
-    nextTick(() => {
-      if (!choroplethContainer.value) {
-        console.warn('ChoroplethMap: Container not available after nextTick')
-        return
-      }
-      
-      // Initialize map
-      map = L.map(choroplethContainer.value, {
-        preferCanvas: true
-      }).setView([54.5, -2], 6)
-      
-      // Add tile layer
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 19
-      }).addTo(map)
-      
-      // Wait a bit for map to render before updating choropleth
-      setTimeout(() => {
-        updateChoropleth()
-      }, 100)
-    })
+      // Wait for container to be fully rendered
+      nextTick(() => {
+        if (!choroplethContainer.value) {
+          console.warn('ChoroplethMap: Container not available after nextTick')
+          return
+        }
+        
+        // Ensure container has dimensions
+        const container = choroplethContainer.value
+        if (container.offsetHeight === 0 || container.offsetWidth === 0) {
+          console.warn('ChoroplethMap: Container has no dimensions, waiting...')
+          setTimeout(() => initializeMap(), 200)
+          return
+        }
+        
+        // Initialize map
+        map = L.map(container, {
+          preferCanvas: true
+        }).setView([54.5, -2], 6)
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
+          maxZoom: 19
+        }).addTo(map)
+        
+        // Invalidate size to ensure map renders correctly
+        map.whenReady(() => {
+          map.invalidateSize()
+          // Wait a bit for map to fully render before updating choropleth
+          setTimeout(() => {
+            updateChoropleth()
+          }, 200)
+        })
+      })
   }).catch(error => {
     console.error('Error loading Leaflet:', error)
     isLoading.value = false
