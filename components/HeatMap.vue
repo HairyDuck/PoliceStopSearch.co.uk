@@ -353,6 +353,14 @@ const updateHeatMap = () => {
     return
   }
   
+  // Ensure map has valid dimensions before rendering
+  if (!heatMapContainer.value || heatMapContainer.value.offsetHeight === 0 || heatMapContainer.value.offsetWidth === 0) {
+    console.warn('HeatMap: Container has no dimensions, invalidating size and retrying...')
+    map.invalidateSize()
+    setTimeout(() => updateHeatMap(), 200)
+    return
+  }
+  
   console.log('HeatMap: Updating map with', props.incidents.length, 'incidents')
   console.log('HeatMap: Sample incidents:', props.incidents.slice(0, 3))
   isLoading.value = true
@@ -369,6 +377,9 @@ const updateHeatMap = () => {
   }
   
   hasData.value = true
+  
+  // Ensure map size is valid before rendering heat layer
+  map.invalidateSize()
   
   // Import heat map plugin
   import('leaflet.heat').then((heatPlugin) => {

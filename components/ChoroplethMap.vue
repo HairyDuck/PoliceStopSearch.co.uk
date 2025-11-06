@@ -591,6 +591,14 @@ const initializeMap = () => {
 const updateChoropleth = () => {
   if (!map || !props.data) return
   
+  // Ensure map has valid dimensions before rendering
+  if (!choroplethContainer.value || choroplethContainer.value.offsetHeight === 0 || choroplethContainer.value.offsetWidth === 0) {
+    console.warn('ChoroplethMap: Container has no dimensions, invalidating size and retrying...')
+    map.invalidateSize()
+    setTimeout(() => updateChoropleth(), 200)
+    return
+  }
+  
   console.log('ChoroplethMap: Updating with', props.data.length, 'data points')
   console.log('ChoroplethMap: Sample data:', props.data.slice(0, 2))
   
@@ -603,6 +611,9 @@ const updateChoropleth = () => {
   }
   
   hasData.value = true
+  
+  // Ensure map size is valid before rendering
+  map.invalidateSize()
   
   // Remove existing layer
   if (geoJsonLayer) {
