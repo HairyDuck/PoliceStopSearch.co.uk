@@ -108,13 +108,38 @@
                             </div>
                           </div>
               </div>
-                        <div class="text-xs px-2 py-1 rounded-full"
+                        <div 
+                          class="text-xs px-2 py-1 rounded-full relative group cursor-help"
                           :class="{
                             'bg-green-100 text-green-800': force.status === 'active',
                             'bg-yellow-100 text-yellow-800': force.status === 'limited'
                           }"
+                          :title="force.status === 'limited' && force.monthsWithData !== undefined && force.totalMonths !== undefined 
+                            ? `${force.monthsWithData}/${force.totalMonths} months of data available${force.totalIncidents < 100 ? ' (less than 100 total incidents)' : ''}` 
+                            : force.status === 'active' 
+                              ? 'Active: 11+ months of data and 100+ incidents' 
+                              : ''"
                         >
                           {{ force.status === 'active' ? 'Active' : 'Limited' }}
+                          <!-- Tooltip for Limited status -->
+                          <div 
+                            v-if="force.status === 'limited' && force.monthsWithData !== undefined && force.totalMonths !== undefined"
+                            class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 max-w-xs"
+                          >
+                            <div class="text-center">
+                              <div class="font-medium mb-1">Limited Data Status</div>
+                              <div>{{ force.monthsWithData }}/{{ force.totalMonths }} months of data available</div>
+                              <div v-if="force.totalIncidents < 100" class="mt-1 text-gray-300">
+                                Less than 100 total incidents
+                              </div>
+                              <div v-else-if="force.monthsWithData < 11" class="mt-1 text-gray-300">
+                                Less than 11 months of data
+                              </div>
+                            </div>
+                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                              <div class="border-4 border-transparent border-t-gray-900"></div>
+                            </div>
+                          </div>
               </div>
             </div>
           </div>
