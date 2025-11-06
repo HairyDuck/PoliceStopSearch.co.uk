@@ -3,7 +3,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Cache-Control: public, max-age=2592000'); // Cache for 30 days
+// Reduced cache time to allow updates to show faster
+header('Cache-Control: public, max-age=3600'); // Cache for 1 hour instead of 30 days
 
 // Handle CORS preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -228,12 +229,14 @@ foreach ($cache as $key => $entry) {
             
             $forceData[$forceId]['totalMonths']++;
             
+            // Check if data exists and has content
             if ($data && isset($data['total']) && $data['total'] > 0) {
                 $forceData[$forceId]['totalIncidents'] += $data['total'];
                 $forceData[$forceId]['monthsWithData']++;
                 
                 // Track latest month with data (skip 'latest' entries)
-                if ($month !== 'latest') {
+                if ($month !== 'latest' && preg_match('/^\d{4}-\d{2}$/', $month)) {
+                    // Only update if this month is newer (string comparison works for YYYY-MM format)
                     if (!$forceData[$forceId]['latestMonth'] || $month > $forceData[$forceId]['latestMonth']) {
                         $forceData[$forceId]['latestMonth'] = $month;
                     }
@@ -276,19 +279,23 @@ foreach ($forcesData as $forceId => $forceInfo) {
                $noDataCount++;
            } else if ($monthsWithData >= 11 && $forceStats['totalIncidents'] > 100) {
                $status = 'active';
-               // If latestMonth is null, try to find it from cache
+               // Always try to find latest month from cache to ensure we have the most recent
                $actualLatestMonth = $forceStats['latestMonth'];
-               if (!$actualLatestMonth && $forceStats['totalIncidents'] > 0) {
-                   $actualLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               // Double-check by searching cache directly
+               $cacheLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               if ($cacheLatestMonth && (!$actualLatestMonth || $cacheLatestMonth > $actualLatestMonth)) {
+                   $actualLatestMonth = $cacheLatestMonth;
                }
                $latestMonthForForce = formatMonth($actualLatestMonth);
                $activeCount++;
            } else if ($forceStats['totalIncidents'] > 0) {
                $status = 'limited';
-               // If latestMonth is null, try to find it from cache
+               // Always try to find latest month from cache to ensure we have the most recent
                $actualLatestMonth = $forceStats['latestMonth'];
-               if (!$actualLatestMonth) {
-                   $actualLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               // Double-check by searching cache directly
+               $cacheLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               if ($cacheLatestMonth && (!$actualLatestMonth || $cacheLatestMonth > $actualLatestMonth)) {
+                   $actualLatestMonth = $cacheLatestMonth;
                }
                $latestMonthForForce = formatMonth($actualLatestMonth);
                $limitedCount++;
@@ -342,10 +349,29 @@ $summary = [
     'latestMonth' => $latestMonth
 ];
 
+// Add cache file modification time to help with cache invalidation
+$cacheFileModTime = file_exists($cacheFile) ? filemtime($cacheFile) : null;
+
+// Debug: Check a specific force to verify latest month detection
+$debugForce = 'city-of-london';
+$debugLatest = null;
+if (isset($forceData[$debugForce])) {
+    $debugLatest = $forceData[$debugForce]['latestMonth'];
+    $debugCacheLatest = findLatestMonthFromCache($cache, $debugForce);
+}
+
 echo json_encode([
     'success' => true,
     'summary' => $summary,
     'forces' => $forces,
-    'timestamp' => date('c')
+    'timestamp' => date('c'),
+    'cacheFile' => $cacheFile,
+    'cacheFileModified' => $cacheFileModTime ? date('c', $cacheFileModTime) : null,
+    'cacheFileModifiedTimestamp' => $cacheFileModTime,
+    'debug' => [
+        'force' => $debugForce,
+        'latestMonthFromStats' => $debugLatest,
+        'latestMonthFromCache' => $debugCacheLatest ?? null
+    ]
 ]);
 ?>

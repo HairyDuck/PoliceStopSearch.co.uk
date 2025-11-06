@@ -1,12 +1,15 @@
 
 
 export default defineEventHandler(async (event) => {
+  // Set cache headers - shorter cache time to allow updates
+  setHeader(event, 'Cache-Control', 'public, max-age=3600') // 1 hour
+  
   try {
     // Determine base URL for API calls
     const isDev = process.env.NODE_ENV === 'development'
     const baseURL = isDev ? 'http://localhost:8000' : 'https://api.policestopsearch.co.uk'
     
-    // Fetch data from the PHP API endpoint
+    // Fetch data from the PHP API endpoint (with cache busting)
     const response = await $fetch<{
       success: boolean
       summary?: {
