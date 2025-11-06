@@ -93,6 +93,30 @@ function formatMonth($monthString) {
     return $monthString;
 }
 
+// Function to find the latest month with data for a force from cache
+function findLatestMonthFromCache($cache, $forceId) {
+    $latestMonth = null;
+    
+    foreach ($cache as $key => $entry) {
+        if (strpos($key, "aggregated:{$forceId}:") === 0) {
+            $parts = explode(':', $key);
+            if (count($parts) >= 3) {
+                $month = $parts[2];
+                $data = $entry['data'] ?? null;
+                
+                // Skip 'latest' entries and only consider entries with actual data
+                if ($month !== 'latest' && $data && isset($data['total']) && $data['total'] > 0) {
+                    if (!$latestMonth || $month > $latestMonth) {
+                        $latestMonth = $month;
+                    }
+                }
+            }
+        }
+    }
+    
+    return $latestMonth;
+}
+
 // Load police forces data - try multiple possible paths
 $possiblePaths = [
     '../police_forces.json',
