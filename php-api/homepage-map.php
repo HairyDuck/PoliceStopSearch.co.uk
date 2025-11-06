@@ -255,6 +255,7 @@ $forces = [];
 $activeCount = 0;
 $limitedCount = 0;
 $noDataCount = 0;
+$latestMonthRaw = null; // Keep in YYYY-MM format for comparison
 $latestMonth = 'Unknown';
 
 foreach ($forcesData as $forceId => $forceInfo) {
@@ -263,33 +264,49 @@ foreach ($forcesData as $forceId => $forceInfo) {
     $forceStats = $forceData[$forceId] ?? ['totalIncidents' => 0, 'monthsWithData' => 0, 'totalMonths' => 0, 'latestMonth' => null];
     
                // Determine status based on real cache data
-           $status = 'none';
+           $status = 'no_data';
            $latestMonthForForce = null;
            $totalIncidents = $forceStats['totalIncidents'] ?? 0;
            $monthsWithData = $forceStats['monthsWithData'] ?? 0;
 
            if ($hasTransparencyIssues) {
-               $status = 'none';
+               $status = 'no_data';
                $latestMonthForForce = null;
                $totalIncidents = 0;
                $noDataCount++;
            } else if ($monthsWithData >= 11 && $forceStats['totalIncidents'] > 100) {
                $status = 'active';
-               $latestMonthForForce = formatMonth($forceStats['latestMonth'] ?? 'latest');
+               // If latestMonth is null, try to find it from cache
+               $actualLatestMonth = $forceStats['latestMonth'];
+               if (!$actualLatestMonth && $forceStats['totalIncidents'] > 0) {
+                   $actualLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               }
+               $latestMonthForForce = formatMonth($actualLatestMonth);
                $activeCount++;
            } else if ($forceStats['totalIncidents'] > 0) {
                $status = 'limited';
-               $latestMonthForForce = formatMonth($forceStats['latestMonth'] ?? 'latest');
+               // If latestMonth is null, try to find it from cache
+               $actualLatestMonth = $forceStats['latestMonth'];
+               if (!$actualLatestMonth) {
+                   $actualLatestMonth = findLatestMonthFromCache($cache, $forceId);
+               }
+               $latestMonthForForce = formatMonth($actualLatestMonth);
                $limitedCount++;
            } else {
-               $status = 'none';
+               $status = 'no_data';
                $noDataCount++;
            }
     
     // Update latest month if we found more recent data
-    if ($forceStats['latestMonth'] && $forceStats['latestMonth'] !== 'latest') {
-        if ($latestMonth === 'Unknown' || $forceStats['latestMonth'] > $latestMonth) {
-            $latestMonth = formatMonth($forceStats['latestMonth']);
+    $forceLatestMonth = $forceStats['latestMonth'];
+    if (!$forceLatestMonth && ($forceStats['totalIncidents'] > 0 || $status === 'active' || $status === 'limited')) {
+        $forceLatestMonth = findLatestMonthFromCache($cache, $forceId);
+    }
+    if ($forceLatestMonth && $forceLatestMonth !== 'latest') {
+        // Compare in YYYY-MM format
+        if (!$latestMonthRaw || $forceLatestMonth > $latestMonthRaw) {
+            $latestMonthRaw = $forceLatestMonth;
+            $latestMonth = formatMonth($forceLatestMonth) ?? 'Unknown';
         }
     }
     
@@ -305,13 +322,17 @@ foreach ($forcesData as $forceId => $forceInfo) {
            ];
 }
 
-// Sort forces by status (active first, then limited, then none)
+// Sort forces by status (active first, then limited, then no_data)
 usort($forces, function($a, $b) {
-    $statusOrder = ['active' => 0, 'limited' => 1, 'none' => 2];
+    $statusOrder = ['active' => 0, 'limited' => 1, 'no_data' => 2];
     return $statusOrder[$a['status']] - $statusOrder[$b['status']];
 });
 
-// Create summary
+// Create summary - format the latest month if we have one
+if ($latestMonthRaw) {
+    $latestMonth = formatMonth($latestMonthRaw) ?? 'Unknown';
+}
+
 $summary = [
     'totalForces' => count($forces),
     'activeForces' => $activeCount,
