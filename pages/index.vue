@@ -429,6 +429,8 @@ interface ForceData {
   status: 'active' | 'limited' | 'no_data'
   latestMonth: string | null
   totalIncidents: number
+  monthsWithData?: number
+  totalMonths?: number
   coordinates?: [number, number]
   hasTransparencyIssues?: boolean
   logoUrl?: string
