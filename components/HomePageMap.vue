@@ -101,7 +101,7 @@
                           <div>
                             <div class="font-medium text-sm">{{ force.name }}</div>
                             <div class="text-xs text-gray-500">
-                              Latest: {{ force.latestMonth || 'Unknown' }}
+                              Latest: {{ force.latestMonth || 'No data available' }}
                             </div>
                             <div class="text-xs text-gray-500">
                               {{ force.totalIncidents.toLocaleString() }} incidents

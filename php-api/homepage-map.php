@@ -69,8 +69,9 @@ if (!$cache) {
 
 // Function to format month string
 function formatMonth($monthString) {
-    if ($monthString === 'latest' || $monthString === null) {
-        return 'Latest';
+    // Return null if we don't have a valid month string
+    if ($monthString === 'latest' || $monthString === null || $monthString === '') {
+        return null;
     }
     
     // Convert YYYY-MM to Month YYYY format
