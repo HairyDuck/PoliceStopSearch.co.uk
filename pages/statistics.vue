@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useRouter, useRoute, onMounted } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 
 // Redirect to analytics page
 const router = useRouter()

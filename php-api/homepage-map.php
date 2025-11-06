@@ -352,26 +352,12 @@ $summary = [
 // Add cache file modification time to help with cache invalidation
 $cacheFileModTime = file_exists($cacheFile) ? filemtime($cacheFile) : null;
 
-// Debug: Check a specific force to verify latest month detection
-$debugForce = 'city-of-london';
-$debugLatest = null;
-if (isset($forceData[$debugForce])) {
-    $debugLatest = $forceData[$debugForce]['latestMonth'];
-    $debugCacheLatest = findLatestMonthFromCache($cache, $debugForce);
-}
-
 echo json_encode([
     'success' => true,
     'summary' => $summary,
     'forces' => $forces,
     'timestamp' => date('c'),
-    'cacheFile' => $cacheFile,
     'cacheFileModified' => $cacheFileModTime ? date('c', $cacheFileModTime) : null,
-    'cacheFileModifiedTimestamp' => $cacheFileModTime,
-    'debug' => [
-        'force' => $debugForce,
-        'latestMonthFromStats' => $debugLatest,
-        'latestMonthFromCache' => $debugCacheLatest ?? null
-    ]
+    'cacheFileModifiedTimestamp' => $cacheFileModTime
 ]);
 ?>
