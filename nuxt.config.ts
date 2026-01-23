@@ -88,10 +88,6 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#ffffff' },
         { name: 'robots', content: 'index, follow' },
         { name: 'author', content: 'PoliceStopSearch.co.uk' },
-        // Cache-busting headers
-        { 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
-        { 'http-equiv': 'Pragma', content: 'no-cache' },
-        { 'http-equiv': 'Expires', content: '0' },
         { name: 'keywords', content: 'police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability' },
         
         // Open Graph
@@ -126,9 +122,23 @@ export default defineNuxtConfig({
         { rel: 'alternate', hreflang: 'en', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'en-GB', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'x-default', href: 'https://policestopsearch.co.uk' },
+        // Performance: Preconnect to external domains
+        { rel: 'preconnect', href: 'https://data.police.uk', crossorigin: 'anonymous' },
+        { rel: 'preconnect', href: 'https://api.policestopsearch.co.uk', crossorigin: 'anonymous' },
+        { rel: 'dns-prefetch', href: 'https://data.police.uk' },
+        { rel: 'dns-prefetch', href: 'https://api.policestopsearch.co.uk' },
+        { rel: 'dns-prefetch', href: 'https://unpkg.com' },
+        // Load Leaflet CSS (non-blocking)
         { 
           rel: 'stylesheet', 
-          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+          media: 'print',
+          onload: "this.media='all'"
+        },
+        { 
+          rel: 'preload', 
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+          as: 'style'
         }
       ],
       script: [
@@ -203,12 +213,30 @@ export default defineNuxtConfig({
     transpile: ['chart.js', 'vue-chartjs']
   },
 
+  // Experimental features for better performance
+  experimental: {
+    payloadExtraction: false, // Disable payload extraction for better performance
+    viewTransition: true // Enable view transitions for smoother navigation
+  },
+
+
   // Development tools
   devtools: { enabled: true },
 
   vite: {
     optimizeDeps: {
       include: ['leaflet', 'leaflet.markercluster']
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'leaflet': ['leaflet', 'leaflet.heat'],
+            'charts': ['chart.js', 'vue-chartjs'],
+            'vendor': ['vue', 'vue-router']
+          }
+        }
+      }
     }
   },
 

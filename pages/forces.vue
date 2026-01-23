@@ -26,6 +26,8 @@
                   :src="getForceLogoUrl(force.id)"
                   :alt="`${force.name} Badge`"
                   class="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                   @error="handleImageError($event)"
                 />
               </div>
@@ -46,10 +48,16 @@
             </NuxtLink>
           </div>
 
-          <!-- Loading State -->
-          <div v-if="isLoading && selectedForceId === force.id" class="py-4 text-center">
-            <div class="loading-spinner mx-auto mb-2"></div>
-            <p class="text-sm text-gray-600">Loading force details...</p>
+          <!-- Loading State with Skeleton -->
+          <div v-if="isLoading && selectedForceId === force.id" class="py-4 space-y-3">
+            <div class="animate-pulse">
+              <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+            <div class="text-center">
+              <div class="loading-spinner mx-auto mb-2"></div>
+              <p class="text-sm text-gray-600">Loading force details...</p>
+            </div>
           </div>
 
           <!-- Force Details -->
@@ -549,10 +557,13 @@ const sanitizeHtml = (html: string | null): string => {
 // SEO Meta Tags
 useHead({
   title: 'UK Police Forces | Stop and Search Data',
+  htmlAttrs: {
+    lang: 'en'
+  },
   meta: [
     {
       name: 'description',
-      content: 'Compare stop and search data across UK police forces.'
+      content: 'Complete directory of all 44 UK police forces with stop and search statistics. Compare forces, view transparency status, access force-specific data and contact information.'
     },
     {
       name: 'keywords',
@@ -587,6 +598,35 @@ useHead({
     {
       rel: 'canonical',
       href: 'https://policestopsearch.co.uk/forces'
+    }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'UK Police Forces - Stop and Search Data by Force',
+        description: 'Complete list of all 44 UK police forces with stop and search statistics. Compare forces, view transparency status, and access detailed force-specific data.',
+        url: 'https://policestopsearch.co.uk/forces',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Police Forces',
+              item: 'https://policestopsearch.co.uk/forces'
+            }
+          ]
+        }
+      })
     }
   ]
 })

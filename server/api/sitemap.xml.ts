@@ -42,17 +42,24 @@ export default defineEventHandler(async (event) => {
     { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: '2025-01-23' }
   ]
   
-  // Generate XML sitemap
+  // Generate XML sitemap with image namespace
   let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n'
-  sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+  sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
   
-  // Add static pages
+  // Add static pages with images
   staticPages.forEach(page => {
     sitemap += `  <url>\n`
     sitemap += `    <loc>${baseUrl}${page.url}</loc>\n`
     sitemap += `    <lastmod>${page.lastmod}</lastmod>\n`
     sitemap += `    <changefreq>${page.changefreq}</changefreq>\n`
     sitemap += `    <priority>${page.priority}</priority>\n`
+    // Add image for homepage
+    if (page.url === '/') {
+      sitemap += `    <image:image>\n`
+      sitemap += `      <image:loc>${baseUrl}/images/puk-logo.png</image:loc>\n`
+      sitemap += `      <image:title>UK Police Stop and Search Data Portal</image:title>\n`
+      sitemap += `    </image:image>\n`
+    }
     sitemap += `  </url>\n`
   })
   

@@ -158,6 +158,35 @@ useHead({
       rel: 'canonical',
       href: 'https://policestopsearch.co.uk/faq'
     }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        name: 'Frequently Asked Questions - UK Police Stop and Search Data',
+        description: 'Common questions about UK police stop and search data, how to use this platform, data sources, and accuracy.',
+        url: 'https://policestopsearch.co.uk/faq',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'FAQ',
+              item: 'https://policestopsearch.co.uk/faq'
+            }
+          ]
+        }
+      })
+    }
   ]
 })
 </script> 

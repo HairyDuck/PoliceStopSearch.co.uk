@@ -77,11 +77,15 @@
         ]" style="min-height: 400px;">
           <div ref="mapContainer" class="absolute inset-0 w-full h-full map-container bg-gray-100" style="min-height: 400px;"></div>
           
-          <!-- Map loading indicator -->
+          <!-- Map loading indicator with skeleton -->
           <div v-if="!map" class="absolute inset-0 flex items-center justify-center bg-gray-100">
             <div class="text-center">
               <div class="loading-spinner mx-auto mb-2"></div>
               <p class="text-gray-600">Loading map...</p>
+              <div class="mt-4 space-y-2 w-48 mx-auto">
+                <div class="h-2 bg-gray-200 rounded animate-pulse"></div>
+                <div class="h-2 bg-gray-200 rounded animate-pulse w-3/4 mx-auto"></div>
+              </div>
             </div>
           </div>
 
@@ -387,7 +391,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area. Access real-time police transparency data across all UK forces.'
+      content: 'Interactive map of UK police stop and search incidents. Filter by location, date range, ethnicity, gender, age, and outcomes. View detailed incident information and analyze patterns across all 44 UK police forces. Free access to official police data.'
     },
     {
       name: 'keywords',
@@ -403,7 +407,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area.'
+      content: 'Interactive map of UK police stop and search incidents. Filter by location, date range, ethnicity, gender, age, and outcomes. View detailed incident information and analyze patterns across all 44 UK police forces.'
     },
     {
       property: 'og:type',
@@ -427,13 +431,30 @@ useHead({
       children: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: 'Interactive Stop and Search Map',
-        description: 'Explore UK police stop and search data through our interactive map. Filter by location, date, and demographics to analyze police activity in your area.',
+        name: 'Interactive Stop and Search Map - UK Police Data',
+        description: 'Interactive map showing UK police stop and search incidents. Filter by location, date range, ethnicity, gender, age, and outcomes. View detailed incident information and analyze patterns across all UK police forces.',
         url: 'https://policestopsearch.co.uk/map',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Interactive Map',
+              item: 'https://policestopsearch.co.uk/map'
+            }
+          ]
+        },
         mainEntity: {
           '@type': 'Dataset',
           name: 'UK Police Stop and Search Data',
-          description: 'Comprehensive dataset of UK police stop and search incidents',
+          description: 'Comprehensive dataset of UK police stop and search incidents with location data',
           url: 'https://data.police.uk/api',
           provider: {
             '@type': 'Organization',

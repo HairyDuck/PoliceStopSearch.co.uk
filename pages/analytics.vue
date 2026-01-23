@@ -71,6 +71,8 @@
                   :src="forceLogos[force.id]?.logo_url || '/images/forces/default.png'" 
                   :alt="`${force.name} logo`"
                   class="w-6 h-6 sm:w-8 sm:h-8 object-contain mr-2 flex-shrink-0"
+                  loading="lazy"
+                  decoding="async"
                   @error="handleImageError"
                 >
                 <div class="min-w-0 flex-1">
@@ -107,35 +109,37 @@
       </div>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="isLoading" class="bg-white rounded-lg shadow p-6 sm:p-8 mb-8">
-      <div class="text-center mb-6">
-        <div class="loading-spinner mx-auto mb-4"></div>
-        <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Loading Analytics Data</h3>
-        <p class="text-sm sm:text-base text-gray-600">Processing {{ selectedForces.length }} force(s) across {{ getMonthsToFetch().length }} months</p>
+    <!-- Loading State with Skeleton -->
+    <div v-if="isLoading" class="space-y-6 mb-8">
+      <!-- Progress Card -->
+      <div class="bg-white rounded-lg shadow p-6 sm:p-8">
+        <div class="text-center mb-6">
+          <div class="loading-spinner mx-auto mb-4"></div>
+          <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Loading Analytics Data</h3>
+          <p class="text-sm sm:text-base text-gray-600">Processing {{ selectedForces.length }} force(s) across {{ getMonthsToFetch().length }} months</p>
         </div>
         
-      <!-- Progress Information -->
-      <div class="space-y-4">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-blue-800">Data Processing</span>
-            <span class="text-sm text-blue-600">{{ loadingProgress.current }}/{{ loadingProgress.total }}</span>
+        <!-- Progress Information -->
+        <div class="space-y-4">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-blue-800">Data Processing</span>
+              <span class="text-sm text-blue-600">{{ loadingProgress.current }}/{{ loadingProgress.total }}</span>
+            </div>
+            <div class="w-full bg-blue-200 rounded-full h-2">
+              <div 
+                class="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                :style="{ width: `${(loadingProgress.current / loadingProgress.total) * 100}%` }"
+              ></div>
+            </div>
+            <p class="text-xs text-blue-600 mt-2">{{ loadingProgress.currentForce }} - {{ formatMonth(loadingProgress.currentMonth) }}</p>
           </div>
-          <div class="w-full bg-blue-200 rounded-full h-2">
-            <div 
-              class="bg-blue-600 h-2 rounded-full transition-all duration-300" 
-              :style="{ width: `${(loadingProgress.current / loadingProgress.total) * 100}%` }"
-            ></div>
-          </div>
-          <p class="text-xs text-blue-600 mt-2">{{ loadingProgress.currentForce }} - {{ formatMonth(loadingProgress.currentMonth) }}</p>
-        </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div class="bg-gray-50 rounded-lg p-3">
-            <div class="text-lg font-bold text-gray-900">{{ analyticsData.length }}</div>
-            <div class="text-xs text-gray-600">Data Points</div>
-        </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="text-lg font-bold text-gray-900">{{ analyticsData.length }}</div>
+              <div class="text-xs text-gray-600">Data Points</div>
+            </div>
           <div class="bg-gray-50 rounded-lg p-3">
             <div class="text-lg font-bold text-gray-900">{{ totalIncidents.toLocaleString() }}</div>
             <div class="text-xs text-gray-600">Total Incidents</div>
@@ -341,7 +345,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling.'
+      content: 'Advanced analytics for UK police stop and search data. Compare forces, analyze trends, demographics, outcomes, and patterns. Free statistical analysis tools for all 44 UK police forces.'
     },
     {
       name: 'keywords',
@@ -353,7 +357,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling.'
+      content: 'Advanced analytics for UK police stop and search data. Compare forces, analyze trends, demographics, outcomes, and patterns. Free statistical analysis tools for all 44 UK police forces.'
     },
     {
       property: 'og:type',
@@ -364,6 +368,35 @@ useHead({
     {
       rel: 'canonical',
       href: 'https://policestopsearch.co.uk/analytics'
+    }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Stop and Search Analytics - UK Police Data Analysis',
+        description: 'Advanced analytics and statistical analysis for UK police stop and search data. Compare forces, analyze trends, demographics, and outcomes.',
+        url: 'https://policestopsearch.co.uk/analytics',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Analytics',
+              item: 'https://policestopsearch.co.uk/analytics'
+            }
+          ]
+        }
+      })
     }
   ]
 })

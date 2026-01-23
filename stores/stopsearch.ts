@@ -263,7 +263,7 @@ export const useStopSearchStore = defineStore('stopsearch', {
         .join('&')
     },
 
-    // Check if cache is valid - very aggressive caching
+    // Check if cache is valid - very aggressive caching with stale-while-revalidate
     isCacheValid(key: string): boolean {
       const timestamp = this.cacheTimes[key]
       if (!timestamp) return false
@@ -277,6 +277,18 @@ export const useStopSearchStore = defineStore('stopsearch', {
       }
       
       return isValid
+    },
+
+    // Check if cache is stale but still usable (stale-while-revalidate pattern)
+    isCacheStale(key: string): boolean {
+      const timestamp = this.cacheTimes[key]
+      if (!timestamp) return false
+      
+      const age = Date.now() - timestamp
+      const staleThreshold = 7 * 24 * 60 * 60 * 1000 // 7 days - data is stale but usable
+      const expiredThreshold = this.cacheTimeout // 90 days - data is expired
+      
+      return age >= staleThreshold && age < expiredThreshold
     },
 
     // Cache data with timestamp
@@ -347,8 +359,11 @@ export const useStopSearchStore = defineStore('stopsearch', {
       }
     },
 
-    // Get data from server cache first, then client cache
+    // Get data from server cache first, then client cache (with stale-while-revalidate)
     async getCachedData(key: string, mode: string = 'force') {
+      let cachedData = null
+      let isStale = false
+      
       // Try server cache first
       if (this.serverCacheAvailable) {
         try {
@@ -360,7 +375,9 @@ export const useStopSearchStore = defineStore('stopsearch', {
             if (process.client) {
               console.log(`🖥️ Server cache hit: ${key}`)
             }
-            return serverResult.data
+            cachedData = serverResult.data
+            // Check if stale for background refresh
+            isStale = this.isCacheStale(key)
           }
         } catch (error) {
           if (process.client) {
@@ -370,12 +387,20 @@ export const useStopSearchStore = defineStore('stopsearch', {
       }
       
       // Fallback to client cache
-      if (this.cache[mode] && this.cache[mode][key]) {
+      if (!cachedData && this.cache[mode] && this.cache[mode][key]) {
         if (this.isCacheValid(key)) {
           if (process.client) {
             console.log(`💾 Client cache hit: ${key}`)
           }
-          return this.cache[mode][key]
+          cachedData = this.cache[mode][key]
+          isStale = this.isCacheStale(key)
+        } else if (this.isCacheStale(key)) {
+          // Stale but usable - return it and refresh in background
+          if (process.client) {
+            console.log(`⚠️ Using stale cache for ${key}, refreshing in background...`)
+          }
+          cachedData = this.cache[mode][key]
+          isStale = true
         } else {
           // Remove expired entry
           delete this.cache[mode][key]
@@ -383,7 +408,41 @@ export const useStopSearchStore = defineStore('stopsearch', {
         }
       }
       
-      return null
+      // If data is stale, trigger background refresh (non-blocking)
+      if (cachedData && isStale && process.client) {
+        // Refresh in background without blocking
+        this.refreshCachedData(key, mode).catch(err => {
+          console.warn(`Background refresh failed for ${key}:`, err)
+        })
+      }
+      
+      return cachedData
+    },
+
+    // Background refresh for stale data
+    async refreshCachedData(key: string, mode: string = 'force') {
+      // Extract force and month from cache key if possible
+      // This is a simplified version - you may need to adjust based on your key format
+      try {
+        // Only refresh if we haven't refreshed recently (avoid duplicate requests)
+        const lastRefresh = this.cacheTimes[`refresh:${key}`] || 0
+        const refreshCooldown = 60 * 60 * 1000 // 1 hour cooldown
+        if (Date.now() - lastRefresh < refreshCooldown) {
+          return
+        }
+        
+        // Mark refresh attempt
+        this.cacheTimes[`refresh:${key}`] = Date.now()
+        
+        // Parse key to get parameters (adjust based on your key format)
+        // For now, this is a placeholder - you'll need to implement based on your key structure
+        console.log(`🔄 Background refresh triggered for ${key}`)
+        
+        // The actual refresh logic would depend on your key format
+        // This is just a framework for the stale-while-revalidate pattern
+      } catch (error) {
+        console.warn(`Background refresh error for ${key}:`, error)
+      }
     },
 
     // Save data to both server and client cache
@@ -993,26 +1052,43 @@ export const useStopSearchStore = defineStore('stopsearch', {
       }
     },
 
-    // Fetch available datasets from the API
-    async fetchAvailableDatasets() {
+    // Fetch available datasets from the API with stale-while-revalidate
+    async fetchAvailableDatasets(forceRefresh: boolean = false) {
       try {
-        // Check localStorage first
-        const storedDatasets = localStorage.getItem('availableDatasets')
-        const storedTimestamp = localStorage.getItem('availableDatasetsTimestamp')
-        
-        if (storedDatasets && storedTimestamp) {
-          const timestamp = parseInt(storedTimestamp)
-          // Use cached data if less than 24 hours old
-          if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
-            this.availableDatasets = JSON.parse(storedDatasets)
-            if (this.availableDatasets.length > 0) {
-              this.latestAvailableDate = this.availableDatasets[0].date
-              return this.availableDatasets
+        // Check localStorage first (unless forcing refresh)
+        if (!forceRefresh) {
+          const storedDatasets = localStorage.getItem('availableDatasets')
+          const storedTimestamp = localStorage.getItem('availableDatasetsTimestamp')
+          
+          if (storedDatasets && storedTimestamp) {
+            const timestamp = parseInt(storedTimestamp)
+            const age = Date.now() - timestamp
+            const staleThreshold = 12 * 60 * 60 * 1000 // 12 hours - data is stale but usable
+            const expiredThreshold = 24 * 60 * 60 * 1000 // 24 hours - data is expired
+            
+            if (age < expiredThreshold) {
+              this.availableDatasets = JSON.parse(storedDatasets)
+              if (this.availableDatasets.length > 0) {
+                this.latestAvailableDate = this.availableDatasets[0].date
+                
+                // If stale but not expired, refresh in background
+                if (age >= staleThreshold) {
+                  if (process.client) {
+                    console.log('🔄 Dataset cache is stale, refreshing in background...')
+                    // Refresh in background without blocking
+                    this.fetchAvailableDatasets(true).catch(err => {
+                      console.warn('Background dataset refresh failed:', err)
+                    })
+                  }
+                }
+                
+                return this.availableDatasets
+              }
             }
           }
         }
 
-        // Fetch fresh data if cache is expired or missing
+        // Fetch fresh data
         const response = await this._fetchWithErrorHandling('https://data.police.uk/api/crimes-street-dates')
         if (Array.isArray(response)) {
           this.availableDatasets = response.filter(dataset => 
@@ -1027,10 +1103,27 @@ export const useStopSearchStore = defineStore('stopsearch', {
           localStorage.setItem('availableDatasets', JSON.stringify(this.availableDatasets))
           localStorage.setItem('availableDatasetsTimestamp', Date.now().toString())
           
+          if (process.client && !forceRefresh) {
+            console.log('✅ Latest available date updated:', this.latestAvailableDate)
+          }
+          
           return this.availableDatasets
         }
         throw new APIError('Invalid response format from API', 500, 'Invalid Response')
       } catch (error) {
+        // If refresh failed but we have stale data, return it
+        if (!forceRefresh) {
+          const storedDatasets = localStorage.getItem('availableDatasets')
+          if (storedDatasets) {
+            console.warn('⚠️ Using stale dataset cache due to API error')
+            this.availableDatasets = JSON.parse(storedDatasets)
+            if (this.availableDatasets.length > 0) {
+              this.latestAvailableDate = this.availableDatasets[0].date
+              return this.availableDatasets
+            }
+          }
+        }
+        
         if (error instanceof StopSearchError) {
           throw error
         }

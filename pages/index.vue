@@ -8,13 +8,13 @@
             UK Police Stop and Search Data Portal
           </h1>
           <p class="text-xl mb-8">
-            Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.
+            Free access to UK police stop and search data from all 44 police forces. Explore interactive maps, detailed statistics, and analytics. Search by location, date, ethnicity, and outcomes. Data updated monthly from official police records.
           </p>
-          <div class="flex justify-center space-x-4">
-            <NuxtLink to="/map" class="btn btn-secondary">
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <NuxtLink to="/map" class="btn btn-secondary text-center">
               View Interactive Map
             </NuxtLink>
-            <NuxtLink to="/analytics" class="btn btn-outline">
+            <NuxtLink to="/analytics" class="btn btn-outline text-center">
               Advanced Analytics
             </NuxtLink>
           </div>
@@ -57,8 +57,9 @@
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold mb-4">UK Police Forces Overview</h2>
           <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Visualize the current state of police data transparency across all UK police forces. 
-            See which forces are actively reporting data and identify areas with transparency issues.
+            Visualize the current state of police data transparency across all 44 UK police forces. 
+            See which forces are actively reporting stop and search data and identify areas with transparency issues. 
+            Compare forces and access detailed statistics for each police force.
           </p>
         </div>
 
@@ -75,22 +76,22 @@
           <div class="bg-white p-6 rounded-lg shadow-sm">
             <div class="text-4xl mb-4">🗺️</div>
             <h3 class="text-xl font-semibold mb-4">Interactive Map</h3>
-            <p class="text-gray-600">
-              Explore stop and search incidents on an interactive map. Filter by location, date, and more.
+            <p class="text-gray-600 mb-4">
+              Explore stop and search incidents on an interactive map. Filter by location, date, ethnicity, gender, and outcomes. <NuxtLink to="/map" class="text-primary hover:underline">View the interactive map →</NuxtLink>
             </p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-sm">
             <div class="text-4xl mb-4">📊</div>
             <h3 class="text-xl font-semibold mb-4">Detailed Statistics</h3>
-            <p class="text-gray-600">
-              Access comprehensive statistics and trends about stop and search incidents across the UK.
+            <p class="text-gray-600 mb-4">
+              Access comprehensive statistics and trends about stop and search incidents across all 44 UK police forces. <NuxtLink to="/analytics" class="text-primary hover:underline">View analytics →</NuxtLink>
             </p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-sm">
             <div class="text-4xl mb-4">📱</div>
             <h3 class="text-xl font-semibold mb-4">Mobile Friendly</h3>
-            <p class="text-gray-600">
-              Access the data portal on any device with our responsive design.
+            <p class="text-gray-600 mb-4">
+              Access the data portal on any device with our responsive design. Works seamlessly on mobile, tablet, and desktop.
             </p>
           </div>
         </div>
@@ -346,9 +347,9 @@
     <!-- Call to Action -->
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-8">Start Exploring Now</h2>
-        <p class="text-xl mb-8 max-w-2xl mx-auto text-gray-600">
-          Discover insights about police stop and search practices in your area and across the UK.
+        <h2 class="text-3xl font-bold mb-4">Start Exploring UK Police Stop and Search Data</h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          Access comprehensive stop and search data from all UK police forces. Use our interactive tools to analyze patterns, compare forces, and understand police activity in your area.
         </p>
         <NuxtLink to="/map" class="btn btn-primary">
           View Interactive Map
@@ -402,6 +403,7 @@
 import { ref, onMounted } from 'vue'
 import { useNuxtApp } from 'nuxt/app'
 import type { Map as LeafletMap } from 'leaflet'
+import { useDataRefresh } from '@/composables/useDataRefresh'
 
 // Types for homepage data
 interface ForceData {
@@ -454,11 +456,11 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.'
+      content: 'Free access to UK police stop and search data from all 44 police forces. Interactive maps, statistics, and analytics. Search by location, date, ethnicity, and outcomes. Latest data updated monthly from official police records.'
     },
     {
       name: 'keywords',
-      content: 'police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability'
+      content: 'police stop and search, UK stop and search data, police statistics, crime data UK, stop and search statistics, police transparency, UK police forces, stop and search by area, police data analysis, law enforcement data, stop and search map, police accountability, stop and search outcomes, UK crime statistics'
     },
     {
       property: 'og:title',
@@ -466,7 +468,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.'
+      content: 'Free access to UK police stop and search data from all 44 police forces. Interactive maps, statistics, and analytics. Search by location, date, ethnicity, and outcomes.'
     },
     {
       property: 'og:type',
@@ -490,7 +492,7 @@ useHead({
     },
     {
       name: 'twitter:description',
-      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics.'
+      content: 'Free access to UK police stop and search data from all 44 police forces. Interactive maps, statistics, and analytics.'
     },
     {
       name: 'twitter:image',
@@ -527,9 +529,47 @@ useHead({
         "name": "PoliceStopSearch.co.uk",
         "url": "https://policestopsearch.co.uk",
         "logo": "https://policestopsearch.co.uk/images/puk-logo.png",
+        "description": "Independent platform providing transparent access to UK police stop and search data",
         "sameAs": [
           "https://github.com/HairyDuck/PoliceStopSearch.co.uk"
         ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "UK Police Stop and Search Data",
+        "description": "Comprehensive dataset of UK police stop and search incidents from all police forces across England, Wales, Scotland, and Northern Ireland. Includes location data, demographics, outcomes, and legislation information.",
+        "url": "https://policestopsearch.co.uk",
+        "keywords": "police stop and search, UK crime data, police statistics, law enforcement transparency, stop and search UK, police data analysis, crime statistics UK",
+        "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "creator": {
+          "@type": "Organization",
+          "name": "UK Police Forces",
+          "url": "https://data.police.uk"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "PoliceStopSearch.co.uk",
+          "url": "https://policestopsearch.co.uk"
+        },
+        "distribution": {
+          "@type": "DataDownload",
+          "contentUrl": "https://data.police.uk/api",
+          "encodingFormat": "application/json"
+        },
+        "temporalCoverage": "2022-01-01/",
+        "spatialCoverage": {
+          "@type": "Country",
+          "name": "United Kingdom"
+        },
+        "includedInDataCatalog": {
+          "@type": "DataCatalog",
+          "name": "UK Police Data Portal",
+          "url": "https://policestopsearch.co.uk"
+        }
       })
     },
     {
@@ -584,12 +624,6 @@ useHead({
             "position": 1,
             "name": "Home",
             "item": "https://policestopsearch.co.uk"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "UK Police Stop and Search Data Portal",
-            "item": "https://policestopsearch.co.uk"
           }
         ]
       })
@@ -602,6 +636,14 @@ const mapPreview = ref<HTMLElement | null>(null)
 let previewMap: LeafletMap | null = null
 
 onMounted(async () => {
+  // Initialize background refresh for latest data (non-blocking)
+  if (process.client) {
+    // Import and initialize in background
+    const { useDataRefresh } = await import('@/composables/useDataRefresh')
+    const { initializeBackgroundRefresh } = useDataRefresh()
+    initializeBackgroundRefresh()
+  }
+  
   try {
     // Remove statistics calculation
     // Initialize map preview

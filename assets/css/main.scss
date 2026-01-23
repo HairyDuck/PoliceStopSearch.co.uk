@@ -230,6 +230,39 @@ p {
   }
 }
 
+// Performance optimizations
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  
+  &[loading="lazy"] {
+    content-visibility: auto;
+  }
+}
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Focus styles for accessibility
+*:focus-visible {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+}
+
 // Responsive
 @media (max-width: 768px) {
   .grid {
@@ -266,5 +299,11 @@ p {
         justify-content: center;
       }
     }
+  }
+  
+  // Mobile performance optimizations
+  .map-container {
+    will-change: transform;
+    transform: translateZ(0); // Force GPU acceleration
   }
 } 

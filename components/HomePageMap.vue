@@ -28,11 +28,15 @@
       <div class="relative">
         <div ref="mapContainer" class="map-container h-[500px] w-full rounded-lg border border-gray-200 bg-gray-100"></div>
         
-        <!-- Map loading indicator -->
+        <!-- Map loading indicator with skeleton -->
         <div v-if="!map" class="absolute inset-0 flex items-center justify-center bg-gray-100">
           <div class="text-center">
             <div class="loading-spinner mx-auto mb-2"></div>
             <p class="text-gray-600">Loading interactive map...</p>
+            <div class="mt-4 space-y-2 w-48 mx-auto">
+              <div class="h-2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="h-2 bg-gray-200 rounded animate-pulse w-3/4 mx-auto"></div>
+            </div>
           </div>
         </div>
         
@@ -95,6 +99,8 @@
                               :src="force.logoUrl || `/images/forces/${force.id}.png`" 
                               :alt="`${force.name} logo`"
                               class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                              loading="lazy"
+                              decoding="async"
                               @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
                             />
                           </div>
@@ -172,6 +178,8 @@
                               :src="force.logoUrl || `/images/forces/${force.id}.png`" 
                               :alt="`${force.name} logo`"
                               class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                              loading="lazy"
+                              decoding="async"
                               @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
                             />
                           </div>

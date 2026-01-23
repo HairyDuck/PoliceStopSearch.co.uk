@@ -1,8 +1,8 @@
 
 
 export default defineEventHandler(async (event) => {
-  // Set cache headers - shorter cache time to allow updates
-  setHeader(event, 'Cache-Control', 'public, max-age=3600') // 1 hour
+  // Set cache headers with stale-while-revalidate for better performance
+  setHeader(event, 'Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400') // 1 hour cache, 24h stale-while-revalidate
   
   try {
     // Determine base URL for API calls

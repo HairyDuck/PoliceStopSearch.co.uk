@@ -298,6 +298,35 @@ useHead({
       rel: 'canonical',
       href: 'https://policestopsearch.co.uk/about'
     }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'About PoliceStopSearch.co.uk',
+        description: 'Learn about our independent platform providing transparent access to UK police stop and search data. Open source, non-profit initiative.',
+        url: 'https://policestopsearch.co.uk/about',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'About',
+              item: 'https://policestopsearch.co.uk/about'
+            }
+          ]
+        }
+      })
+    }
   ]
 })
 </script>

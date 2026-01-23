@@ -544,6 +544,35 @@ useHead({
       rel: 'canonical',
       href: 'https://policestopsearch.co.uk/know-your-rights'
     }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Know Your Rights - Police Stop and Search',
+        description: 'Your rights during a police stop and search in the UK. Learn what police can and cannot do, your legal rights, and how to make a complaint.',
+        url: 'https://policestopsearch.co.uk/know-your-rights',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://policestopsearch.co.uk'
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Know Your Rights',
+              item: 'https://policestopsearch.co.uk/know-your-rights'
+            }
+          ]
+        }
+      })
+    }
   ]
 })
 </script>
