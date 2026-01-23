@@ -1,15 +1,5 @@
 <template>
   <div>
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>Know Your Rights: Stop and Search in the UK | Police Stop Search Portal</title>
-      <meta name="description" content="Understand your rights during a police stop and search in the UK. Learn what police can and cannot do, what they must tell you, and how to make a complaint." />
-      <meta name="keywords" content="stop and search rights, UK police rights, PACE Act, stop search legal rights, police powers UK" />
-      <meta property="og:title" content="Know Your Rights: Stop and Search in the UK" />
-      <meta property="og:description" content="Understand your rights during a police stop and search in the UK. Learn what police can and cannot do, and what they must tell you." />
-      <meta property="og:type" content="website" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/know-your-rights" />
-    </Head>
 
     <!-- Hero Section -->
     <section class="bg-primary text-white py-16 -mt-8">
@@ -514,7 +504,7 @@
 import { useHead } from 'nuxt/app'
 
 useHead({
-  title: 'Know Your Rights: Stop and Search in the UK | Police Stop Search Portal',
+  title: 'Know Your Rights | UK Police Stop and Search',
   meta: [
     {
       name: 'description',

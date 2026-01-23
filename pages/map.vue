@@ -383,7 +383,7 @@ import MobileDatePicker from '../components/MobileDatePicker.vue'
 
 // Initialize head metadata
 useHead({
-  title: 'Interactive Stop and Search Map | UK Police Data Visualization',
+  title: 'Interactive Stop and Search Map | UK Police Data',
   meta: [
     {
       name: 'description',

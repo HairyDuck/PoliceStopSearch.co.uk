@@ -84,10 +84,6 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
-        { 
-          name: 'description', 
-          content: 'Access and analyse UK police stop and search data through interactive maps, detailed statistics, and comprehensive incident information across all UK police forces.'
-        },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'theme-color', content: '#ffffff' },
         { name: 'robots', content: 'index, follow' },
@@ -127,8 +123,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/png', href: '/images/puk-logo.png' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'canonical', href: 'https://policestopsearch.co.uk' },
-
         { rel: 'alternate', hreflang: 'en', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'en-GB', href: 'https://policestopsearch.co.uk' },
         { rel: 'alternate', hreflang: 'x-default', href: 'https://policestopsearch.co.uk' },

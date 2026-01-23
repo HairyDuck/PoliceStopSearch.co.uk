@@ -1,12 +1,5 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>Frequently Asked Questions | UK Police Stop and Search Data Portal</title>
-      <meta name="description" content="Find answers to common questions about UK police stop and search data, our data sources, updates, and how to use the platform." />
-      <meta name="keywords" content="police data FAQ, stop and search questions, UK police data help, data accuracy, data updates" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/faq" />
-    </Head>
 
     <h1 class="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
 
@@ -153,11 +146,17 @@
 import { useHead } from 'nuxt/app'
 
 useHead({
-  title: 'Frequently Asked Questions | UK Police Stop and Search Data Portal',
+  title: 'FAQ | UK Police Stop and Search Data Portal',
   meta: [
     {
       name: 'description',
       content: 'Find answers to common questions about UK police stop and search data, our data sources, updates, and how to use the platform.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/faq'
     }
   ]
 })

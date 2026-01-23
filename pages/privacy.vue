@@ -1,12 +1,5 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>Privacy Policy | UK Police Stop and Search Data Portal</title>
-      <meta name="description" content="Our privacy policy explains how we handle data and cookies on our platform." />
-      <meta name="keywords" content="privacy policy, cookies policy, data usage" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/privacy" />
-    </Head>
 
     <h1 class="text-3xl font-bold mb-8">Privacy Policy</h1>
 
@@ -90,11 +83,17 @@
 import { useHead } from 'nuxt/app'
 
 useHead({
-  title: 'Privacy Policy | UK Police Stop and Search Data Portal',
+  title: 'Privacy Policy | UK Police Data Portal',
   meta: [
     {
       name: 'description',
       content: 'Our privacy policy explains how we handle data and cookies on our platform.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/privacy'
     }
   ]
 })

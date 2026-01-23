@@ -1,15 +1,5 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>API Documentation | UK Police Stop and Search Data Portal</title>
-      <meta name="description" content="Learn how we use the UK Police Data API and access the official documentation for integrating stop and search data into your applications." />
-      <meta name="keywords" content="police API, UK police data API, stop and search API, data.police.uk, API documentation" />
-      <meta property="og:title" content="API Documentation | UK Police Stop and Search Data Portal" />
-      <meta property="og:description" content="Learn how we use the UK Police Data API and access the official documentation." />
-      <meta property="og:type" content="website" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/api" />
-    </Head>
 
     <!-- Page Header -->
     <header class="text-center mb-12">
@@ -184,7 +174,7 @@
 import { useHead } from 'nuxt/app'
 
 useHead({
-  title: 'API Documentation | UK Police Stop and Search Data Portal',
+  title: 'API Documentation | UK Police Data Portal',
   meta: [
     {
       name: 'description',

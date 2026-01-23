@@ -22,22 +22,6 @@
       </div>
     </section>
 
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>UK Police Stop and Search Data Portal | Interactive Maps & Statistics</title>
-      <meta name="description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />
-      <meta name="keywords" content="police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability" />
-      <meta property="og:title" content="UK Police Stop and Search Data Portal" />
-      <meta property="og:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data." />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://policestopsearch.co.uk" />
-      <meta property="og:image" content="https://policestopsearch.co.uk/images/puk-logo.png" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="UK Police Stop and Search Data Portal" />
-      <meta name="twitter:description" content="Access and analyse UK police stop and search data through interactive maps and detailed statistics." />
-      <meta name="twitter:image" content="https://policestopsearch.co.uk/images/puk-logo.png" />
-      <link rel="canonical" href="https://policestopsearch.co.uk" />
-    </Head>
 
     <!-- Open Source Banner -->
     <section class="bg-secondary/10 py-8">
@@ -466,6 +450,59 @@ const { data: homepageData } = await useFetch<{
 
 // SEO and Structured Data
 useHead({
+  title: 'UK Police Stop and Search Data Portal',
+  meta: [
+    {
+      name: 'description',
+      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.'
+    },
+    {
+      name: 'keywords',
+      content: 'police data, stop and search, UK police, crime statistics, law enforcement data, police transparency, UK crime data, police accountability'
+    },
+    {
+      property: 'og:title',
+      content: 'UK Police Stop and Search Data Portal'
+    },
+    {
+      property: 'og:description',
+      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics. Promoting transparency and informed discussions through accurate data.'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      property: 'og:url',
+      content: 'https://policestopsearch.co.uk'
+    },
+    {
+      property: 'og:image',
+      content: 'https://policestopsearch.co.uk/images/puk-logo.png'
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: 'UK Police Stop and Search Data Portal'
+    },
+    {
+      name: 'twitter:description',
+      content: 'Access and analyse UK police stop and search data through interactive maps and detailed statistics.'
+    },
+    {
+      name: 'twitter:image',
+      content: 'https://policestopsearch.co.uk/images/puk-logo.png'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk'
+    }
+  ],
   script: [
     {
       type: 'application/ld+json',

@@ -1,18 +1,5 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>UK Police Forces | Stop and Search Data by Force</title>
-      <meta name="description" content="Compare stop and search data across UK police forces." />
-      <meta name="keywords" content="UK police forces, police force comparison, stop and search by force, police force statistics" />
-      <meta property="og:title" content="UK Police Forces | Stop and Search Data by Force" />
-      <meta property="og:description" content="Browse and compare stop and search data across different UK police forces. View force-specific statistics and trends." />
-      <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="UK Police Forces" />
-      <meta name="twitter:description" content="Compare stop and search data across UK police forces." />
-      <link rel="canonical" href="https://policestopsearch.co.uk/forces" />
-    </Head>
 
     <!-- Page Header -->
     <header class="mb-12">
@@ -558,6 +545,51 @@ const sanitizeHtml = (html: string | null): string => {
     .replace(/<br\s*\/?>\s*$/, '') // Remove trailing line break
     .trim()
 }
+
+// SEO Meta Tags
+useHead({
+  title: 'UK Police Forces | Stop and Search Data',
+  meta: [
+    {
+      name: 'description',
+      content: 'Compare stop and search data across UK police forces.'
+    },
+    {
+      name: 'keywords',
+      content: 'UK police forces, police force comparison, stop and search by force, police force statistics'
+    },
+    {
+      property: 'og:title',
+      content: 'UK Police Forces | Stop and Search Data'
+    },
+    {
+      property: 'og:description',
+      content: 'Browse and compare stop and search data across different UK police forces. View force-specific statistics and trends.'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: 'UK Police Forces'
+    },
+    {
+      name: 'twitter:description',
+      content: 'Compare stop and search data across UK police forces.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/forces'
+    }
+  ]
+})
 
 // Lifecycle
 onMounted(async () => {

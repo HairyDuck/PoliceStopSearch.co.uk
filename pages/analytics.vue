@@ -1,16 +1,5 @@
 <template>
   <div class="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>Advanced Analytics | UK Police Stop and Search Data Analysis</title>
-      <meta name="description" content="Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling." />
-      <meta name="keywords" content="police analytics, stop and search trends, predictive analytics, correlation analysis, UK police data" />
-      <meta property="og:title" content="Advanced Analytics | UK Police Stop and Search Data Analysis" />
-      <meta property="og:description" content="Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling." />
-      <meta property="og:type" content="website" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/analytics" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    </Head>
 
     <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8">Advanced Analytics</h1>
 
@@ -346,6 +335,38 @@ import EnhancedAnalytics from '@/components/EnhancedAnalytics.vue'
 import HeatMap from '@/components/HeatMap.vue'
 import ChoroplethMap from '@/components/ChoroplethMap.vue'
 
+// SEO Meta Tags
+useHead({
+  title: 'Advanced Analytics | UK Police Data',
+  meta: [
+    {
+      name: 'description',
+      content: 'Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling.'
+    },
+    {
+      name: 'keywords',
+      content: 'police analytics, stop and search trends, predictive analytics, correlation analysis, UK police data'
+    },
+    {
+      property: 'og:title',
+      content: 'Advanced Analytics | UK Police Data'
+    },
+    {
+      property: 'og:description',
+      content: 'Advanced analytics and insights for UK police stop and search data including trend analysis, correlation studies, and predictive modeling.'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/analytics'
+    }
+  ]
+})
 
 // Initialize store
 const store = useStopSearchStore()

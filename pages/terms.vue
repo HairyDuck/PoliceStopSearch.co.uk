@@ -1,12 +1,5 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- SEO Meta Tags -->
-    <Head>
-      <title>Terms of Service | UK Police Stop and Search Data Portal</title>
-      <meta name="description" content="Terms and conditions for using our platform to explore UK police stop and search data." />
-      <meta name="keywords" content="terms of service, terms and conditions, user agreement, legal terms" />
-      <link rel="canonical" href="https://policestopsearch.co.uk/terms" />
-    </Head>
 
     <h1 class="text-3xl font-bold mb-8">Terms of Service</h1>
 
@@ -109,11 +102,17 @@
 import { useHead } from 'nuxt/app'
 
 useHead({
-  title: 'Terms of Service | UK Police Stop and Search Data Portal',
+  title: 'Terms of Service | UK Police Data Portal',
   meta: [
     {
       name: 'description',
       content: 'Terms and conditions for using our platform to explore UK police stop and search data.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://policestopsearch.co.uk/terms'
     }
   ]
 })
