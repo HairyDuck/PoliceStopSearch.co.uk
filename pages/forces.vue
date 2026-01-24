@@ -317,7 +317,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRuntimeConfig } from 'nuxt/app'
+import { useRuntimeConfig, useHead } from 'nuxt/app'
 import policeForceBadges from '../police_forces.json'
 
 interface ForceDetails {
